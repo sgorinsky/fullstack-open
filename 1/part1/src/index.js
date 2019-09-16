@@ -1,111 +1,5 @@
 import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
-/*
-const Hello = (props) => {  
-    return (    
-    <div>      
-        <p>Hello {props.name}, you are {props.age} years old!</p>   
-    </div>  
-    )
-}
-
-const Footer = () => {
-    return [
-        <div>
-            greeting app created by   
-            <a href="https://github.com/sgorinsky"> sgorinsky</a>
-        </div>
-    ]
-}
-
-const App = () => {
-    const name = 'Daisy'
-    const age = 27
-    // can declare "fragments" for DOM tree using more concise syntax <>
-    // in this case, App is the root
-    return (
-        <> 
-            <h1> Greetings </h1>
-            <Hello name="Sam" age={50/2+1}/>
-            <Hello name={name} age={age}/>
-            <Hello name="Peach" age={29} />
-
-            <Footer />
-        </>
-    )
-}
-
-
-// destructured assignment of name, age instead of props.name and props.age
-const Hello = ({name, age}) => {
-    const bornYear = () => new Date().getFullYear() - age;
-
-    return (
-        <div>
-            <p>Hello {name}, you are {age} years old</p>
-            <p>So you were probably born in {bornYear()}</p>
-        </div>
-    )
-}
-
-
-const App = () => {
-    const name = 'Peter'
-    const age = 10
-
-    return (
-        <div>
-            <h1>Greetings</h1>
-            <Hello name="Maya" age={26 + 10} />
-            <Hello name={name} age={age} />
-        </div>
-    )
-}
-ReactDOM.render(<App />, document.getElementById('root'))
-
-const Display = ({ counter }) => <div>{counter}</div>
-
-const Button = ({ onClick, text }) => (
-    <button onClick={onClick}>
-        {text}
-    </button>
-)
-
-const App = (props) => {
-    const [counter, setCounter] = useState(0);
-
-    //const increaseByOne = () => setCounter(counter + 1);
-    //const setToZero = () => setCounter(0);
-
-    // event handlers in react expect a reference to a function, not a function call
-    const setToValue = (value) => { 
-        // if we didn't include this pointer to a function, we would see the error 'too many renders'
-        // that is b/c we would call a function which calls itself and points to itself infinitely
-        // react event handlers expect pointers to functions to be evaluated
-        return () => { 
-            setCounter(value);
-        }
-    }
-
-    return (
-        <div>
-            <Display counter={counter} />
-            <Button 
-                onClick={setToValue(counter + 1)}
-                text='plus' 
-            />        
-            <Button
-                onClick={setToValue(counter - 1)}
-                text='minus'
-            />  
-            <Button
-                onClick={setToValue(0)}
-                text='zero'
-            />  
-        </div>
-    )
-}
-*/
 
 const Statistic = ({ counter, text }) => {
     return (
@@ -158,7 +52,7 @@ const anecdotes = [
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ];
-const points = Array.apply(null, new Array(anecdotes.length)).map(Number.prototype.valueOf, 0);; 
+const points = Array.apply(null, new Array(anecdotes.length)).map(Number.prototype.valueOf, 0);
 
 const App = (props) => {
     
