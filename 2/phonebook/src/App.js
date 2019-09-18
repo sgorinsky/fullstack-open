@@ -1,91 +1,29 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Phonebook from './components/Phonebook'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Phonebook from './components/Phonebook';
 
 const App = ({ addresses }) => {
+  const [filter, setFilter] = useState('');
   const [phonebook, setPhonebook] = useState([...addresses]);
   const [filtered, setFiltered] = useState([...phonebook]);
-  const [filter, setFilter] = useState('');
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
 
-  const addNumber = (event) => {
-    event.preventDefault();
-    
-    const alreadyIn = phonebook.filter((address) => {
-      return( address['name'] === name || address['number'] === number);
-    }).length > 0
-    
-    console.log(alreadyIn);
-
-    if (alreadyIn) {
-      alert('Name or number already in the phonebook');
-    } else {
-      const address = {};
-      address['name'] = name;
-      address['number'] = number;
-      setPhonebook(phonebook.concat(address));
-      setFiltered(phonebook.concat(address));
-      setFilter('')
-
-    }
-  }
-
-  const handleName = (event) => {
-    setName(event.target.value);
-    console.log(event.target.value);
-  }
-
-  const handleNumber = (event) => {
-    setNumber(event.target.value);
-    console.log(event.target.value);
-  }
-  const filterAddresses = (event) => {
-    event.preventDefault();
-    console.log(event.target.value);
-    if (event.target.value !== '') {
-      setFilter(event.target.value);
-      setFiltered(phonebook.filter(address => 
-        address.name.toLowerCase().includes(event.target.value.toLowerCase()) || address.number.includes(event.target.value)))
-      console.log(filtered);
-    } else {
-      setFilter('');
-      setFiltered(phonebook);
-    }
-  }
-
+  var count = 0;
   
-
+  console.log(phonebook)
   return (
   <>
     <h1>Phonebook</h1> 
-    <form>
-      filter shown with
-      <input
-        value={filter}
-        onChange={filterAddresses}
-      />
-    </form>
+    <Filter phonebook={phonebook} filtered={filtered} setFiltered={setFiltered} />
 
     <h1>Add a new</h1>
-    <form onSubmit={addNumber}>
-      Name:
-      <input 
-        value={name}
-        onChange={handleName}
-      />
-      <br></br>
-      Number: 
-      <input
-        value={number}
-        onChange={handleNumber}
-      />
-      <br></br>
-      <button type="submit">add</button>
-    </form>
+    <PersonForm phonebook={ phonebook } setPhonebook={ setPhonebook } setFiltered={ setFiltered } />
+
+    <h1> Numbers </h1>
+    {filtered.map(address => <Phonebook key={count++} address={address} />)}
     
-    {filtered.map(address => <Phonebook address={address} />)}
   </>
   )
 }

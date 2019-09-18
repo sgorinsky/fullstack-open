@@ -1,8 +1,6 @@
-import React from 'react'
+import React , { useState } from 'react'
 
-const Filter = ({ addresses }) => {
-    const [phonebook, setPhonebook] = useState([...addresses]);
-    const [filtered, setFiltered] = useState([...phonebook]);
+const Filter = ({ phonebook, filtered, setFiltered }) => {
     const [filter, setFilter] = useState('');
 
     const filterAddresses = (event) => {
@@ -10,7 +8,8 @@ const Filter = ({ addresses }) => {
         console.log(event.target.value);
         if (event.target.value !== '') {
             setFilter(event.target.value);
-            setFiltered(phonebook.filter(address => address.name.includes(event.target.value) || address.number.includes(event.target.value)))
+            setFiltered(phonebook.filter(address =>
+                address.name.toLowerCase().includes(event.target.value.toLowerCase()) || address.number.includes(event.target.value)))
             console.log(filtered);
         } else {
             setFilter('');
@@ -18,13 +17,15 @@ const Filter = ({ addresses }) => {
         }
     }
     return (
-        <form>
-            filter shown with
-        <input
-                value={filter}
-                onChange={filterAddresses}
-            />
-        </form>
+        <>
+            <form>
+                filter shown with:
+                <input
+                        value={filter}
+                        onChange={filterAddresses}
+                />
+            </form>
+        </>
     )
 }
 

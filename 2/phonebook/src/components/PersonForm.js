@@ -1,10 +1,10 @@
+import React, { useState } from 'react'
 
-
-const PersonForm = ({addresses}) => {
-    const [phonebook, setPhonebook] = useState([...addresses]);
+const PersonForm = ({ phonebook, setPhonebook, setFiltered }) => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
 
+    console.log(phonebook)
     const addNumber = (event) => {
         event.preventDefault();
 
@@ -15,15 +15,16 @@ const PersonForm = ({addresses}) => {
         console.log(alreadyIn);
 
         if (alreadyIn) {
-            alert('Name or number already in the phonebook');
+            alert(`${name} already in phonebook`);
         } else {
             const address = {};
             address['name'] = name;
             address['number'] = number;
             setPhonebook(phonebook.concat(address));
             setFiltered(phonebook.concat(address));
-            setFilter('')
-
+            for (var i of phonebook) {
+                console.log(i);
+            }
         }
     }
 
@@ -39,19 +40,21 @@ const PersonForm = ({addresses}) => {
 
     return (
         <form onSubmit={addNumber}>
-            Name
+            Name:
             <input
                 value={name}
                 onChange={handleName}
             />
             <br></br>
-            Number
+            Number:
             <input
                 value={number}
                 onChange={handleNumber}
             />
             <br></br>
-            <button type="submit">add</button>`
+            <button type="submit">add</button>
         </form>
     )
 }
+
+export default PersonForm
