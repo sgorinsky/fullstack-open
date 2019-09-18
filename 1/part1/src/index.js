@@ -205,7 +205,7 @@ const App = ({anecdotes}) => {
             />
             <Button 
                 onClick={ () => setSelected(Math.round(Math.random() * (anecdotes.length - 1))) }
-                text='next anecdote'
+                text='another anecdote'
             />            
             
             <h1>Anecdote with most votes </h1>

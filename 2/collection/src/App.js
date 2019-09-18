@@ -1,35 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
-import Note from './components/Note'
+import Note from './components/Note';
 
+const Show = ({show}) => {
+  return (
+    <h3>Are we showing all notes? { show + '' } </h3>
+  )
+}
 const App = ({ notes }) => {
-  const rows = () => notes.map(note => <li key={note.id}> {note.id}: {note.content} </li>);
+  console.log()
+  const [collection, setCollection] = useState([...notes]);
+  const [newNote, setNewNote] = useState('');
+  const [showAll, setShowAll] = useState(true);
+  
+  const notesToShow = showAll ? collection : collection.filter((note) => note.important)
+  const rows = () => notesToShow.map((note) => <Note key={note.id} note={note} />);
+  
+  /* we create a new note object from the form input and create a new note
+  that we add to the collection of notes when we hit submit */
+  const addNoteToCollection = (event) => { 
+    event.preventDefault();
+    const noteObject = {
+      content: newNote,
+      date: new Date().toISOString(),
+      important: Math.random() > 0.45,
+      id: collection.length + 1,
+    }
 
-  //let's try another version of the map function we're trying to display
-  var count = 1; // using count as id for incrementing within jsx
-  const result = notes.map((note) => <li key={note.id}> {count++}: {note.content} </li>);
-  console.log(result);
-  console.log(result[0]);
+    setCollection(collection.concat(noteObject));
+    setNewNote('');
+  }
+
+  // this function is event listener that always logs the state of the form input
+  const handleNoteChange = (event) => { 
+    setNewNote(event.target.value);
+  }
 
   return (
     <div>
       <h1>Notes</h1>
+      <p>{!showAll ? 'important notes only' : 'all notes shown'}</p>
+      <button type="submit" onClick={() => setShowAll(!showAll)}> toggle showAll </button>
       <ul>
-        Calling the map method on notes directly in jsx:
-                {notes.map(note => <li key={note.id}>{note.id}: {note.content}</li>)}
-        {/* in order to call map function on notes, we need to wrap it in curly braces */}
-        <br></br>
-        Calling the rows() function:
-                {rows() /* or we can call it here */}
-        <br></br>
-        Result array directly from invoking the map method on notes:
-                {result}
-        <br></br>
-        <strong>After we've exported Note.js from components and imported it</strong>
-        {notes.map(note => <Note key={note.id} note={note} />)/* specifying key for each note */}
-
+        {rows()}
       </ul>
+      <form onSubmit={addNoteToCollection}>
+        <input 
+          value={newNote} 
+          onChange={handleNoteChange 
+            /* everytime we change the input, we change the newNote value to the 
+            form's input */ } 
+        />       
+        <button type="submit"> save </button>
+      </form>
     </div>
   )
 }
