@@ -36,7 +36,7 @@ const Show = ({ countries }) => {
             { countries.map(country => 
                 <>
                     <li>
-                        {country.name} 
+                        {country.name}
                     </li> 
                 </>
                 

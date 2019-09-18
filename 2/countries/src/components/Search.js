@@ -3,11 +3,14 @@ import React from 'react'
 const Search = ({ countries, search, setSearch, setFiltered }) => {
     
     const updateSearch = (event) => {
-        console.log(event.target.value);
-        setSearch(event.target.value);
+        setSearch(event.target.value); 
+        
+        // setSearch updates a letter late, so filtering based on form input
         setFiltered(countries.filter((country) => 
-            country['name'].toLowerCase().includes(search.toLowerCase())
+            country['name'].toLowerCase().includes(event.target.value.toLowerCase())
         ))
+        
+
     }
 
     return (
@@ -15,8 +18,8 @@ const Search = ({ countries, search, setSearch, setFiltered }) => {
             find countries 
             <form>
                 <input 
-                    onChange={updateSearch}
                     value={search}
+                    onChange={updateSearch}
                 />
             </form>
         </>
