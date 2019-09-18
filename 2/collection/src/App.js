@@ -39,7 +39,7 @@ const App = ({ notes }) => {
   return (
     <div>
       <h1>Notes</h1>
-      <p>{!showAll ? 'important notes only' : 'all notes shown'}</p>
+      <p>{showAll ? 'all notes shown' : 'important notes only' }</p>
       <button type="submit" onClick={() => setShowAll(!showAll)}> toggle showAll </button>
       <ul>
         {rows()}
