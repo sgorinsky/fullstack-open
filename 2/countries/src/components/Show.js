@@ -41,7 +41,7 @@ const Show = ({ countries }) => {
                     <li>
                         {country.name}
                         <button key='button' onClick={() => {
-                            buttons[index] = true;
+                            buttons[index] = !buttons[index];
                             return setButtonState([...buttons]);
                         }}>
                             {buttonStates[index] ? 
