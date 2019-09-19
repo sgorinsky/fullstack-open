@@ -11,7 +11,7 @@ const ShowAll = ({ country }) => {
             <li> population {country.population} </li>
             <h3> Languages </h3>
             { country.languages.map((language) => <li> {language.name} </li>) }
-            <img src={country.flag}></img>
+            <img src={country.flag} width="500" height="300"></img>
             <Weather country={country} api='false' />
         </>
     )
