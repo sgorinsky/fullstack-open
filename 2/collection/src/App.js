@@ -1,19 +1,31 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Note from './components/Note';
+import axios from 'axios'
 
-const Show = ({show}) => {
-  return (
-    <h3>Are we showing all notes? { show + '' } </h3>
-  )
-}
-const App = ({ notes }) => {
+const App = () => {
   console.log()
-  const [collection, setCollection] = useState([...notes]);
+  const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
+
+  // useEffect is a way of executing code synchronously
+  // if the second arg is [], then it only executes the code once
+  useEffect(() => {
+    console.log('effect')
+
+    const eventHandler = response => {
+      console.log('promise fulfilled')
+      setNotes(response.data)
+    }
+
+    const promise = axios.get('http://localhost:3001/notes')
+    promise.then(eventHandler)
+  }, []) 
   
-  const notesToShow = showAll ? collection : collection.filter((note) => note.important)
+  console.log('render', notes.length, 'notes')
+  
+  const notesToShow = showAll ? notes : notes.filter((note) => note.important)
   const rows = () => notesToShow.map((note) => <Note key={note.id} note={note} />);
   
   /* we create a new note object from the form input and create a new note
@@ -24,10 +36,10 @@ const App = ({ notes }) => {
       content: newNote,
       date: new Date().toISOString(),
       important: Math.random() > 0.45,
-      id: collection.length + 1,
+      id: notes.length + 1,
     }
 
-    setCollection(collection.concat(noteObject));
+    setNotes(notes.concat(noteObject));
     setNewNote('');
   }
 

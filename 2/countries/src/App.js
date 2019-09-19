@@ -14,7 +14,6 @@ const App = () => {
     axios
       .get('/rest/v2/all')        
       .then((response)=> {
-        console.log(response.data[0])
         setCountries(response.data);
         setFiltered(response.data);
       })
@@ -22,9 +21,8 @@ const App = () => {
         console.log(error)
       })
   }, [])
+  var count = -1000;
 
-  console.log(countries)
-  
   if (search === '') {
     return (
       <>
@@ -37,7 +35,7 @@ const App = () => {
   return (
     <>
       <Search countries={countries} search={ search } setSearch={ setSearch } setFiltered={ setFiltered } />
-      <Show countries={filtered} />
+      <Show key={count++} countries={filtered} />
     </>
   )
 }

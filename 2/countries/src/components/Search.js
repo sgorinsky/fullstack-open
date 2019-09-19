@@ -15,8 +15,8 @@ const Search = ({ countries, search, setSearch, setFiltered }) => {
 
     return (
         <>
-            find countries 
             <form>
+                find countries: {' '/* for whitespace */} 
                 <input 
                     value={search}
                     onChange={updateSearch}

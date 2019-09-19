@@ -22,10 +22,8 @@ const App = () => {
         console.log("Houston, we have a problem: \n", error);
       })
   }, []);
-
-  console.log(phonebook);
   
-  
+  const currentAddresses = filtered.map(address => <Phonebook key={address.id} address={address} />)
   return (
   <>
     <h1>Phonebook</h1> 
@@ -35,7 +33,7 @@ const App = () => {
     <PersonForm phonebook={ phonebook } setPhonebook={ setPhonebook } setFiltered={ setFiltered } setFilter={ setFilter } />
 
     <h1> Numbers </h1>
-    {filtered.map(address => <Phonebook key={address.id} address={address} />)}
+    { currentAddresses }
     
   </>
   )

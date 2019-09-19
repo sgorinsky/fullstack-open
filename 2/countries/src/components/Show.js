@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from './Button';
+import Weather from './Weather';
 
 const ShowAll = ({ country }) => {
-    console.log(country);
+    
     return (
         <>
             <h1> {country.name} </h1>
@@ -11,32 +12,42 @@ const ShowAll = ({ country }) => {
             <h3> Languages </h3>
             { country.languages.map((language) => <li> {language.name} </li>) }
             <img src={country.flag}></img>
+            <Weather country={country} api='false' />
         </>
     )
 }
 
 const Show = ({ countries }) => {
+    //initializing array of 'off' button states that correspond to each country in countries array
+    const [buttonStates, setButtonState] = useState(Array.apply(null, Array(countries.length)).map(entry => false));
+    var buttons = [...buttonStates];
+
     if (countries.length == 1) {
         return (
-            <ShowAll country={countries[0]} />
+            <ShowAll key={countries[0].id} country={countries[0]} />
         )
     } else if (!Array.isArray(countries)) {
         console.log(countries);
         return (
-            <ShowAll country={countries} />
+            <ShowAll key={countries.id} country={countries} />
         )
     }
 
-    const showAllButton = (country) => {
-        console.log(country)
-        return () => <li>Check</li>
-    }
+
     return (
-        <>
-            { countries.map(country => 
+        <>  
+            { countries.map((country, index) => 
                 <>
                     <li>
                         {country.name}
+                        <button key='button' onClick={() => {
+                            buttons[index] = true;
+                            return setButtonState([...buttons]);
+                        }}>
+                            {buttonStates[index] ? 
+                                <ShowAll country={countries[index]} /> 
+                                :'show'}
+                        </button>
                     </li> 
                 </>
                 

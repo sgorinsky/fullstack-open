@@ -18,6 +18,7 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
             
             address['name'] = name;
             address['number'] = number;
+            address['id'] = phonebook.length+1;
             
             setPhonebook(phonebook.concat(address));
             setFiltered(phonebook.concat(address));
