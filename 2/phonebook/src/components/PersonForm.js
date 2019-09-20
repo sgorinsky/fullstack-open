@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import phoneService from './addresses';
 
-const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
+const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotification }) => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
     
     const addNumber = (event) => {
         event.preventDefault();
-
+        
         var current = phonebook.find(address => name.toLowerCase() === address.name.toLowerCase());
 
         if (current === undefined) {
@@ -46,6 +46,8 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
             setFilter('');
             setName('');
             setNumber('');
+            setNotification(`Added ${address.name} to phonebook`);
+            setTimeout(() => setNotification(null), 3000);
             
         }
     }
