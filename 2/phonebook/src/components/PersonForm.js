@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import phoneService from './addresses';
 
 const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
     const [name, setName] = useState('');
@@ -7,24 +8,39 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
     const addNumber = (event) => {
         event.preventDefault();
 
-        const alreadyIn = phonebook.filter((address) => {
-            return (address['name'] === name || address['number'] === number);
-        }).length > 0
+        const current = phonebook.find(address => name.toLowerCase() === address.name.toLowerCase());
 
-        if (alreadyIn) {
-            alert(`${name} already in phonebook`);
-        } else {
-            const address = {};
-            
-            address['name'] = name;
-            address['number'] = number;
-            address['id'] = phonebook.length+1;
-            
-            setPhonebook(phonebook.concat(address));
+        if (current === undefined) {
+            const address = {
+                name: name,
+                number: number,
+                id: phonebook.length + 1
+            };
+
+            phoneService.create(address).then(setPhonebook(phonebook.concat(address)));
             setFiltered(phonebook.concat(address));
             setFilter('');
-            
-        }
+            setName('');
+            setNumber('');
+
+        } else if (current.name === name && current.number === number) {
+            alert(`${name} is already in the phonebook`);
+        } else if (current.number !== number) {
+            if (window.confirm(`${current.name} is already in the phonebook, would you like to change their number?`)) {
+                const newNumber = { ...current, number: number };
+                phoneService
+                    .update(current.id, newNumber)
+                    .then(data => {
+                        phoneService.getAll().then(data => {
+                            console.log(data);
+                            setFiltered([...data]);
+                            setPhonebook([...data]);
+                            setName('');
+                            setNumber('');
+                        })
+                    })
+            }
+        } 
     }
 
     const handleName = (event) => {
@@ -53,5 +69,4 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
         </form>
     )
 }
-
 export default PersonForm

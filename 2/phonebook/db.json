@@ -1,24 +1,39 @@
 {
-  "persons":[
-    { 
-      "name": "Arto Hellas", 
+  "persons": [
+    {
+      "name": "Arto Hellas",
       "number": "040-123456",
       "id": 1
     },
-    { 
-      "name": "Ada Lovelace", 
+    {
+      "name": "Ada Lovelace",
       "number": "39-44-5323523",
       "id": 2
     },
-    { 
-      "name": "Dan Abramov", 
+    {
+      "name": "Dan Abramov",
       "number": "12-43-234345",
       "id": 3
     },
-    { 
-      "name": "Mary Poppendieck", 
+    {
+      "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": 4
+    },
+    {
+      "name": "James Madison",
+      "number": "252-116-8344",
+      "id": 6
+    },
+    {
+      "name": "Joe Biden",
+      "number": "30330",
+      "id": 7
+    },
+    {
+      "name": "Sam Adelman",
+      "number": "114-652-9924",
+      "id": 8
     }
   ]
 }
