@@ -1,5 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-const Note = ({note}) => <li key={note.id}> {note.content} </li>
+const Note = ({note, toggleImportanceOf}) => {
+    const label = note.important
+        ? 'make not important' : 'make important';
+    
+    return (
+        <li key={note.id}>
+            {note.content}
+            <button onClick={() => toggleImportanceOf(note)}> {label} </button>
+        </li>
+    )
 
+}
 export default Note
