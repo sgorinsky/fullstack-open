@@ -9,8 +9,6 @@ const Search = ({ countries, search, setSearch, setFiltered }) => {
         setFiltered(countries.filter((country) => 
             country['name'].toLowerCase().includes(event.target.value.toLowerCase())
         ))
-        
-
     }
 
     return (
@@ -23,7 +21,6 @@ const Search = ({ countries, search, setSearch, setFiltered }) => {
                 />
             </form>
         </>
-
     )
 }
 

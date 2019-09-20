@@ -7,10 +7,16 @@ const ShowAll = ({ country }) => {
     return (
         <>
             <h1> {country.name} </h1>
-            <li> capital {country.capital} </li>
-            <li> population {country.population} </li>
+            <ul>
+                <li> capital: {country.capital} </li>
+                <li> population: {country.population} </li>
+            </ul>
+            
             <h3> Languages </h3>
-            { country.languages.map((language) => <li> {language.name} </li>) }
+            <ul>
+                {country.languages.map((language) => <li key={language.name}> {language.name} </li>)}
+            </ul>
+            
             <img src={country.flag} width="500" height="300"></img>
             <Weather country={country} api='false' />
         </>
@@ -24,32 +30,28 @@ const Show = ({ countries }) => {
 
     if (countries.length == 1) {
         return (
-            <ShowAll key={countries[0].id} country={countries[0]} />
+            <ShowAll country={countries[0]} />
         )
     } else if (!Array.isArray(countries)) {
-        console.log(countries);
         return (
-            <ShowAll key={countries.id} country={countries} />
+            <ShowAll country={countries} />
         )
     }
-
-
     return (
         <>  
             { countries.map((country, index) => 
-                <>
-                    <li>
-                        {country.name}
-                        <button key='button' onClick={() => {
-                            buttons[index] = !buttons[index];
-                            return setButtonState([...buttons]);
-                        }}>
-                            {buttonStates[index] ? 
-                                <ShowAll country={countries[index]} /> 
-                                :'show'}
-                        </button>
-                    </li> 
-                </>
+                <li key={country.numericCode}>
+                    {country.name}
+                    <button onClick={() => { // onClick toggles ShowAll button corresponding to country view
+                        buttons[index] = !buttons[index]; 
+                        return setButtonState([...buttons]);
+                    }}>
+                        {buttonStates[index] ? 
+                            <ShowAll country={countries[index]} /> 
+                            :'show'}
+                    </button>
+                </li> 
+                
                 
             )}
         </>

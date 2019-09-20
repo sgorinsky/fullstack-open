@@ -34,8 +34,8 @@ const App = () => {
 
   return (
     <>
-      <Search countries={countries} search={ search } setSearch={ setSearch } setFiltered={ setFiltered } />
-      <Show key={count++} countries={filtered} />
+      <Search key='search' countries={countries} search={ search } setSearch={ setSearch } setFiltered={ setFiltered } />
+      <Show key='show' countries={filtered} />
     </>
   )
 }
