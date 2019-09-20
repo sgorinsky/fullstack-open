@@ -4,28 +4,22 @@ import phoneService from './addresses';
 const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
-
+    
     const addNumber = (event) => {
         event.preventDefault();
 
-        const current = phonebook.find(address => name.toLowerCase() === address.name.toLowerCase());
+        var current = phonebook.find(address => name.toLowerCase() === address.name.toLowerCase());
 
         if (current === undefined) {
-            const address = {
-                name: name,
-                number: number,
-                id: phonebook.length + 1
-            };
-
-            phoneService.create(address).then(setPhonebook(phonebook.concat(address)));
-            setFiltered(phonebook.concat(address));
-            setFilter('');
-            setName('');
-            setNumber('');
-
-        } else if (current.name === name && current.number === number) {
-            alert(`${name} is already in the phonebook`);
-        } else if (current.number !== number) {
+            current = {
+                name:' ',
+                number:' '
+            }
+        }
+        
+        if (current.name === name && current.number === number) {
+            alert(`${name} already in phonebook`);
+        } else if (current.number !== number && current.name === name) {
             if (window.confirm(`${current.name} is already in the phonebook, would you like to change their number?`)) {
                 const newNumber = { ...current, number: number };
                 phoneService
@@ -40,7 +34,20 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter }) => {
                         })
                     })
             }
-        } 
+        } else {
+            const address = {
+                name: name,
+                number: number,
+                id: phonebook.length+1
+            };
+            
+            phoneService.create(address).then(setPhonebook(phonebook.concat(address)));
+            setFiltered(phonebook.concat(address));
+            setFilter('');
+            setName('');
+            setNumber('');
+            
+        }
     }
 
     const handleName = (event) => {
