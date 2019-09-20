@@ -3,12 +3,34 @@ import './App.css';
 import Note from './components/Note';
 import axios from 'axios'
 import noteService from './components/notes'
+import Notification from './components/Notification'
+
+const Footer = () => {
+  const footerStyle = {
+    color: 'white',
+    fontStyle: 'italic',
+    fontSize: 12,
+    backgroundColor: 'darkred',
+    position: 'relative',
+    top:"100px",
+    paddingLeft:"10px",
+    borderRadius: 4
+  }
+
+  return (
+    <div style={footerStyle} className='footer'>
+      <br />
+      <em>Department of Computer Science, University of Helsinki 2019</em>
+    </div>
+  )
+}
 
 const App = () => {
   console.log()
   const [notes, setNotes] = useState([]);
   const [newNote, setNewNote] = useState('');
   const [showAll, setShowAll] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // useEffect is a way of executing code synchronously
   // if the second arg is [], then it only executes the code once
@@ -23,13 +45,19 @@ const App = () => {
   console.log('render', notes.length, 'notes')
   
   const toggleImportanceOf = id => {
-    const note = notes.find(n => n.id === id)
-    const changedNote = { ...note, important: !note.important }
+    const note = notes.find(n => n.id === id);
+    const changedNote = { ...note, important: !note.important };
 
     noteService
       .update(id, changedNote)
       .then(returnedNote => {
-        setNotes(notes.map(note => note.id !== id ? note : returnedNote))
+        setNotes(notes.map(note => note.id !== id ? note : returnedNote));
+      })
+      .catch(error => { 
+        setErrorMessage(`Note ${note.content} was already removed from the server`);
+        setTimeout( () => setErrorMessage(null), 5000);
+        setNotes(notes.filter(n => n.id !== id));
+        
       })
   }
 
@@ -62,6 +90,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <button type="submit" onClick={() => setShowAll(!showAll)}> {showAll ? 'all notes shown': 'only important notes shown'} </button>
       <ul>
         {rows()}
@@ -75,6 +104,8 @@ const App = () => {
         />       
         <button type="submit"> save </button>
       </form>
+
+      <Footer />
     </div>
   )
 }
