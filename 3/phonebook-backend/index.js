@@ -1,9 +1,28 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-var morgan = require('morgan')
+const morgan = require('morgan')
 
 app.use(bodyParser.json())
+
+morgan.token('req-content', (req, res) => { 
+  if (req['body']) {
+    return JSON.stringify(req['body']);
+  } else {
+    return '-';
+  }
+})
+
+const requestLogger = morgan('method::method \
+                              \nurl: :url \
+                              \nstatus: :status \
+                              \nremote address: :remote-addr \
+                              \nrequest body: :req-content \
+                              \nrequest length: :req[content-length] \
+                              \nresponse length: :res[content-length] \
+                              \nresponse time: :response-time ms\
+                              \n----------------------');
+app.use(requestLogger);
 
 let persons = [
   {
@@ -62,13 +81,7 @@ let persons = [
     "id": 11
   }
 ]
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
-}
+
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
