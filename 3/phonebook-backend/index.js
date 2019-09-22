@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
-
 const bodyParser = require('body-parser')
+var morgan = require('morgan')
 
 app.use(bodyParser.json())
 
@@ -62,56 +62,79 @@ let persons = [
     "id": 11
   }
 ]
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.get('/', (request, response) => {
+  app.use(requestLogger);
+  response.send('<h1> Homepage </h1>')
+})
+
+app.get('/info', (request, response) => {
+  const message = `Phonebook has ${persons.length} people<br></br>${new Date()}`
+
+  response.send(message);
 })
 
 const generateId = () => {
-  const maxId = persons.length > 0
-    ? Math.max(...persons.map(n => n.id))
-    : 0
-  return maxId + 1
+  return Math.round(Math.random()*1000000 + persons.length);
 }
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
-  if (!body.content) {
+  if (!body.name || !body.number) {
     return response.status(400).json({
       error: 'content missing'
     })
+  } else if (persons.find(person => person.name === body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
+  } else if (persons.find(person => person.number === body.number)) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
   }
 
-  const note = {
-    content: body.content,
-    important: body.important || false,
+  const person = {
+    name: body.name,
+    number: body.number,
     date: new Date(),
     id: generateId(),
   }
 
-  persons = persons.concat(note)
+  persons = persons.concat(person)
 
-  response.json(note)
+  response.json(person)
 })
 
 app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
-app.get('/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const note = persons.find(note => note.id === id)
-  if (note) {
-    response.json(note)
+  const person = persons.find(person => person.id === id)
+  if (person) {
+    response.json(person)
   } else {
     response.status(404).end()
   }
 })
 
-app.delete('/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  persons = persons.filter(note => note.id !== id)
+  persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
 })
