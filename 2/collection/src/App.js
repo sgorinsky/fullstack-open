@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import Note from './components/Note';
-import axios from 'axios'
 import noteService from './components/notes'
 import Notification from './components/Notification'
 
@@ -55,7 +54,7 @@ const App = () => {
       })
       .catch(error => { 
         setErrorMessage(`Note ${note.content} was already removed from the server`);
-        setTimeout( () => setErrorMessage(null), 5000);
+        setTimeout( () => setErrorMessage(null), 4000);
         setNotes(notes.filter(n => n.id !== id));
         
       })
