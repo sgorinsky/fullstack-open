@@ -8,8 +8,9 @@ app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 
+// for now, morgan request logger is for dev build 
 const morgan = require('morgan')
-morgan.token('req-content', (req, res) => { 
+morgan.token('req-content', (req, res) => {
   if (req['body']) {
     return JSON.stringify(req['body']);
   } else {
@@ -26,7 +27,19 @@ const requestLogger = morgan('method::method \
                               \nresponse length: :res[content-length] \
                               \nresponse time: :response-time ms\
                               \n----------------------');
-app.use(requestLogger);
+
+/*
+const requestLogger = (request, response, next) => {
+  console.log('Method:', request.method)
+  console.log('Path:  ', request.path)
+  console.log('Body:  ', request.body)
+  console.log('---')
+  next()
+}
+*/
+app.use(requestLogger)
+
+
 
 
 let persons = [
