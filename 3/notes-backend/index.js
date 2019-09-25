@@ -1,8 +1,9 @@
 const express = require('express')
 const app = express()
-
+const cors = require('cors')
 const bodyParser = require('body-parser')
 
+app.use(cors())
 app.use(bodyParser.json())
 
 const requestLogger = (request, response, next) => {
@@ -12,7 +13,6 @@ const requestLogger = (request, response, next) => {
   console.log('---')
   next()
 }
-
 app.use(requestLogger)
 
 
@@ -90,7 +90,7 @@ app.delete('/notes/:id', (request, response) => {
   response.status(204).end()
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
