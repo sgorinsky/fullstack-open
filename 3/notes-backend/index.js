@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const bodyParser = require('body-parser')
-app.use(express.static('build'))
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 
