@@ -1,7 +1,7 @@
 import React from 'react'
 import phoneService from './addresses'
 
-const baseUrl = '/api/persons';
+const baseUrl = 'api/persons';
 const Phonebook = ({ address, setFiltered, setPhonebook, setNotification, setError }) => 
         <li> 
             {address.name + ' '} 

@@ -1,12 +1,14 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const morgan = require('morgan')
+
 const cors = require('cors')
 
+app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 
+const morgan = require('morgan')
 morgan.token('req-content', (req, res) => { 
   if (req['body']) {
     return JSON.stringify(req['body']);
@@ -25,6 +27,7 @@ const requestLogger = morgan('method::method \
                               \nresponse time: :response-time ms\
                               \n----------------------');
 app.use(requestLogger);
+
 
 let persons = [
   {
