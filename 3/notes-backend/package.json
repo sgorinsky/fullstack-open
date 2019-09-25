@@ -8,7 +8,7 @@
     "watch": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:ui": "rm -rf build && cd ../../2/collection && npm run build --prod && cp -r build ../../3/notes-backend/",
-    "deploy": "git push heroku master",
+    "deploy": "git push heroku",
     "deploy:full": "npm run build:ui && cd ../.. && git add . && git commit -m uibuild &&  git push origin master && cd 3/notes-backend && npm run deploy",
     "logs:prod": "heroku logs --tail --app young-inlet-32691"
   },
