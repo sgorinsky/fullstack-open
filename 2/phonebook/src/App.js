@@ -44,7 +44,7 @@ const App = () => {
   return (
   <>
     <Notification message={notification} error={error} />
-    <h1>Phonebook</h1> 
+    <h1>PHONEBOOK</h1> 
     <Filter phonebook={phonebook} filtered={filtered} setFiltered={setFiltered} />
 
     <h1>Add a new</h1>
