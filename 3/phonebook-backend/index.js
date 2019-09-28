@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-
 const cors = require('cors')
+const Person = require('./models/Person')
+
 
 app.use(express.static('build'))
 app.use(cors())
@@ -27,79 +29,7 @@ const requestLogger = morgan('method::method \
                               \nresponse length: :res[content-length] \
                               \nresponse time: :response-time ms\
                               \n----------------------');
-
-/*
-const requestLogger = (request, response, next) => {
-  console.log('Method:', request.method)
-  console.log('Path:  ', request.path)
-  console.log('Body:  ', request.body)
-  console.log('---')
-  next()
-}
-*/
 app.use(requestLogger)
-
-
-
-
-let persons = [
-  {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-    "id": 2
-  },
-  {
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "id": 3
-  },
-  {
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
-    "id": 4
-  },
-  {
-    "name": "James Madison",
-    "number": "252-116-8344",
-    "id": 6
-  },
-  {
-    "name": "Joe Biden",
-    "number": "30330",
-    "id": 7
-  },
-  {
-    "name": "Johnny DeMarco",
-    "number": "220-461-4977",
-    "id": 8
-  },
-  {
-    "name": "Yolanta Gunderson",
-    "number": "882-342-9544",
-    "id": 5
-  },
-  {
-    "name": "Tiffany Anderson",
-    "number": "221-981-4400",
-    "id": 9
-  },
-  {
-    "name": "Kimmy Yu",
-    "number": "011-330-330",
-    "id": 10
-  },
-  {
-    "name": "Nova Scotia",
-    "number": "32-119-0644",
-    "id": 11
-  }
-]
-
 
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
@@ -111,66 +41,71 @@ app.get('/', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-  const message = `Phonebook has ${persons.length} people<br></br>${new Date()}`
-
+  const message = `Phonebook has ${Person.find().count()} people<br></br>${new Date()}`
   response.send(message);
 })
 
-const generateId = () => {
-  return Math.round(Math.random()*1000000 + persons.length);
-}
-
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  var name;
+  Person.find({ name: body.name }).then(person => {
+    name = person.name;
+  })
+  var number;
+  Person.find({ number: body.number }).then(person => {
+    number = person.number;
+  })
 
   if (!body.name || !body.number) {
     return response.status(400).json({
       error: 'content missing'
     })
-  } else if (persons.find(person => person.name === body.name)) {
+  } else if (name) {
     return response.status(400).json({
       error: 'name must be unique'
     })
-  } else if (persons.find(person => person.number === body.number)) {
+  } else if (number) {
     return response.status(400).json({
       error: 'name must be unique'
     })
   }
 
-  const person = {
+  const person = new Person({
     name: body.name,
     number: body.number,
     date: new Date(),
-    id: generateId(),
-  }
+  })
 
-  persons = persons.concat(person)
-
-  response.json(person)
+  person.save().then(newPerson => {
+    console.log(`${newPerson.name} saved in database!`);
+    response.json(newPerson.toJSON());
+  })
 })
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find().then(people => {
+      response.json(people)
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const person = persons.find(person => person.id === id)
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  Person
+    .findById(request.params.id)
+    .then(persons => {
+      response.json(persons.toJSON())
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-  const id = Number(request.params.id)
-  persons = persons.filter(person => person.id !== id)
-
-  response.status(204).end()
+  console.log(request.params)
+  Person
+    .findById(request.params.id)
+    .then(persons => {
+      response.json(persons.toJSON())
+    })
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
