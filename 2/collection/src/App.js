@@ -43,21 +43,25 @@ const App = () => {
   
   console.log('render', notes.length, 'notes')
   
-  const toggleImportanceOf = id => {
-    const note = notes.find(n => n.id === id);
+  const toggleImportanceOf = (id) => {
+    const note = notes.find(note => note.id === id);
     const changedNote = { ...note, important: !note.important };
 
+    // currently, we don't have a response handler for updates so we're just toggling the importance states of notes on click
+    setNotes(notes.map(note => note.id !== id ? note : changedNote));
+    
+    /* 
     noteService
       .update(id, changedNote)
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote));
       })
       .catch(error => { 
-        setErrorMessage(`Note ${note.content} was already removed from the server`);
+        setErrorMessage(`Note ${note.id} was already removed from the server`);
         setTimeout( () => setErrorMessage(null), 4000);
-        setNotes(notes.filter(n => n.id !== id));
-        
+        setNotes(notes.filter(n => n.id !== id));       
       })
+    */
   }
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
