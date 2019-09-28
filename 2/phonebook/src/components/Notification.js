@@ -4,7 +4,6 @@ const Notification = ({message, error}) => {
     if (message === null) {
         return null
     }
-
     if (error) {
         return (
             <div className="error">
@@ -12,7 +11,6 @@ const Notification = ({message, error}) => {
             </div>
         )
     }
-
     return (
         <div className="notification">
             {message}
