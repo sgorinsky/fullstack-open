@@ -21,7 +21,7 @@ const requestLogger = (request, response, next) => {
 app.use(requestLogger)
 
 // REQUEST HANDLING
-app.post('/api/notes', (request, response) => {
+app.post('/api/notes', (request, response, next) => {
   const body = request.body
 
   if (!body.content) {
@@ -36,10 +36,13 @@ app.post('/api/notes', (request, response) => {
     date: new Date(),
   })
   
-  note.save().then(newNote => {
-    console.log('note saved!');
-    response.json(newNote.toJSON());
-  })
+  note
+    .save()
+    .then(newNote => {
+      console.log('note saved!');
+      response.json(newNote.toJSON());
+    })
+    .catch(error => next(error));
 })
 
 app.get('/api/notes', (request, response) => {
@@ -62,12 +65,10 @@ app.get('/api/notes/:id', (request, response, next) => {
 
 app.put('/api/notes/:id', (request, response, next) => { // handles update queries from frontend
   const body = request.body;
-  
   const note = {
     content: body.content,
     important: body.important,
   }
-  
   // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
   Note.findByIdAndUpdate(request.params.id, note, { new: true })
     .then(updatedNote => {
@@ -76,8 +77,7 @@ app.put('/api/notes/:id', (request, response, next) => { // handles update queri
     .catch(error => next(error));
 })
 
-app.delete('/api/notes/:id', (request, response, next) => {
-  
+app.delete('/api/notes/:id', (request, response, next) => { 
   // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove
   Note.findByIdAndRemove(request.params.id)
     .then(result => {
@@ -96,6 +96,9 @@ const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === 'CastError' && error.kind == 'ObjectId') {
     return response.status(400).send({ error: 'wrong id' })
+  } else if (error.name === 'ValidationError') { 
+    console.log(error);
+    return response.status(400).json({ error: error.message }) ;
   }
   next(error)
 }
