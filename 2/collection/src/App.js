@@ -47,12 +47,8 @@ const App = () => {
     const note = notes.find(note => note.id === id);
     const changedNote = { ...note, important: !note.important };
 
-    // currently, we don't have a response handler for updates so we're just toggling the importance states of notes on click
-    setNotes(notes.map(note => note.id !== id ? note : changedNote));
-    
-    /* 
     noteService
-      .update(id, changedNote)
+      .update(id, changedNote) // put request
       .then(returnedNote => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote));
       })
@@ -61,7 +57,7 @@ const App = () => {
         setTimeout( () => setErrorMessage(null), 4000);
         setNotes(notes.filter(n => n.id !== id));       
       })
-    */
+    
   }
 
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
