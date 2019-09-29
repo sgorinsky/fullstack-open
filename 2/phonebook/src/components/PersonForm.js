@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import phoneService from './addresses';
-import axios from 'axios'
 
 const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotification }) => {
     const [name, setName] = useState('');
@@ -9,8 +8,7 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotifi
     const addNumber = (event) => {
         event.preventDefault();
         
-        var current = phonebook.find(address => name.toLowerCase() === address.name.toLowerCase());
-
+        var current = phonebook.find(address => name.toLowerCase() === address.name.toLowerCase() || number === address.number);
         if (current === undefined) {
             current = {
                 name:' ',
@@ -34,19 +32,40 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotifi
                             setNumber('');
                         })
                     })
+                    .catch(error => console.log(error))
+            }
+        } else if (current.number === number) {
+            if (window.confirm(`${current.number} is already in the phonebook, would you like to change their name?`)) {
+                const newNumber = { ...current, name: name };
+                
+                phoneService
+                    .update(current.id, newNumber)
+                    .then(data => {
+                        phoneService.getAll().then(data => {
+                            console.log(data);
+                            setFiltered([...data]);
+                            setPhonebook([...data]);
+                            setName('');
+                            setNumber('');
+                        })
+                    })
+                    .catch(error => console.log(error))
             }
         } else {
             const address = {
                 name: name,
                 number: number,
-                id: phonebook.length+1
             };
             
-            phoneService.create(address).then(setPhonebook(phonebook.concat(address)));
-            setFiltered(phonebook.concat(address));
-            setFilter('');
             setName('');
             setNumber('');
+            
+            phoneService
+                .create(address)
+                .then(setPhonebook(phonebook.concat(address)));
+            
+            setFiltered(phonebook.concat(address));
+            setFilter('');
             setNotification(`Added ${address.name} to phonebook`);
             setTimeout(() => setNotification(null), 3000);
             
@@ -56,7 +75,6 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotifi
     const handleName = (event) => {
         setName(event.target.value);
     }
-
     const handleNumber = (event) => {
         setNumber(event.target.value);
     }
