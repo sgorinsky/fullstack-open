@@ -54,6 +54,7 @@ const App = () => {
                 setFiltered={ setFiltered } 
                 setFilter={ setFilter }  
                 setNotification={ setNotification }
+                setError={ setError }
     />
 
     <h1> Numbers </h1>

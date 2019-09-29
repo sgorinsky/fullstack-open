@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import phoneService from './addresses';
 
-const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotification }) => {
+const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotification, setError }) => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
     
@@ -74,7 +74,14 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotifi
                             setTimeout(() => setNotification(null), 3000);
                         })
                 })
-                .catch(error => console.log(error));
+                .catch(err => {
+                    setError(true);
+                    setNotification(err.response.data.error);
+                    setTimeout(() => {
+                        setError(false);
+                        setNotification(null);
+                    }, 3500);
+                });
         }
     }
 

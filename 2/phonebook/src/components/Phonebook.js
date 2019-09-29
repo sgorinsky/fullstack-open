@@ -26,7 +26,7 @@ const Phonebook = ({ address, setFiltered, setPhonebook, setNotification, setErr
                                 setTimeout(() => {
                                     setNotification(null)
                                     setError(false)
-                                }, 3000);
+                                }, 3500);
                             })
                         })
                         
