@@ -41,7 +41,7 @@ app.get('/info', (request, response) => {
   response.send(message);
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
   
   var name;
@@ -57,14 +57,6 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({
       error: 'content missing'
     })
-  } else if (name) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    })
-  } else if (number) {
-    return response.status(400).json({
-      error: 'name must be unique'
-    })
   }
 
   const person = new Person({
@@ -73,10 +65,13 @@ app.post('/api/persons', (request, response) => {
     date: new Date(),
   })
 
-  person.save().then(newPerson => {
-    console.log(`${newPerson.name} has been saved in database!`);
-    response.json(newPerson.toJSON());
-  })
+  person
+    .save()
+    .then(newPerson => {
+      console.log(`${newPerson.name} has been saved in database!`);
+      response.json(newPerson.toJSON());
+    })
+    .catch(error => next(error))
 })
 
 app.get('/api/persons', (request, response) => {
@@ -140,9 +135,11 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  console.error(error)
   if (error.name === 'CastError' && error.kind == 'ObjectId') {
     return response.status(400).send({ error: 'wrong id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).send({ error: error.message })
   }
   next(error)
 }
