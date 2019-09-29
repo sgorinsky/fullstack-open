@@ -12,7 +12,7 @@ const app = 'notes-app'
 const username = 'samg'
 const url =
   `mongodb+srv://samg:${password}@fullstack-open-yxrow.mongodb.net/${app}?retryWrites=true&w=majority`
-
+//mongodb+srv://samg@fullstack-open-yxrow.mongodb.net/
 mongoose.connect(url, { useNewUrlParser: true })
 
 const noteSchema = new mongoose.Schema({

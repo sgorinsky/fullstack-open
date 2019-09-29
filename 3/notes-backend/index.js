@@ -1,3 +1,4 @@
+// DEPENDENCIES
 require('dotenv').config()
 const express = require('express')
 const app = express()
@@ -9,7 +10,7 @@ app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 
-
+// MIDDLEWARE
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
   console.log('Path:  ', request.path)
@@ -19,6 +20,7 @@ const requestLogger = (request, response, next) => {
 }
 app.use(requestLogger)
 
+// REQUEST HANDLING
 app.post('/api/notes', (request, response) => {
   const body = request.body
 
@@ -42,31 +44,63 @@ app.post('/api/notes', (request, response) => {
 
 app.get('/api/notes', (request, response) => {
   Note.find({}).then(notes => {
-    response.json(notes)
+    response.json(notes);
   })
 })
 
-app.get('/api/notes/:id', (request, response) => {
+app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id)
     .then(note => {
       if (note) { 
-        response.json(note.toJSON()) 
+        response.json(note.toJSON()) ;
       } else { 
-        response.status(404).end() 
+        response.status(404).end();
       }
     })
-    .catch(error => {
-      console.log(error);
-      response.status(404).end()
+    .catch(error => next(error));
+})
+
+app.put('/api/notes/:id', (request, response, next) => { // handles update queries from frontend
+  const body = request.body;
+  
+  const note = {
+    content: body.content,
+    important: body.important,
+  }
+  
+  // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndUpdate
+  Note.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote.toJSON())
     })
+    .catch(error => next(error));
 })
 
-app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
-
-  response.status(204).end()
+app.delete('/api/notes/:id', (request, response, next) => {
+  
+  // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove
+  Note.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 })
+
+// ERROR HANDLING
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+    return response.status(400).send({ error: 'wrong id' })
+  }
+  next(error)
+}
+app.use(errorHandler)
+
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
