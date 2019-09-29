@@ -9,8 +9,8 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-mongoose.connect(url, { 
-    useNewUrlParser: true 
+mongoose.connect(url, {
+    useNewUrlParser: true
     })
     .then(result => {
         console.log('connected to MongoDB phonebook')

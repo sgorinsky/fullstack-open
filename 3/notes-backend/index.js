@@ -28,14 +28,14 @@ app.post('/api/notes', (request, response, next) => {
     return response.status(400).json({
       error: 'content missing'
     })
-  } 
-  
+  }
+
   const note = new Note({
     content: body.content,
     important: body.important || false,
     date: new Date(),
   })
-  
+
   note
     .save()
     .then(newNote => {
@@ -54,9 +54,9 @@ app.get('/api/notes', (request, response) => {
 app.get('/api/notes/:id', (request, response, next) => {
   Note.findById(request.params.id)
     .then(note => {
-      if (note) { 
+      if (note) {
         response.json(note.toJSON()) ;
-      } else { 
+      } else {
         response.status(404).end();
       }
     })
@@ -77,10 +77,11 @@ app.put('/api/notes/:id', (request, response, next) => { // handles update queri
     .catch(error => next(error));
 })
 
-app.delete('/api/notes/:id', (request, response, next) => { 
+app.delete('/api/notes/:id', (request, response, next) => {
   // https://mongoosejs.com/docs/api.html#model_Model.findByIdAndRemove
   Note.findByIdAndRemove(request.params.id)
     .then(result => {
+      console.log(result)
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -94,9 +95,9 @@ app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'wrong id' })
-  } else if (error.name === 'ValidationError') { 
+  } else if (error.name === 'ValidationError') {
     console.log(error);
     return response.status(400).json({ error: error.message }) ;
   }

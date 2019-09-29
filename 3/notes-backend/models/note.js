@@ -8,8 +8,8 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
 mongoose.connect(url, { useNewUrlParser: true })
-    .then(result => { 
-        console.log('connected to MongoDB') 
+    .then(result => {
+        console.log('connected to MongoDB')
     })
     .catch((error) => {
         console.log('error connecting to MongoDB:', error.message)
