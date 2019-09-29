@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
-const Person = require('./models/Person')
+const Person = require('./models/person')
 
 
 app.use(express.static('build'))
@@ -102,12 +102,25 @@ app.put('/api/persons/:id', (request, response, next) => {
     name: body.name,
   }
 
-  Person
-    .findByIdAndUpdate(request.params.id, person, {new: true})
-    .then(updatedPersons => {
-      response.json(updatedPersons.toJSON())
-    })
-    .catch(error => next(error))
+  if (body.id !== undefined) {
+    Person
+      .findByIdAndUpdate(request.params.id, person, { new: true })
+      .then(updatedPerson => {
+        response.json(updatedPerson.toJSON())
+      })
+      .catch(error => next(error))
+    
+  } else {
+    console.log(body)
+    console.log(person)
+    Person.findOneAndUpdate({ name: body.name }, person, { new: true })
+      .then(updatedPersons => {
+        console.log(updatedPerson)
+        response.json(updatedPerson.toJSON())
+      })
+      .catch(error => next(error))
+  }
+
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
