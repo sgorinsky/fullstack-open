@@ -24,12 +24,14 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotifi
                 phoneService
                     .update(current.id, newNumber)
                     .then(data => {
-                        phoneService.getAll().then(data => {
-                            console.log(data);
-                            setFiltered([...data]);
-                            setPhonebook([...data]);
-                            setName('');
-                            setNumber('');
+                        phoneService
+                            .getAll()
+                            .then(data => {
+                                console.log(data);
+                                setFiltered([...data]);
+                                setPhonebook([...data]);
+                                setName('');
+                                setNumber('');
                         })
                     })
                     .catch(error => console.log(error))
@@ -57,18 +59,22 @@ const PersonForm = ({ phonebook, setPhonebook, setFiltered, setFilter, setNotifi
                 number: number,
             };
             
-            setName('');
-            setNumber('');
-            
             phoneService
                 .create(address)
-                .then(setPhonebook(phonebook.concat(address)));
-            
-            setFiltered(phonebook.concat(address));
-            setFilter('');
-            setNotification(`Added ${address.name} to phonebook`);
-            setTimeout(() => setNotification(null), 3000);
-            
+                .then(response => {
+                    phoneService
+                        .getAll()
+                        .then(data => {
+                            setFiltered([...data]);
+                            setPhonebook([...data]);
+                            setName('');
+                            setNumber('');
+                            setFilter('');
+                            setNotification(`Added ${address.name} to phonebook`);
+                            setTimeout(() => setNotification(null), 3000);
+                        })
+                })
+                .catch(error => console.log(error));
         }
     }
 
