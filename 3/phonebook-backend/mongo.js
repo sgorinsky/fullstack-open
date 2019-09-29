@@ -10,6 +10,7 @@ const password = process.argv[2]
 // better name for database we want to connect to would be notes-app, not test
 const app = 'phonebook'
 const username = 'samg'
+// mongo "mongodb+srv://fullstack-open-yxrow.mongodb.net/test" --username samg
 const url =
     `mongodb+srv://${username}:${password}@fullstack-open-yxrow.mongodb.net/${app}?retryWrites=true&w=majority`
 

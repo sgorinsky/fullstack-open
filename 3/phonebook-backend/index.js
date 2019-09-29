@@ -31,10 +31,6 @@ const requestLogger = morgan('method::method \
                               \n----------------------');
 app.use(requestLogger)
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-
 app.get('/', (request, response) => {
   app.use(requestLogger);
   response.send('<h1> Homepage </h1>')
@@ -47,6 +43,7 @@ app.get('/info', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
+  
   var name;
   Person.find({ name: body.name }).then(person => {
     name = person.name;
@@ -77,7 +74,7 @@ app.post('/api/persons', (request, response) => {
   })
 
   person.save().then(newPerson => {
-    console.log(`${newPerson.name} saved in database!`);
+    console.log(`${newPerson.name} has been saved in database!`);
     response.json(newPerson.toJSON());
   })
 })
@@ -88,22 +85,55 @@ app.get('/api/persons', (request, response) => {
     })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person
     .findById(request.params.id)
     .then(persons => {
       response.json(persons.toJSON())
     })
+    .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body;
+  
+  const person = {
+    number: body.number,
+    name: body.name,
+  }
+
+  Person
+    .findByIdAndUpdate(request.params.id, person, {new: true})
+    .then(updatedPersons => {
+      response.json(updatedPersons.toJSON())
+    })
+    .catch(error => next(error))
+})
+
+app.delete('/api/persons/:id', (request, response, next) => {
   console.log(request.params)
   Person
-    .findById(request.params.id)
-    .then(persons => {
-      response.json(persons.toJSON())
+    .findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
     })
+    .catch(error => next(error));
 })
+
+// ERROR HANDLING
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+    return response.status(400).send({ error: 'wrong id' })
+  }
+  next(error)
+}
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
