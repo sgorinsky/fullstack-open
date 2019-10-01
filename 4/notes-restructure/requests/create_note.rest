@@ -1,0 +1,1 @@
+curl -H "Content-type:application/json" -X POST -d  '{"content": "posting with cURL but you can make requests with Postman", "important": true}'
