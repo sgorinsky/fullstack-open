@@ -1,4 +1,3 @@
-const config = require('./utils/config')
 const express = require('express')
 const bodyParser = require('body-parser')
 
@@ -8,7 +7,9 @@ const notesRouter = require('./controllers/notes')
 const middleware = require('./utils/middleware')
 const mongoose = require('mongoose')
 
+const config = require('./utils/config')
 const logger = require('./utils/logger')
+
 logger.info('connecting to', config.MONGODB_URI)
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true })
