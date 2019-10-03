@@ -14,7 +14,7 @@ blogsRouter.get('/', async (request, response, next) => {
 blogsRouter.get('/:id', async (request, response, next) => {
     try {
         const blog = await Blog.findById(request.params.id);
-        if (blog !== undefined) {
+        if (blog) {
             response.json(blog.toJSON());
         } else {
             response.status(404).end()
@@ -28,8 +28,13 @@ blogsRouter.post('/', async (request, response, next) => {
     const blog = new Blog(request.body)
 
     try {
-        const result = await blog.save()
-        response.status(201).json(result.toJSON());
+        if (blog['title']) {
+            const result = await blog.save()
+            response.status(201).json(result.toJSON());
+        } else {
+            response.status(400).end()
+        }
+        
     } catch (error) {
         next(error);
     }

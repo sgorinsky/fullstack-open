@@ -14,7 +14,7 @@ beforeEach(async () => {
     await Promise.all(promiseArray) // resolving them in parallel
 })
 
-describe('connecting to blogs test db', () => {
+describe('gets', () => {
     
     test('blogs are returned as json', async () => {
         await api
@@ -43,9 +43,11 @@ describe('connecting to blogs test db', () => {
 
     
     })
+})
 
+describe('post requests', () => {
     test('post new blog to db', async () => {
-        
+
         const newBlog = {
             body: 'new blog',
             author: 'me',
@@ -60,12 +62,12 @@ describe('connecting to blogs test db', () => {
             .expect('Content-Type', /application\/json/)
 
         const dbBlogs = await helper.blogsInDB();
-        expect(dbBlogs.length).toBe(helper.someBlogs.length+1);
+        expect(dbBlogs.length).toBe(helper.someBlogs.length + 1);
 
     })
 
     test('post blog with missing likes', async () => {
-        
+
         const newBlog = {
             body: 'post should have no likes field',
             author: 'Patrick Star',
@@ -88,7 +90,7 @@ describe('connecting to blogs test db', () => {
     })
 
     test('urls aren\'t required, but titles are', async () => {
-        
+
         const newBlog = {
             body: 'blog shouldn\'t post',
             author: 'No title, no url',
@@ -100,8 +102,12 @@ describe('connecting to blogs test db', () => {
             .expect(400)
     })
 
+})
+    
+
+describe('slightly closer to corner cases', () => {
     test('fails with statuscode 404 if blog doesn\'t exist', async () => {
-        const validNonexistingId = await helper.nonExistentId()
+        const validNonexistentId = await helper.nonExistentId()
 
         console.log(validNonexistentId)
 
@@ -111,6 +117,9 @@ describe('connecting to blogs test db', () => {
     })
 
 })
+    
+
+
 
 
 afterAll(() => {
