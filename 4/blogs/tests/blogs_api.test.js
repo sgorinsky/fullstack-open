@@ -1,8 +1,7 @@
-const supertest = require('supertest');
+const app = require('../app');
+const api = require('supertest')(app);
 const mongoose = require('mongoose');
 const helper = require('./test_helper');
-const app = require('../app');
-const api = supertest(app);
 
 const Blog = require('../models/blog');
 
@@ -28,7 +27,7 @@ describe('gets', () => {
         expect(response.body.length).toBe(3);
     })
 
-    test('get id', async () => {
+    test('by id', async () => {
         const blogsAtStart = await helper.blogsInDB();
 
         const blogToView = blogsAtStart[0];
@@ -45,8 +44,8 @@ describe('gets', () => {
     })
 })
 
-describe('post requests', () => {
-    test('post new blog to db', async () => {
+describe('posts', () => {
+    test('new blog', async () => {
 
         const newBlog = {
             body: 'new blog',
@@ -66,7 +65,7 @@ describe('post requests', () => {
 
     })
 
-    test('post blog with missing likes', async () => {
+    test('missing likes', async () => {
 
         const newBlog = {
             body: 'post should have no likes field',
@@ -103,13 +102,53 @@ describe('post requests', () => {
     })
 
 })
-    
+   
+describe('deletes', () => {
+    test('by id', async () => {
+        const allBlogs = await helper.blogsInDB();
+        const blogToDelete = allBlogs[0];
+
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(204)
+        
+        const nowBlogs = await helper.blogsInDB();
+        
+        expect(nowBlogs.length).toBe(helper.someBlogs.length-1);
+    })
+
+    test('lookup failure after delete', async () => {
+        const allBlogs = await helper.blogsInDB();
+        const blogToDelete = allBlogs[0];
+
+        await api
+            .delete(`/api/blogs/${blogToDelete.id}`)
+            .expect(204)
+
+        await api
+            .get(`/api/blogs/${blogToDelete.id}`)
+            .expect(404)
+    })
+})
+
+describe('puts', () => {
+    test('update body', async () => {
+        
+        const blogs = await helper.blogsInDB();
+        
+        await api
+            .put(`/api/blogs/${blogs[0].id}`)
+            .send({'title': 'PUT New Title'})
+            .expect(200)
+
+        const updatedBlog = await api.get(`/api/blogs/${blogs[0].id}`);
+        expect(updatedBlog.body.title).toBe('PUT New Title');
+    })
+})
 
 describe('slightly closer to corner cases', () => {
     test('fails with statuscode 404 if blog doesn\'t exist', async () => {
         const validNonexistentId = await helper.nonExistentId()
-
-        console.log(validNonexistentId)
 
         await api
             .get(`/api/blogs/${validNonexistentId}`)

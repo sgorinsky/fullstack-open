@@ -1,6 +1,9 @@
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 
+// REMEMBER:
+// for a lot of these methods (the GETs, mainly), we are returning responses 
+// if we want to get blogs, we have to check the response['body'] from the response we're returning
 
 blogsRouter.get('/', async (request, response, next) => {
     try {
@@ -24,6 +27,21 @@ blogsRouter.get('/:id', async (request, response, next) => {
     }
 })
 
+blogsRouter.put('/:id', async(request, response, next) => {
+    const body = request.body;
+    
+    try {
+        const updated = await Blog.findByIdAndUpdate(request.params.id, body, {new: true});
+        if (updated) {
+            response.status(200).json(updated.toJSON());
+        } else {
+            response.status(400).end()
+        }
+        
+    } catch(error) {
+        next(error)
+    }
+})
 blogsRouter.post('/', async (request, response, next) => {
     const blog = new Blog(request.body)
 
