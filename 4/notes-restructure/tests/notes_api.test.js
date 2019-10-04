@@ -1,6 +1,6 @@
 const supertest = require('supertest')
 const mongoose = require('mongoose')
-const helper = require('./test_helper').notes
+const helper = require('./test_helper')
 const app = require('../app')
 const api = supertest(app)
 
@@ -8,9 +8,7 @@ const Note = require('../models/note')
 
 beforeEach(async () => {
     await Note.deleteMany({})
-
-    const noteObjects = helper.initialNotes
-        .map(note => new Note(note))
+    const noteObjects = helper.initialNotes.map(note => new Note(note))
     const promiseArray = noteObjects.map(note => note.save())
     await Promise.all(promiseArray)
 })
@@ -49,7 +47,7 @@ describe('when there is initially some notes saved', () => {
                 .expect(200)
                 .expect('Content-Type', /application\/json/)
 
-            expect(resultNote.body).toEqual(noteToView)
+            expect(resultNote.body.id).toEqual(noteToView.id)
         })
 
         test('fails with statuscode 404 if note does not exist', async () => {
@@ -69,16 +67,28 @@ describe('when there is initially some notes saved', () => {
         })
     })
 
-    describe('addition of a new note', () => {
-        test('succeeds with valid data', async () => {
+    describe('adding new note', () => {
+
+        test('the big kahuna: post succeeds with valid data', async () => {
+            const response = await api
+                .get('/api/users')
+                .expect(200)
+                .expect('Content-Type', /application\/json/)
+
+            const user = response.body[0]
             const newNote = {
                 content: 'async/await simplifies making async calls',
                 important: true,
+                user: user.id
             }
 
             await api
                 .post('/api/notes')
                 .send(newNote)
+                .set({
+                    'Authorization': `bearer ${helper.validToken}`,
+                    'Content-Type': 'application/json'
+                })
                 .expect(201)
                 .expect('Content-Type', /application\/json/)
 
@@ -100,6 +110,10 @@ describe('when there is initially some notes saved', () => {
             await api
                 .post('/api/notes')
                 .send(newNote)
+                .set({
+                    'Authorization': `bearer ${helper.validToken}`,
+                    'Content-Type': 'application/json'
+                })
                 .expect(400)
 
             const notesAtEnd = await helper.notesInDb()

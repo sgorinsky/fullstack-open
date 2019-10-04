@@ -1,8 +1,8 @@
 const User = require('../models/user');
-const Note = require('../models/note')
+const Note = require('../models/note');
 
-const mongoose = require('mongoose')
-const helper = require('./test_helper').users;
+const mongoose = require('mongoose');
+const helper = require('./test_helper');
 const app = require('../app');
 const api = require('supertest')(app);
 
@@ -92,6 +92,7 @@ describe('user already in db', () => {
         await api
             .post('/api/notes')
             .send(newNote)
+            .set('Authorization', `bearer ${helper.validToken}`)
             .expect(201)
 
         const response = await api

@@ -1,4 +1,5 @@
 const notesRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Note = require('../models/note')
 const User = require('../models/user')
 
@@ -25,8 +26,29 @@ notesRouter.get('/:id', async (request, response, next) => {
     }
 })
 
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7)
+    }
+    return null
+}
+
 notesRouter.post('/', async (request, response, next) => {
+// example:
+// curl -H "Content-type:application/json"
+//      -H "Authorization:bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVkOTc2NWU5NDlmMWEyOTAzMDhmOGRiZCIsImlhdCI6MTU3MDIwMzE4Mn0.a9jtioY8kGSGBAgEBBUturMsdSA7Jm9bwlQo-ExNrYE"
+//      -d '{ "content":"root with auth token", "user":"5d9765e949f1a290308f8dbd", "important":"true" }'
+//      http://localhost:3001/api/notes
+
     try {
+
+        const token = getTokenFrom(request)
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!token || !decodedToken.id) {
+            return response.status(401).json({ error: 'token missing or invalid' })
+        }
+
         const body = request.body
         const user = await User.findById(body.user)
 
