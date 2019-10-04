@@ -1,6 +1,6 @@
 const supertest = require('supertest')
 const mongoose = require('mongoose')
-const helper = require('./test_helper')
+const helper = require('./test_helper').notes
 const app = require('../app')
 const api = supertest(app)
 
@@ -54,8 +54,6 @@ describe('when there is initially some notes saved', () => {
 
         test('fails with statuscode 404 if note does not exist', async () => {
             const validNonexistingId = await helper.nonExistingId()
-
-            console.log(validNonexistingId)
 
             await api
                 .get(`/api/notes/${validNonexistingId}`)
