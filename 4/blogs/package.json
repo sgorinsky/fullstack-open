@@ -4,10 +4,15 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "bcrypt": "^3.0.6",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
-    "mongoose": "^5.7.3"
+    "install": "^0.13.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.3",
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "jest": "^24.9.0",
@@ -18,7 +23,8 @@
     "start": "NODE_ENV=production node index.js",
     "watch": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand",
-    "test_blogs_api": "NODE_ENV=test npx jest tests/blogs_api.test.js --verbose --runInBand"
+    "test_blogs_api": "NODE_ENV=test npx jest tests/blogs_api.test.js --verbose --runInBand",
+    "test_users_api": "NODE_ENV=test npx jest tests/users_api.test.js --verbose --runInBand"
   },
   "jest": {
     "testEnvironment": "node"

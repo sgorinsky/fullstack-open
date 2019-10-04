@@ -1,5 +1,5 @@
-const Blog = require('../models/blog')
-
+const Blog = require('../models/blog');
+const User = require('../models/user');
 const someBlogs = [
     {
         title: "History of Blogging",
@@ -37,6 +37,13 @@ const blogsInDB = async () => {
     return blogs.map(blog => blog.toJSON())
 }
 
+const usersInDB = async () => {
+    const users = await User.find({});
+    return users.map(user => user.toJSON());
+}
+
+const validToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVkOTc4MjhmNzM5ZmUxYWNjYzJmYTllOCIsImlhdCI6MTU3MDIxODg3OH0.ROTqC0RfDHSV_UVC2mmOiVUtxzJ7aKaKwSDrDJrTw5E';
+
 module.exports = {
-    someBlogs, nonExistentId, blogsInDB
+    someBlogs, nonExistentId, blogsInDB, usersInDB, validToken
 }

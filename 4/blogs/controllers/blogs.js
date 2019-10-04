@@ -1,5 +1,8 @@
-const blogsRouter = require('express').Router()
-const Blog = require('../models/blog')
+const jwt = require('jsonwebtoken');
+const blogsRouter = require('express').Router();
+
+const Blog = require('../models/blog');
+const User = require('../models/user');
 
 // REMEMBER:
 // for a lot of these methods (the GETs, mainly), we are returning responses 
@@ -27,6 +30,49 @@ blogsRouter.get('/:id', async (request, response, next) => {
     }
 })
 
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7)
+    }
+    return null
+}
+
+        
+blogsRouter.post('/', async (request, response, next) => {
+    try {
+        const token = getTokenFrom(request)
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!token || !decodedToken.id) {
+            return response.status(401).json({ error: 'token missing or invalid' })
+        }
+
+        const body = request.body
+        const user = await User.findById(body.user)
+
+        if (body['title'] && user && user._id) {
+            
+            body.user = user._id
+            const blog = new Blog(body);
+            const savedBlog = await blog.save();
+            
+            user.blogs = user.blogs.concat(blog);
+            await user.save()
+            response.status(201).json(savedBlog.toJSON());
+
+        } else if (body['title']) {
+            const blog = new Blog(body);
+            const savedBlog = await blog.save();
+            response.status(201).json(savedBlog.toJSON());
+        } else {
+            response.status(400).end()
+        }
+
+    } catch (error) {
+        next(error);
+    }
+})
+
 blogsRouter.put('/:id', async(request, response, next) => {
     const body = request.body;
     
@@ -40,21 +86,6 @@ blogsRouter.put('/:id', async(request, response, next) => {
         
     } catch(error) {
         next(error)
-    }
-})
-blogsRouter.post('/', async (request, response, next) => {
-    const blog = new Blog(request.body)
-
-    try {
-        if (blog['title']) {
-            const result = await blog.save()
-            response.status(201).json(result.toJSON());
-        } else {
-            response.status(400).end()
-        }
-        
-    } catch (error) {
-        next(error);
     }
 })
 

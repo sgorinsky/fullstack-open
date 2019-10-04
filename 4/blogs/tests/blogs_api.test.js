@@ -57,6 +57,10 @@ describe('posts', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set({
+                'Authorization': `bearer ${helper.validToken}`,
+                'Content-Type': 'application/json'
+            })
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -76,6 +80,10 @@ describe('posts', () => {
         await api
             .post('/api/blogs')
             .send(newBlog)
+            .set({
+                'Authorization': `bearer ${helper.validToken}`,
+                'Content-Type': 'application/json'
+            })
             .expect(201)
             .expect('Content-Type', /application\/json/)
 
@@ -97,6 +105,10 @@ describe('posts', () => {
 
         await api
             .post('/api/blogs')
+            .set({
+                'Authorization': `bearer ${helper.validToken}`,
+                'Content-Type': 'application/json'
+            })
             .send(newBlog)
             .expect(400)
     })
