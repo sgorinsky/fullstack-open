@@ -116,14 +116,16 @@ describe('posts', () => {
 })
    
 describe('deletes', () => {
-    test('by id', async () => {
+    test('post then delete by id', async () => {
         const allBlogs = await helper.blogsInDB();
         const blogToDelete = allBlogs[0];
+        const users = await helper.usersInDB();
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
             .set({
-                'Authorization': `bearer ${helper.validToken}`
+                'Authorization': `bearer ${helper.validToken}`,
+                'User': `id ${users[0].id}`
             })
             .expect(204)
         
@@ -135,11 +137,13 @@ describe('deletes', () => {
     test('lookup failure after delete', async () => {
         const allBlogs = await helper.blogsInDB();
         const blogToDelete = allBlogs[0];
+        const users = await helper.usersInDB();
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
             .set({
-                'Authorization': `bearer ${helper.validToken}`
+                'Authorization': `bearer ${helper.validToken}`,
+                'User': `id ${users[0].id}`
             })
             .expect(204)
 

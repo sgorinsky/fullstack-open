@@ -89,6 +89,15 @@ blogsRouter.put('/:id', async(request, response, next) => {
     }
 })
 
+const getUserFrom = request => {
+    // getting headers from request
+    const user = request.get('user')
+    if (user && user.toLowerCase().startsWith('id ')) {
+        return user.substring(3)
+    }
+    return null
+}
+
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
         const token = getTokenFrom(request)
@@ -96,7 +105,13 @@ blogsRouter.delete('/:id', async (request, response, next) => {
         if (!token || !decodedToken.id) {
             return response.status(401).json({ error: 'token missing or invalid' })
         }
-        
+
+        const blog = await Blog.findById(request.params.id)
+        const user = getUserFrom(request)
+        if (blog.user !== user && blog.user) {
+            return response.status(401).json({ error: 'incorrect user id' })
+        }
+
         await Blog.findByIdAndRemove(request.params.id);
         response.status(204).end();
     } catch(error) {
