@@ -89,13 +89,19 @@ blogsRouter.put('/:id', async(request, response, next) => {
     }
 })
 
-blogsRouter.delete('/:id', (request, response, next) => {
-    Blog
-        .findByIdAndRemove(request.params.id)
-        .then(() => {
-            response.status(204).end()
-        })
-        .catch(error => next(error))
+blogsRouter.delete('/:id', async (request, response, next) => {
+    try {
+        const token = getTokenFrom(request)
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!token || !decodedToken.id) {
+            return response.status(401).json({ error: 'token missing or invalid' })
+        }
+        
+        await Blog.findByIdAndRemove(request.params.id);
+        response.status(204).end();
+    } catch(error) {
+        next(error);
+    }
 })
 
 // delete all

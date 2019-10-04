@@ -122,6 +122,9 @@ describe('deletes', () => {
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
+            .set({
+                'Authorization': `bearer ${helper.validToken}`
+            })
             .expect(204)
         
         const nowBlogs = await helper.blogsInDB();
@@ -135,6 +138,9 @@ describe('deletes', () => {
 
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
+            .set({
+                'Authorization': `bearer ${helper.validToken}`
+            })
             .expect(204)
 
         await api
