@@ -142,8 +142,7 @@ describe('deletes', () => {
         await api
             .delete(`/api/blogs/${blogToDelete.id}`)
             .set({
-                'Authorization': `bearer ${helper.validToken}`,
-                'User': `id ${users[0].id}`
+                'Authorization': `bearer ${helper.validToken}`
             })
             .expect(204)
 

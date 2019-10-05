@@ -15,9 +15,11 @@ const userSchema = new mongoose.Schema({
     blogs: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Blog'
-    }]
+    }],
+    token: String
 })
 
+userSchema.plugin(uniqueValidator);
 userSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString()
@@ -28,7 +30,7 @@ userSchema.set('toJSON', {
     }
 })
 
-userSchema.plugin(uniqueValidator);
+
 const User = mongoose.model('User', userSchema)
 
 module.exports = User

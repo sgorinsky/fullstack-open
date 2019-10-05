@@ -8,6 +8,7 @@ const api = require('supertest')(app);
 
 beforeEach(async () => {
     await User.deleteMany({})
+    await Blog.deleteMany({})
     const user = new User({ username: 'root', password: 'sekret', name: 'root' })
     await user.save()
 });
@@ -36,7 +37,7 @@ describe('basic gets', () => {
     })
 })
 
-describe('users and blogs', () => {
+describe('creating users', () => {
     test('post new user', async () => {
         const usersBefore = await helper.usersInDB();
         const newUser = {
@@ -66,8 +67,10 @@ describe('users and blogs', () => {
             .send(newUser)
             .expect(400)
     })
+})
 
-    test('big kahuna: linking post to user', async () => {
+describe('users and blogs', () => {
+    test('linking post to user', async () => {
         var users = await helper.usersInDB();
         const user = users[0];
 
@@ -77,9 +80,7 @@ describe('users and blogs', () => {
             'author': user.username,
             'title': 'testing the post!'
         }
-        
-        users = await helper.usersInDB();
-        
+
         await api
             .post('/api/blogs')
             .set({
@@ -90,13 +91,49 @@ describe('users and blogs', () => {
             .expect(201)
             .expect('Content-Type', /application\/json/);
 
-        const response = await api
-            .get(`/api/users/${users[0].id}`)
-            .expect(200)
-        
-        expect(response.body.blogs[0].id).toBe(users[0].blogs.id);
-        
+        users = await helper.usersInDB();
+        const blog = await Blog.find({ 'user': `${users[0].id}` });
+
+        expect(blog.id).toBe(users[0].blogs.id);
+
     })
+
+    test('THE BIG KAHUNA', async () => {
+        const newUser = {
+            "name":"Kahuna Lenape",
+            "username":"testing",
+            "password":"testing123",
+            "token": helper.validToken
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(201)
+        
+        const user = await User.findOne({"name":"Kahuna Lenape"});
+        console.log(user)
+        const newBlog ={
+            "title": "One",
+            "body": "Drop the the",
+            "author": newUser.name,
+            "user": user._id.toString(),
+            "likes": 1000
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .set({'Authorization':`bearer ${newUser.token}`})
+            .expect(201)
+        
+        const blog = await Blog.findOne({ "body": "Drop the the" });
+        await api
+            .delete(`/api/blogs/${blog._id.toString()}`)
+            .set('Authorization',`bearer ${newUser.token}`)
+            .expect(204)
+    })
+
 })
 
 afterAll(() => {

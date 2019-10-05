@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 
 usersRouter.get('/', async (request, response, next) => {
     try {
-        const users = await User.find({}).populate('blogs', { 'title': 1, 'author': 1, 'body': 1 });
+        const users = await User.find({}).populate('blogs', { 'title': 1, 'author': 1, 'body': 1, 'id': 1 });
         if (users) {
             response.status(200).json(users.map(user => user.toJSON())).end();
         } else {
@@ -17,7 +17,7 @@ usersRouter.get('/', async (request, response, next) => {
 
 usersRouter.get('/:id', async (request, response, next) => {
     try {
-        const user = await User.findById(request.params.id);
+        const user = await User.findById(request.params.id).populate('blogs', { 'title': 1, 'author': 1, 'body': 1, 'id': 1 });
         if (user) {
             response.status(200).json(user.toJSON());
         } else {
@@ -37,7 +37,8 @@ usersRouter.post('/', async (request, response, next) => {
         const user = new User({
             username: body.username,
             passwordHash,
-            name: body.name
+            name: body.name,
+            token: body.token
         })
 
         if (user.username && user.passwordHash && user.name) {

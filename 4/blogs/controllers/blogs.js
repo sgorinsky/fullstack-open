@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const blogsRouter = require('express').Router();
-
+const middleware = require('../utils/middleware');
 const Blog = require('../models/blog');
 const User = require('../models/user');
 
@@ -30,18 +30,9 @@ blogsRouter.get('/:id', async (request, response, next) => {
     }
 })
 
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-        return authorization.substring(7)
-    }
-    return null
-}
-
-        
 blogsRouter.post('/', async (request, response, next) => {
     try {
-        const token = getTokenFrom(request)
+        const token = middleware.tokenExtractor(request)
         const decodedToken = jwt.verify(token, process.env.SECRET)
         if (!token || !decodedToken.id) {
             return response.status(401).json({ error: 'token missing or invalid' })
@@ -89,31 +80,19 @@ blogsRouter.put('/:id', async(request, response, next) => {
     }
 })
 
-const getUserFrom = request => {
-    // getting headers from request
-    const user = request.get('user')
-    if (user && user.toLowerCase().startsWith('id ')) {
-        return user.substring(3)
-    }
-    return null
-}
-
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
-        const token = getTokenFrom(request)
+        const token = middleware.tokenExtractor(request)
         const decodedToken = jwt.verify(token, process.env.SECRET)
-        if (!token || !decodedToken.id) {
+        const user = await User.findOne({token: token})
+        const blog = await Blog.findById(request.params.id)
+        
+        if (!token || !decodedToken.id || (user._id.toString() !== blog.user.toString())) {
             return response.status(401).json({ error: 'token missing or invalid' })
         }
-
-        const blog = await Blog.findById(request.params.id)
-        const user = getUserFrom(request)
-        if (blog.user !== user && blog.user) {
-            return response.status(401).json({ error: 'incorrect user id' })
-        }
-
         await Blog.findByIdAndRemove(request.params.id);
         response.status(204).end();
+
     } catch(error) {
         next(error);
     }

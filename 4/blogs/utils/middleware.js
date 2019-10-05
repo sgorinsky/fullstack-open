@@ -1,26 +1,20 @@
 const logger = require('./logger')
-const morgan = require('morgan')
 
-morgan.token('req-content', (req, res) => {
-    if (req['body']) {
-        if (req.body.password || req.body.passwordHash) {
-            return JSON.stringify({'user': 'hiding user info'});
-        }
-        return JSON.stringify(req['body']);
-    } else {
-        return '-';
+const requestLogger = (request, response, next) => {
+    logger.info('Method:', request.method)
+    logger.info('Path:  ', request.path)
+    logger.info('Body:  ', request.body)
+    logger.info('---')
+    next()
+}
+
+const tokenExtractor = (request) => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        return authorization.substring(7)
     }
-})
-
-const requestLogger = morgan('method::method \
-                              \nurl: :url \
-                              \nstatus: :status \
-                              \nremote address: :remote-addr \
-                              \nrequest body: :req-content \
-                              \nrequest length: :req[content-length] \
-                              \nresponse length: :res[content-length] \
-                              \nresponse time: :response-time ms\
-                              \n----------------------');
+    return null
+}
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
@@ -41,5 +35,6 @@ const errorHandler = (error, request, response, next) => {
 module.exports = {
     requestLogger,
     unknownEndpoint,
-    errorHandler
+    errorHandler,
+    tokenExtractor
 }
