@@ -100,10 +100,10 @@ describe('users and blogs', () => {
 
     test('THE BIG KAHUNA', async () => {
         const newUser = {
-            "name":"Kahuna Lenape",
-            "username":"testing",
-            "password":"testing123",
-            "token": helper.validToken
+            'name':'Kahuna Lenape',
+            'username':'testing',
+            'password':'testing123',
+            'token': helper.validToken
         }
 
         await api
@@ -111,14 +111,13 @@ describe('users and blogs', () => {
             .send(newUser)
             .expect(201)
         
-        const user = await User.findOne({"name":"Kahuna Lenape"});
-        console.log(user)
-        const newBlog ={
-            "title": "One",
-            "body": "Drop the the",
-            "author": newUser.name,
-            "user": user._id.toString(),
-            "likes": 1000
+        const user = await User.findOne({'name':'Kahuna Lenape'});
+        const newBlog = {
+            'title': 'One',
+            'body': 'Drop the the',
+            'author': newUser.name,
+            'user': user._id.toString(),
+            'likes': 1000
         }
 
         await api
@@ -126,14 +125,52 @@ describe('users and blogs', () => {
             .send(newBlog)
             .set({'Authorization':`bearer ${newUser.token}`})
             .expect(201)
+
+        const blog = await Blog.findOne({ 'body': 'Drop the the' });
+        const before = await Blog.find({});
+        expect(before.length).toBe(1);
         
-        const blog = await Blog.findOne({ "body": "Drop the the" });
         await api
             .delete(`/api/blogs/${blog._id.toString()}`)
             .set('Authorization',`bearer ${newUser.token}`)
             .expect(204)
+        
+        const after = await helper.blogsInDB;
+        expect(after.length).toBe(before.length-1);
     })
 
+})
+
+describe('login', () => {
+    test('token', async () => {
+        const validUser = {
+            username: 'samg',
+            password: 'samg123',
+            name: 'samg'
+        }
+
+        await api
+            .post('/api/users')
+            .send(validUser)
+            .expect(201)
+        
+        await api
+            .post('/api/login')
+            .send(validUser)
+            .expect(200)
+    })
+
+    test('fails', async () => {
+        const validUser = {
+            username: 'samg',
+            password: 'samg123',
+            name: 'samg'
+        }
+        await api
+            .post('/api/login')
+            .send(validUser)
+            .expect(401)
+    })
 })
 
 afterAll(() => {

@@ -116,7 +116,7 @@ describe('posts', () => {
 })
    
 describe('deletes', () => {
-    test('post then delete by id', async () => {
+    test.skip('post then delete by id', async () => {
         const allBlogs = await helper.blogsInDB();
         const blogToDelete = allBlogs[0];
         const users = await helper.usersInDB();
@@ -134,7 +134,7 @@ describe('deletes', () => {
         expect(nowBlogs.length).toBe(helper.someBlogs.length-1);
     })
 
-    test('lookup failure after delete', async () => {
+    test.skip('lookup failure after delete', async () => {
         const allBlogs = await helper.blogsInDB();
         const blogToDelete = allBlogs[0];
         const users = await helper.usersInDB();
