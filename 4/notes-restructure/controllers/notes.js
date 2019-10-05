@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const Note = require('../models/note')
 const User = require('../models/user')
 
-//using async-await syntax for requests to rest api
+// using async-await syntax for requests to rest api
 notesRouter.get('/', async (request, response, next) => {
     try {
         const notes = await Note.find({})
@@ -52,7 +52,7 @@ notesRouter.post('/', async (request, response, next) => {
         const body = request.body
         const user = await User.findById(body.user)
 
-        if (user && user._id) {
+        if (user && user._id && body.content) {
 
             body.user = user._id
             const note = new Note(body);
@@ -60,6 +60,11 @@ notesRouter.post('/', async (request, response, next) => {
 
             user.notes = user.notes.concat(savedNote._id);
             await user.save();
+            response.status(201).json(savedNote.toJSON());
+
+        } else if (body.content) {
+            const note = new Note(body);
+            const savedNote = await note.save();
             response.status(201).json(savedNote.toJSON());
 
         } else {
