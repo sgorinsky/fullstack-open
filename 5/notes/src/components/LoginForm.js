@@ -1,6 +1,5 @@
 import React from 'react'
 import loginService from '../services/login'
-import noteService from './notes'
 
 const LoginForm = ({ username, password, setUsername, setPassword, setUser, setToken, setErrorMessage  }) => {
 
@@ -13,7 +12,6 @@ const LoginForm = ({ username, password, setUsername, setPassword, setUser, setT
             })
 
             window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user)) 
-            console.log(window.localStorage)
             setToken(user.token)
             setUser(user)
             setUsername('')
