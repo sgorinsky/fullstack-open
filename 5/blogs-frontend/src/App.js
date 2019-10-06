@@ -1,14 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
+import Blog from './components/Blog'
+import Logout from './components/Logout'
 import Notification from './components/Notification'
+import blogService from './services/blogs'
 
 function App() {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [token, setToken] = useState(null);
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
+  const [blogs, setBlogs] = useState([]);
+
+  useEffect(() => {
+    const loadIn = async () => {
+      const initialBlogs = await blogService.getAll()
+      setBlogs(initialBlogs);
+    }
+    loadIn()
+  }, []);
+  
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)      
+      setUser(user);
+    }
+  }, [])
+
+
+  const rows = () => blogs.map(blog => <Blog key={blog.id} blog={blog} />)
 
   return (
     <>
@@ -20,26 +43,31 @@ function App() {
             password={password}
             setUsername={setUsername}
             setPassword={setPassword}
-            setToken={setToken}
             setUser={setUser}
             setNotification={setNotification}
             error={error}
             setError={setError}
           /> :
           <div>
-            <p>
-              {user} logged in
-              <button onClick={
-                () => {
-                  setUser(null)
-                  window.localStorage.clear()
-                  console.log(window.localStorage)
-                }}>
-                logout
-              </button>
-            </p>
+            <li>
+              {user.username} logged in
+              <Logout 
+                user={user}
+                setUser={setUser}
+                setNotification={setNotification}
+                setError={setError}
+              />
+              <BlogForm
+                user={user}
+                blogs={blogs}
+                setBlogs={setBlogs}
+                setNotification={setNotification}
+                setError={setError}
+              />
+            </li>
           </div>
       }
+      {rows()}
     </>
   );
 }

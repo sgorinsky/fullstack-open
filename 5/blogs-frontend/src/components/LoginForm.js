@@ -1,7 +1,7 @@
 import React from 'react';
 import loginService from '../services/login'
 
-const LoginForm = ({ username, setUsername, password, setPassword, setUser, setToken, setNotification, error, setError }) => {
+const LoginForm = ({ username, setUsername, password, setPassword, setUser, setNotification, error, setError }) => {
     
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -9,17 +9,17 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setT
             const user = await loginService.login({
                 username, password
             });
-            console.log(user);
-            window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user));
-            setToken(user.token);
-            setUser(user.username);
+            window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user));
+            setUser(user);
             setUsername('');
             setPassword('');
+            setNotification(`${user.username} logged in!`);
+            setTimeout(() => {
+                setNotification(null);
+                setError(false);
+            }, 1000)
         } catch (exception) {
-            console.log(exception);
-            console.log(error);
             setError(true);
-            console.log(error);
             setNotification('Wrong credentials');
             setTimeout(() => {
                 setNotification(null);
@@ -32,7 +32,7 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setT
         <>
             <form onSubmit={handleLogin}>
                 <div>
-                    <h3> Login </h3>
+                    <h4> Blogs login </h4>
                     username
                     <input
                         type="text"
