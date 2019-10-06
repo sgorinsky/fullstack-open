@@ -1,25 +1,31 @@
 import React from 'react';
 import loginService from '../services/login'
 
-const LoginForm = ({ username, setUsername, password, setPassword, setUser, setToken, setErrorMessage }) => {
+const LoginForm = ({ username, setUsername, password, setPassword, setUser, setToken, setNotification, error, setError }) => {
     
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
             const user = await loginService.login({
-                username, password,
-            })
-
-            window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user))
-            setToken(user.token)
-            setUser(user.username)
-            setUsername('')
-            setPassword('')
+                username, password
+            });
+            console.log(user);
+            window.localStorage.setItem('loggedNoteappUser', JSON.stringify(user));
+            setToken(user.token);
+            setUser(user.username);
+            setUsername('');
+            setPassword('');
         } catch (exception) {
-            setErrorMessage('Wrong credentials')
+            console.log(exception);
+            console.log(error);
+            setError(true);
+            console.log(error);
+            setNotification('Wrong credentials');
             setTimeout(() => {
-                setErrorMessage(null)
-            }, 5000)
+                setNotification(null);
+                setError(false);
+            }, 3000)
+            
         }
     }
     return (
@@ -31,7 +37,7 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setT
                     <input
                         type="text"
                         value={username}
-                        name="Username"
+                        name="username"
                         onChange={({ target }) => setUsername(target.value)}
                     />
                 </div>
@@ -40,7 +46,7 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setT
                     <input
                         type="password"
                         value={password}
-                        name="Password"
+                        name="password"
                         onChange={({ target }) => setPassword(target.value)}
                     />
                 </div>
