@@ -17,7 +17,9 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError }) => {
                 user: user.id}
             const response = await blogService.create(newBlog, user.token);
             setBlogs(blogs.concat(response));
-            setNotification('Created new blog!');
+            setNotification(`${title} created by ${user.username}!`);
+            setTitle('');
+            setBody('');
             setTimeout(() => {
                 setNotification(null);
             }, 1500)
@@ -31,7 +33,6 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError }) => {
         }
     }
 
-    console.log(`TITLE: ${title}`)
     return (
         <form onSubmit={handleBlog}>
             <div>
