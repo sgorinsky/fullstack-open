@@ -14,9 +14,6 @@ function App() {
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
   const [blogs, setBlogs] = useState([]);
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [loginVisible, setLoginVisible] = useState(true);
   
   const blogFormRef = React.createRef();
 
@@ -31,41 +28,11 @@ function App() {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
     if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)      
+      const user = JSON.parse(loggedUserJSON)
+      console.log(user)      
       setUser(user);
     }
   }, [])
-
-  
-
-  const handleBlog = async (event) => {
-    event.preventDefault();
-    try {
-      const newBlog = {
-        title: title,
-        body: body,
-        author: user.username,
-        likes: 0,
-        user: user.id
-      }
-      const response = await blogService.create(newBlog, user.token);
-      setBlogs(blogs.concat(response));
-      blogFormRef.current.toggleVisibility();
-      setNotification(`${title} created by ${user.username}!`);
-      setTitle('');
-      setBody('');
-      setTimeout(() => {
-        setNotification(null);
-      }, 1500)
-    } catch (error) {
-      setError(true);
-      setNotification('Include all fields when creating new blog');
-      setTimeout(() => {
-        setError(false);
-        setNotification(null);
-      }, 3000)
-    }
-  }
 
   return (
     <>
@@ -84,7 +51,7 @@ function App() {
               setError={setError}
             />
         </Togglable>
-           :
+          :
           <div>
             <li>
               {user.username} logged in
@@ -96,13 +63,13 @@ function App() {
                   setError={setError}
                 />
               </Togglable>              
-              <Togglable buttonLabel="new blog?" ref={blogFormRef}>
+              <Togglable buttonLabel="new blog?">
                 <BlogForm
-                  handleBlog={handleBlog}
-                  title={title}
-                  setTitle={setTitle}
-                  body={body}
-                  setBody={setBody}
+                  user={user}
+                  blogs={blogs} 
+                  setBlogs={setBlogs} 
+                  setNotification={setNotification} 
+                  setError={setError}
                 />
               </Togglable>
             </li>
@@ -113,6 +80,7 @@ function App() {
           <Blog 
             key={blog.id} 
             blog={blog} 
+            blogs={blogs}
             user={user} 
             setNotification={setNotification}
             setBlogs={setBlogs}
