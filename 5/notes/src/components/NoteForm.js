@@ -1,14 +1,16 @@
 import React from 'react';
-import noteService from './notes';
+import noteService from '../services/notes';
+import refService from '../services/refs'
 
-const NoteForm = ({ notes, setNotes, newNote, setNewNote, token, setErrorMessage }) => {
-
+const NoteForm = ({ notes, setNotes, newNote, setNewNote, token, setErrorMessage}) => {
+    
     const handleNoteChange = (event) => {
         setNewNote(event.target.value);
     }
 
     const addNoteToCollection = (event) => {
         event.preventDefault();
+        refService.noteFormRef.current.toggleVisibility();
         const noteObject = {
             content: newNote,
             important: Math.random() > 0.45

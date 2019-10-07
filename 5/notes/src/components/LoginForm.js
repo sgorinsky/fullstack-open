@@ -1,5 +1,6 @@
 import React from 'react'
 import loginService from '../services/login'
+import refService from '../services/refs'
 
 const LoginForm = ({ username, password, setUsername, setPassword, setUser, setToken, setErrorMessage  }) => {
 
@@ -25,7 +26,10 @@ const LoginForm = ({ username, password, setUsername, setPassword, setUser, setT
     }
     return (
         <>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={(event) => {
+                handleLogin(event);
+            }
+            }>
                 <div>
                     <h3> Login </h3>
                     <input

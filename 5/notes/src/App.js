@@ -1,13 +1,17 @@
 //Dependencies
 import React, { useState, useEffect } from 'react';
 import './App.css';
-// Components
+// Components, Services
 import Note from './components/Note';
-import noteService from './components/notes'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import NoteForm from './components/NoteForm'
 import Footer from './components/Footer'
+import Togglable from './components/Togglable'
+//Services
+import noteService from './services/notes'
+import refService from './services/refs'
+import Logout from './components/Logout';
 
 const App = () => {
   const [notes, setNotes] = useState([]);
@@ -26,7 +30,7 @@ const App = () => {
         setNotes(initialNotes)
       })
   }, []) 
-
+  
   useEffect(() => { 
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')    
     if (loggedUserJSON) { 
@@ -54,6 +58,7 @@ const App = () => {
     
   }
 
+  // DISPLAY NOTES
   const notesToShow = showAll ? notes : notes.filter((note) => note.important)
   const rows = () => 
     notesToShow.map((note) => 
@@ -63,6 +68,8 @@ const App = () => {
         toggleImportanceOf={() => toggleImportanceOf(note.id)}
       />
     );
+
+  
   
   return (
     <div>
@@ -70,50 +77,45 @@ const App = () => {
       <Notification message={errorMessage} />
       {
         user === null ?
-          <LoginForm 
-            username={username} 
-            password={password}
-            setUsername={setUsername}
-            setPassword={setPassword}
-            setUser={setUser}
-            setToken={setToken}
-            setErrorMessage={setErrorMessage}
-          /> :
-          <div>
-            <p>
-              {user.name} logged in
-              <button onClick={
-                () => {
-                  setUsername('username')
-                  setPassword('password')
-                  setUser(null)
-                  window.localStorage.clear()
-                  console.log(window.localStorage)
-              }}> 
-                logout 
-              </button>
-            </p>
-            <NoteForm 
-              notes={notes}
-              setNotes={setNotes}
-              newNote={newNote}
-              setNewNote={setNewNote}
-              token={token}
+        <Togglable buttonLabel="login?" ref={refService.loginFormRef}>
+            <LoginForm
+              username={username}
+              password={password}
+              setUsername={setUsername}
+              setPassword={setPassword}
+              setUser={setUser}
+              setToken={setToken}
               setErrorMessage={setErrorMessage}
             />
-          </div>
+        </Togglable>
+        :
+        <div>
+          <p>
+            {user.name} logged in
+            <Togglable buttonLabel="new note?" ref={refService.noteFormRef}>
+              <NoteForm
+                notes={notes}
+                setNotes={setNotes}
+                newNote={newNote}
+                setNewNote={setNewNote}
+                token={token}
+                setErrorMessage={setErrorMessage}
+              />
+            </Togglable>
+            <Logout
+              setUser={setUser}
+              setUsername={setUsername}
+              setPassword={setPassword}
+            />
+          </p>
+            <button
+              type="submit"
+              onClick={() => setShowAll(!showAll)}>
+              {showAll ? 'all notes shown' : 'only important notes shown'}
+            </button>
+          {rows()}
+        </div>
       }
-      
-
-      <button 
-        type="submit" 
-        onClick={() => setShowAll(!showAll)}> 
-          {showAll ? 'all notes shown': 'only important notes shown'}
-      </button>
-
-      <ul>
-        {rows()}
-      </ul>
       <Footer />
     </div>
   )
