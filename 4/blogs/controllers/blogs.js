@@ -65,12 +65,21 @@ blogsRouter.post('/', async (request, response, next) => {
     }
 })
 
-blogsRouter.put('/:id', async(request, response, next) => {
-    const body = request.body;
-    
+blogsRouter.put('/:id', async(request, response, next) => {   
     try {
+        /*
+        const token = middleware.tokenExtractor(request)
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+        if (!token || !decodedToken.id) {
+            return response.status(401).json({ error: 'token missing or invalid' })
+        }
+        */
+       
+        const body = request.body;
+        console.log(body);
         const updated = await Blog.findByIdAndUpdate(request.params.id, body, {new: true});
-        if (updated) {
+        console.log(updated);
+        if (updated ) {
             response.status(200).json(updated.toJSON());
         } else {
             response.status(400).end()
