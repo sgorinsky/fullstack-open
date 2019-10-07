@@ -90,7 +90,7 @@ const App = () => {
         </Togglable>
         :
         <div>
-          <p>
+          <div>
             {user.name} logged in
             <Togglable buttonLabel="new note?" ref={refService.noteFormRef}>
               <NoteForm
@@ -107,7 +107,7 @@ const App = () => {
               setUsername={setUsername}
               setPassword={setPassword}
             />
-          </p>
+          </div>
             <button
               type="submit"
               onClick={() => setShowAll(!showAll)}>

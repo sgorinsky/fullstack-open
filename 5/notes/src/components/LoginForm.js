@@ -1,6 +1,6 @@
 import React from 'react'
 import loginService from '../services/login'
-import refService from '../services/refs'
+import PropTypes from 'prop-types';
 
 const LoginForm = ({ username, password, setUsername, setPassword, setUser, setToken, setErrorMessage  }) => {
 
@@ -53,4 +53,8 @@ const LoginForm = ({ username, password, setUsername, setPassword, setUser, setT
     )
 }
 
+LoginForm.propTypes = {
+    username: PropTypes.string.isRequired,
+    password: PropTypes.string.isRequired
+}
 export default LoginForm;
