@@ -14,8 +14,12 @@ function App() {
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
   const [blogs, setBlogs] = useState([]);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
   const [loginVisible, setLoginVisible] = useState(true);
   
+  const blogFormRef = React.createRef();
+
   useEffect(() => {
     const loadIn = async () => {
       const initialBlogs = await blogService.getAll()
@@ -31,6 +35,37 @@ function App() {
       setUser(user);
     }
   }, [])
+
+  
+
+  const handleBlog = async (event) => {
+    event.preventDefault();
+    try {
+      const newBlog = {
+        title: title,
+        body: body,
+        author: user.username,
+        likes: 0,
+        user: user.id
+      }
+      const response = await blogService.create(newBlog, user.token);
+      setBlogs(blogs.concat(response));
+      blogFormRef.current.toggleVisibility();
+      setNotification(`${title} created by ${user.username}!`);
+      setTitle('');
+      setBody('');
+      setTimeout(() => {
+        setNotification(null);
+      }, 1500)
+    } catch (error) {
+      setError(true);
+      setNotification('Include all fields when creating new blog');
+      setTimeout(() => {
+        setError(false);
+        setNotification(null);
+      }, 3000)
+    }
+  }
 
   return (
     <>
@@ -61,19 +96,30 @@ function App() {
                   setError={setError}
                 />
               </Togglable>              
-              <Togglable buttonLabel="new blog?">
+              <Togglable buttonLabel="new blog?" ref={blogFormRef}>
                 <BlogForm
-                  user={user}
-                  blogs={blogs}
-                  setBlogs={setBlogs}
-                  setNotification={setNotification}
-                  setError={setError}
+                  handleBlog={handleBlog}
+                  title={title}
+                  setTitle={setTitle}
+                  body={body}
+                  setBody={setBody}
                 />
               </Togglable>
             </li>
           </div>
       }
-      {blogs.map(blog => <Blog key={blog.id} blog={blog} />)}
+      {
+        blogs.map(blog => 
+          <Blog 
+            key={blog.id} 
+            blog={blog} 
+            user={user} 
+            setNotification={setNotification}
+            setBlogs={setBlogs}
+            setError={setError}
+          />
+        )
+      }
     </>
   );
 }

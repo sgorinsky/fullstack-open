@@ -13,11 +13,20 @@ const create = async (newObject, token) => {
 
 const getAll = async () => {
     const response = await axios.get(baseUrl);
-    return response.data;
+    const blogs = response.data;
+    console.log(blogs)
+    return blogs.sort((first, second) => {
+        return first.likes > second.likes ? -1 : 1;
+    })
 }
 
-const remove = async () => {
-    const response = await axios.delete(baseUrl);
+const remove = async (id, token) => {
+    const config = {
+        headers: {
+            "Authorization": `bearer ${token}`
+        }
+    }
+    const response = await axios.delete(`${baseUrl}/${id}`, config);
     return response.data;
 }
 
