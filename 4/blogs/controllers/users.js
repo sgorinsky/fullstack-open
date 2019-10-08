@@ -17,7 +17,7 @@ usersRouter.get('/', async (request, response, next) => {
 
 usersRouter.get('/:id', async (request, response, next) => {
     try {
-        const user = await User.findById(request.params.id).populate('blogs', { 'title': 1, 'author': 1, 'body': 1, 'id': 1 });
+        const user = await User.findById(request.params.id).populate('blogs', { 'likedBlogs':1, 'title': 1, 'author': 1, 'body': 1, 'id': 1 });
         if (user) {
             response.status(200).json(user.toJSON());
         } else {
@@ -38,7 +38,8 @@ usersRouter.post('/', async (request, response, next) => {
             username: body.username,
             passwordHash,
             name: body.name,
-            token: body.token
+            token: body.token,
+            likedBlogs:{}
         })
 
         if (user.username && user.passwordHash && user.name) {

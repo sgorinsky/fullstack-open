@@ -28,6 +28,7 @@ loginRouter.post('/', async (request, response) => {
     console.log(updated)
     updated['token'] = token;
     updated['id'] = user._id
+    updated['likedBlogs'] = updated.hasOwnProperty('likedBlogs') ? updated.likedBlogs : {}
 
     response
         .status(200)
