@@ -45,7 +45,7 @@ function App() {
               setPassword={setPassword}
               setUser={setUser}
               setNotification={setNotification}
-              error={error}
+              setBlogs={setBlogs}
               setError={setError}
             />
         </Togglable>

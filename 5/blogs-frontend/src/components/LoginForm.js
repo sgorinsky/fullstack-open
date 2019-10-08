@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import loginService from '../services/login'
-
-const LoginForm = ({ username, setUsername, password, setPassword, setUser, setNotification, error, setError }) => {
+import blogService from '../services/blogs'
+const LoginForm = ({ username, setUsername, password, setPassword, setUser, setNotification, setError, setBlogs }) => {
     
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -12,12 +12,15 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setN
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user));
             setUser(user);
             console.log(user)
+            const blogs = await blogService.getAll();
             setUsername('');
             setPassword('');
             setNotification(`${user.username} logged in!`);
+            
             setTimeout(() => {
                 setNotification(null);
                 setError(false);
+                setBlogs(blogs);
             }, 1000)
         } catch (exception) {
             setError(true);

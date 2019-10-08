@@ -7,7 +7,7 @@ import refService from '../services/refs'
 
 const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser }) => {
     const [visible, setVisible] = useState(false);
-    const [likes, setLikes] = useState(blog.likes)
+    const [likes, setLikes] = useState(blog.likes > 0 ? Object.keys(blog.usersLiked).length : blog.likes)
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
     const showWhenVisible = { display: visible ? '' : 'none' }
     const id = user ? user.id : 'null'
@@ -20,13 +20,13 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
         try {
             const currentUserLikes = user && user.hasOwnProperty('likedBlogs') ? user.likedBlogs : {};
             const currentBlogLikes = blog && blog.hasOwnProperty('usersLiked') ? blog.usersLiked : {};
-
+            console.log(currentBlogLikes)
             if (user && !currentUserLikes.hasOwnProperty(blog.id)) {
                 currentBlogLikes[user.id]=true;
-
+                console.log(currentBlogLikes)
                 setLikeButton(!likeButton)
                 setLikes(Object.keys(currentBlogLikes).length)
-                await blogService.update(blog.id, { likes, usersLiked: currentBlogLikes })
+                await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
                 const currentUser = user
                 currentUserLikes[blog.id] = true;
                 currentUser.likedBlogs = currentUserLikes;
@@ -36,7 +36,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
                 delete currentBlogLikes[user.id]
                 setLikeButton(!likeButton)
                 setLikes(Object.keys(currentBlogLikes).length)
-                await blogService.update(blog.id, { likes, usersLiked: currentBlogLikes })
+                await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
                 console.log('unlike:1')
                 const currentUser = user
                 console.log(currentUser)
