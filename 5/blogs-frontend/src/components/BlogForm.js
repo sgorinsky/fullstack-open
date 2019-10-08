@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import blogService from '../services/blogs'
+import refService from '../services/refs'
 
 const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', PostNotPut=true }) => {
     const [title, setTitle] = useState('');
@@ -9,7 +10,7 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
         event.preventDefault();
         try {
             console.log(1)
-            console.log( user)
+            console.log(user)
             console.log(body)
             console.log(title)
             
@@ -46,7 +47,7 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
     }
 
     const updateBlog = async (event) => {
-        event.preventDefault()
+        event.preventDefault();
         try {
             console.log(1)
             await blogService.update( blog.id, { title:title, body:body })
@@ -55,7 +56,9 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
             console.log(3)
             setBlogs(temps);
             setNotification(`${title} updated!`)
-
+            setTitle('');
+            setBody('');
+            refService.blogUpdateRef.current.toggleVisibility();
             setTimeout(() => {
                 setNotification(null)
             }, 2500)

@@ -1,8 +1,9 @@
 import React, { useState, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
+import refService from '../services/refs'
 
-const Togglable = React.forwardRef((props, ref) => {
-    const [visible, setVisible] = useState(true)
+const Togglable = React.forwardRef((props = { start: false }, ref = refService.blogUpdateRef) => {
+    const [visible, setVisible] = useState(props.start)
 
     const hideWhenVisible = { display: visible ? 'none' : '' }
     const showWhenVisible = { display: visible ? '' : 'none' }

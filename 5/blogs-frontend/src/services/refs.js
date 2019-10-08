@@ -1,7 +1,4 @@
 import React from 'react';
+const blogUpdateRef = React.createRef();
 
-
-const loginFormRef = React.createRef();
-const logoutFormRef = React.createRef();
-
-export default { logoutFormRef, loginFormRef }
+export default { blogUpdateRef }

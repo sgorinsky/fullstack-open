@@ -13,7 +13,7 @@ const Logout = ({user, setUser, setError, setNotification}) => {
                 setNotification(null);
             }, 1000)
             
-        }}> logout </button>
+        }}> are you sure? </button>
     )
 }
 export default Logout

@@ -15,8 +15,6 @@ function App() {
   const [error, setError] = useState(false);
   const [blogs, setBlogs] = useState([]);
   
-  const blogFormRef = React.createRef();
-
   useEffect(() => {
     const loadIn = async () => {
       const initialBlogs = await blogService.getAll()
@@ -39,7 +37,7 @@ function App() {
       <Notification message={notification} error={error} />
       {
         user === null ?
-        <Togglable buttonLabel="login?">
+        <Togglable buttonLabel="login?" start={true}>
             <LoginForm
               username={username}
               password={password}
@@ -82,6 +80,7 @@ function App() {
             blog={blog} 
             blogs={blogs}
             user={user} 
+            setUser={setUser}
             setNotification={setNotification}
             setBlogs={setBlogs}
             setError={setError}

@@ -11,6 +11,7 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setN
             });
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user));
             setUser(user);
+            console.log(user)
             setUsername('');
             setPassword('');
             setNotification(`${user.username} logged in!`);
