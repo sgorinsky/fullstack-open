@@ -25,9 +25,13 @@ loginRouter.post('/', async (request, response) => {
     const token = jwt.sign(userForToken, process.env.SECRET)
 
     const updated = await User.findByIdAndUpdate(user.id, { 'token': token }, { new: true });
+    console.log(updated)
+    updated['token'] = token;
+    updated['id'] = user._id
+
     response
         .status(200)
-        .send({ token, username: user.username, name: user.name, id: user._id })
+        .send( updated )
 })
 
 module.exports = loginRouter
