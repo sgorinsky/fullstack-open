@@ -7,13 +7,12 @@ import refService from '../services/refs'
 
 const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser }) => {
     const [visible, setVisible] = useState(false);
-    const [likes, setLikes] = useState(blog.likes > 0 ? Object.keys(blog.usersLiked).length : blog.likes)
+    const [likes, setLikes] = useState(blog.likes)
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
+    
     const showWhenVisible = { display: visible ? '' : 'none' }
     const id = user ? user.id : 'null'
     const author = user ? user.username : 'null'
-    
-    const blogRef = React.createRef();
     const showIfUser = { display: id ===  blog.user ||  blog.author === author ? '' : 'none' }
 
     const handleLikes = async () => { 
@@ -23,6 +22,8 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
             console.log(currentBlogLikes)
             if (user && !currentUserLikes.hasOwnProperty(blog.id)) {
                 currentBlogLikes[user.id]=true;
+                console.log('LIKE')
+                console.log(user)
                 console.log(currentBlogLikes)
                 setLikeButton(!likeButton)
                 setLikes(Object.keys(currentBlogLikes).length)
@@ -30,10 +31,11 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
                 const currentUser = user
                 currentUserLikes[blog.id] = true;
                 currentUser.likedBlogs = currentUserLikes;
-                await userService.update(user.id, { likes: currentUserLikes })
+                await userService.update(user.id, { likedBlogs: currentUserLikes })
                 setUser(currentUser);
             } else if (user) {
                 delete currentBlogLikes[user.id]
+                console.log('UNLIKE')
                 setLikeButton(!likeButton)
                 setLikes(Object.keys(currentBlogLikes).length)
                 await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
@@ -45,7 +47,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
                 console.log(currentUser)
                 setUser(currentUser);
                 console.log(user);
-                await userService.update(user.id, { likes: currentUser.likedBlogs })
+                await userService.update(user.id, { likedBlogs: currentUser.likedBlogs })
                 
             } else {
                 setNotification('Login to like a post');
