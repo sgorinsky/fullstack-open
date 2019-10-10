@@ -1,14 +1,31 @@
-import React, { useState } from 'react' 
+import React, { useState, useEffect } from 'react'
+
+import refService from '../services/refs'
 import blogService from '../services/blogs'
 import userService from '../services/users'
+
 import Togglable from './Togglable'
+import Like from './Like'
 import BlogForm from './BlogForm'
-import refService from '../services/refs'
 
 const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser }) => {
+    const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
+    useEffect(() => {
+        const loadIn = async () => {
+            console.log('CURRENT USER')
+            console.log(user)
+            const initialBlogs = await blogService.getAll()
+            console.log('DOES IT?')
+            console.log(user && user.likedBlogs.hasOwnProperty(blog.id))
+            setBlogs(initialBlogs);
+
+        }
+        loadIn()
+    }, []);
+    
     const [visible, setVisible] = useState(false);
     const [likes, setLikes] = useState(blog.likes)
-    const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
+    
     
     const showWhenVisible = { display: visible ? '' : 'none' }
     const id = user ? user.id : 'null'
@@ -85,15 +102,16 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
     
     return (
         <div className='blog'>
-            <li className='title' onClick={() => setVisible(!visible)}> <h5>title: { blog.title}</h5></li>
+            <div onClick={() => setVisible(!visible)}>
+            <li className='title' > <h5>title: { blog.title}</h5></li>
             <div style={showWhenVisible}>
                 <li className='author'> <h6>author: { blog.author}</h6></li>
                 <li className='body'>{ blog.body}</li>
-                {likes + ' likes' } 
-                <button onClick={handleLikes}>
-                    {likeButton ? 'unlike' : 'like'}
-                </button>
             </div>
+            {likes + ' likes'}
+            </div>
+            <Like handleLikes={handleLikes} likeButton={likeButton} />
+            
             
             <div style={showIfUser}>
                 <Togglable buttonLabel="edit?" ref={refService.blogUpdateRef}>
@@ -109,7 +127,6 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
                 </Togglable>
                 <button style={showIfUser} onClick={deletePost}>delete</button>
             </div>
-            
         </div>
     )
 }

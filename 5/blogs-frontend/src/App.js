@@ -21,6 +21,7 @@ function App() {
       setBlogs(initialBlogs);
     }
     loadIn()
+    
   }, []);
   
   useEffect(() => {
@@ -59,6 +60,7 @@ function App() {
                   setUser={setUser}
                   setNotification={setNotification}
                   setError={setError}
+                  setBlogs={setBlogs}
                 />
               </Togglable>              
               <Togglable buttonLabel="new blog?">
@@ -74,21 +76,22 @@ function App() {
           </div>
       }
       {
-        blogs.map(blog => 
-          <Blog 
-            key={blog.id} 
-            blog={blog} 
-            blogs={blogs}
-            user={user} 
-            setUser={setUser}
-            setNotification={setNotification}
-            setBlogs={setBlogs}
-            setError={setError}
-          />
-        )
+        blogs
+          .map(blog => 
+            <Blog 
+              key={blog.id} 
+              blog={blog} 
+              blogs={blogs}
+              user={user} 
+              setUser={setUser}
+              setNotification={setNotification}
+              setBlogs={setBlogs}
+              setError={setError}
+            />
+          )
       }
     </>
-  );
+  )
 }
 
 export default App;

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import loginService from '../services/login'
 import blogService from '../services/blogs'
+
 const LoginForm = ({ username, setUsername, password, setPassword, setUser, setNotification, setError, setBlogs }) => {
     
     const handleLogin = async (event) => {
@@ -8,20 +9,22 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setN
         try {
             const user = await loginService.login({
                 username, password
-            });
+            })
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user));
             setUser(user);
             console.log(user)
-            const blogs = await blogService.getAll();
-            setUsername('');
-            setPassword('');
-            setNotification(`${user.username} logged in!`);
+            var blogs = await blogService.getAll();
+
+            setBlogs(blogs)
+            setUsername('')
+            setPassword('')
+            setNotification(`${user.username} logged in!`)
             
             setTimeout(() => {
                 setNotification(null);
                 setError(false);
-                setBlogs(blogs);
             }, 1000)
+            
         } catch (exception) {
             setError(true);
             setNotification('Wrong credentials');
