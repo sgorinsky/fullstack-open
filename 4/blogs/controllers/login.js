@@ -24,11 +24,8 @@ loginRouter.post('/', async (request, response) => {
 
     const token = jwt.sign(userForToken, process.env.SECRET)
 
-    const updated = await User.findByIdAndUpdate(user.id, { 'token': token }, { new: true });
+    const updated = await User.findByIdAndUpdate(user.id, { 'token': token }, { upsert: true });
     console.log(updated)
-    updated['token'] = token;
-    updated['id'] = user._id
-    updated['likedBlogs'] = updated.hasOwnProperty('likedBlogs') ? updated.likedBlogs : {}
 
     response
         .status(200)
