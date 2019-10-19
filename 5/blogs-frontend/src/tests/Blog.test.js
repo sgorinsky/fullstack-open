@@ -50,8 +50,12 @@ describe('<Blog />', () => {
     })
 
     test('toggles on/off', () => {
-        const button = component.container.querySelector('.toggle .button1')
+        const button = component.getByText('edit?')
         fireEvent.click(button)
+        const div = component.container.querySelector('.togglable1')
+        expect(div).toHaveStyle('')
+        fireEvent.click(button)
+        expect(div).not.toHaveStyle('display: none')
     })
 
     test('like button', () => {
@@ -62,6 +66,7 @@ describe('<Blog />', () => {
         fireEvent.click(button)
         component.getByText('unlike')
     })
+    
     test('main body', () => {
         var main = component.container.querySelector('.main')
         expect(main.textContent).toBe('author body')

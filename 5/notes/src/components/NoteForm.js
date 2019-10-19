@@ -1,16 +1,15 @@
-import React from 'react';
-import noteService from '../services/notes';
+import React from 'react'
+import noteService from '../services/notes'
 import refService from '../services/refs'
 
-const NoteForm = ({ notes, setNotes, newNote, setNewNote, token, setErrorMessage}) => {
-    
+const NoteForm = ({ notes, setNotes, newNote, setNewNote, token, setErrorMessage }) => {
+
     const handleNoteChange = (event) => {
-        setNewNote(event.target.value);
-    }
+        setNewNote(event.target.value)    }
 
     const addNoteToCollection = (event) => {
-        event.preventDefault();
-        refService.noteFormRef.current.toggleVisibility();
+        event.preventDefault()
+        refService.noteFormRef.current.toggleVisibility()
         const noteObject = {
             content: newNote,
             important: Math.random() > 0.45
@@ -20,14 +19,14 @@ const NoteForm = ({ notes, setNotes, newNote, setNewNote, token, setErrorMessage
             .create(noteObject, token)
             .then(returnedNote => {
                 setNotes(notes.concat(returnedNote))
-                setNewNote('');
+                setNewNote('')
             })
-            .catch(error => {
-                setErrorMessage('Issue creating note');
-                setTimeout(() => setErrorMessage(null), 4000);
+            .catch(() => {
+                setErrorMessage('Issue creating note')
+                setTimeout(() => setErrorMessage(null), 4000)
             })
     }
-    
+
     return (
         <>
             <form onSubmit={addNoteToCollection}>
@@ -41,5 +40,5 @@ const NoteForm = ({ notes, setNotes, newNote, setNewNote, token, setErrorMessage
     )
 }
 
-export default NoteForm;
+export default NoteForm
 
