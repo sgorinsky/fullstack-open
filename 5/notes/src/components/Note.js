@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Note = ({note, toggleImportanceOf}) => {
-    const label = note.important ? 'make not important' : 'make important';
+const Note = ({ note, toggleImportanceOf }) => {
+    const label = note.important ? 'make not important' : 'make important'
     return (
         <li key={note.id} className='note'>
             {note.content + ' '}

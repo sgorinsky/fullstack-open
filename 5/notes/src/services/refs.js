@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-const loginFormRef = React.createRef();
-const noteFormRef = React.createRef();
+const loginFormRef = React.createRef()
+const noteFormRef = React.createRef()
 
 export default { noteFormRef, loginFormRef }
