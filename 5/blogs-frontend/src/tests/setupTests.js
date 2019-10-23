@@ -1,6 +1,9 @@
+import 'jest-dom/extend-expect'
+import '@testing-library/react/cleanup-after-each'
+
 let savedItems = {}
 
-const localStorageMock = {
+const localStorage = {
     setItem: (key, item) => {
         savedItems[key] = item
     },
@@ -10,7 +13,7 @@ const localStorageMock = {
     }
 }
 
-Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+Object.defineProperty(window, 'localStorage', { value: localStorage })
 
 const originalError = console.error
 beforeAll(() => {

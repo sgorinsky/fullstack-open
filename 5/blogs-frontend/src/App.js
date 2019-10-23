@@ -51,7 +51,7 @@ function App() {
             />
         </Togglable>
           :
-          <div>
+          <div className='logout'>
             <li>
               {user.username} logged in
               <Togglable buttonLabel="logout?">
