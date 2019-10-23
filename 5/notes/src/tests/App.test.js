@@ -1,6 +1,7 @@
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
-jest.mock('./services/notes')
+import '@testing-library/jest-dom/extend-expect'
+jest.mock('../services/notes')
 import App from './App'
 
 describe('<App />', () => {
@@ -11,11 +12,10 @@ describe('<App />', () => {
             <App />
         )
         component.rerender(<App />)
-
         await waitForElement(
             () => component.container.querySelector('.note')
         )
-
+        
         const notes = component.container.querySelectorAll('.note')
         expect(notes.length).toBe(3)
 
