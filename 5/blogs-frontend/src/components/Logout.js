@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 
 const Logout = ({user, setUser, setError, setNotification, setBlogs}) => {
     return (
-        <button onClick={async () => {
+        <button className='logout' onClick={async () => {
             const temp = user.username;
             setUser(null)
             window.localStorage.clear()

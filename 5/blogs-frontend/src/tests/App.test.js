@@ -1,27 +1,25 @@
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
-jest.mock('./services/blogs')
-import App from './App'
+import '@testing-library/jest-dom/extend-expect'
+jest.mock('../services/blogs')
+import App from '../App'
 
 describe('<App />', () => {
-    test('renders all notes it gets from backend', async () => {
+    test('if no user logged, login form rendered', async () => {
         const component = render(
             <App />
         )
         component.rerender(<App />)
-        await waitForElement(() => component.container.querySelector('.note'))
-        
-        const notes = component.container.querySelectorAll('.note')
-        expect(notes.length).toBe(3)
 
-        expect(component.container).toHaveTextContent(
-            'HTML is easy'
-        )
-        expect(component.container).toHaveTextContent(
-            'Browser can execute only javascript'
-        )
-        expect(component.container).toHaveTextContent(
-            'The most important methods of HTTP are GET and POST'
-        )
+        console.log(component.container.textContent)
+        await waitForElement(() => component.getByText('login'))
+        
+        console.log(component.container.textContent)
+        console.log(component.container)
+        const login = component.container.querySelectorAll('.login')
+        expect(login.length).toBe(1)
+        console.log('LOGIN')
+        expect(login[0]).toHaveTextContent(/.*login.*/)
+
     })
 })

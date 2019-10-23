@@ -37,7 +37,7 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setN
     }
     return (
         <>
-            <form onSubmit={handleLogin}>
+            <form onSubmit={handleLogin} className='login'>
                 <div>
                     <h4> Blogs login </h4>
                     username

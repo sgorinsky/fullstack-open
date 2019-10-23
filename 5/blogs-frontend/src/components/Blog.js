@@ -12,11 +12,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
     useEffect(() => {
         const loadIn = async () => {
-            console.log('CURRENT USER')
-            console.log(user)
             const initialBlogs = await blogService.getAll()
-            console.log('DOES IT?')
-            console.log(user && user.likedBlogs.hasOwnProperty(blog.id))
             setBlogs(initialBlogs);
 
         }
@@ -36,12 +32,8 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
         try {
             const currentUserLikes = user && user.hasOwnProperty('likedBlogs') ? user.likedBlogs : {};
             const currentBlogLikes = blog && blog.hasOwnProperty('usersLiked') ? blog.usersLiked : {};
-            console.log(currentBlogLikes)
             if (user && !currentUserLikes.hasOwnProperty(blog.id)) {
                 currentBlogLikes[user.id]=true;
-                console.log('LIKE')
-                console.log(user)
-                console.log(currentBlogLikes)
                 setLikeButton(!likeButton)
                 setLikes(Object.keys(currentBlogLikes).length)
                 await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
@@ -52,18 +44,12 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
                 setUser(currentUser);
             } else if (user) {
                 delete currentBlogLikes[user.id]
-                console.log('UNLIKE')
                 setLikeButton(!likeButton)
                 setLikes(Object.keys(currentBlogLikes).length)
                 await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
-                console.log('unlike:1')
                 const currentUser = user
-                console.log(currentUser)
                 delete currentUser.likedBlogs[blog.id];
-                console.log('unlike:2')
-                console.log(currentUser)
                 setUser(currentUser);
-                console.log(user);
                 await userService.update(user.id, { likedBlogs: currentUser.likedBlogs })
                 
             } else {

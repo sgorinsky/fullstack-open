@@ -3,34 +3,34 @@ const blogs = [
         id: '5a451df7571c224a31b5c8ce',
         title: 'sam is testing',
         author: 'sam g',
-        body: 'testing testing 1 2 3',
+        body: 'NUMBER 2',
         likes: 0
     },
     {
         id: '5a451df7571c224a31b5c8ce',
         title: 'sam is testing',
         author: 'sam g',
-        body: 'testing testing 1 2 3',
+        body: 'NUMBER 2',
         likes: 0
     },
     {
         id: '5a451df7571c224a31b5c8ce',
         title: 'sam is testing',
         author: 'sam g',
-        body: 'testing testing 1 2 3',
+        body: 'NUMBER 3',
         likes: 0
     },
     {
         id: '5a451df7571c224a31b5c8ce',
         title: 'sam is testing',
         author: 'sam g',
-        body: 'testing testing 1 2 3',
+        body: 'NUMBER 4',
         likes: 0
     }
 ]
 
 const getAll = () => {
-    return Promise.resolve(notes)
+    return Promise.resolve(blogs)
 }
 
 export default { getAll }
