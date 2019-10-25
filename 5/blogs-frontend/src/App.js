@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+// components
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Blog from './components/Blog'
@@ -6,11 +7,13 @@ import Logout from './components/Logout'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
+// hooks
+import useField from './hooks/useField'
 
 function App() {
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const usernameField = useField('text', 'username');
+  const passwordField = useField('password', 'password');
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
   const [blogs, setBlogs] = useState([]);
@@ -40,10 +43,8 @@ function App() {
         user === null ?
         <Togglable buttonLabel="login?" start={true}>
             <LoginForm
-              username={username}
-              password={password}
-              setUsername={setUsername}
-              setPassword={setPassword}
+              usernameField={usernameField}
+              passwordField={passwordField}
               setUser={setUser}
               setNotification={setNotification}
               setBlogs={setBlogs}

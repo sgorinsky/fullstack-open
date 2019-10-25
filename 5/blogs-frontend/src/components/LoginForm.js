@@ -2,22 +2,20 @@ import React from 'react';
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
-const LoginForm = ({ username, setUsername, password, setPassword, setUser, setNotification, setError, setBlogs }) => {
+const LoginForm = ({ usernameField, passwordField, setUser, setNotification, setError, setBlogs }) => {
     
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
             const user = await loginService.login({
-                username, password
+                "username": usernameField.value, "password": passwordField.value
             })
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user));
             setUser(user);
-            console.log(user)
             var blogs = await blogService.getAll();
-
             setBlogs(blogs)
-            setUsername('')
-            setPassword('')
+            //setUsername('')
+            //setPassword('')
             setNotification(`${user.username} logged in!`)
             
             setTimeout(() => {
@@ -41,21 +39,11 @@ const LoginForm = ({ username, setUsername, password, setPassword, setUser, setN
                 <div>
                     <h4> Blogs login </h4>
                     username
-                    <input
-                        type="text"
-                        value={username}
-                        name="username"
-                        onChange={({ target }) => setUsername(target.value)}
-                    />
+                    <input { ...usernameField } />
                 </div>
                 <div>
                     password
-                    <input
-                        type="password"
-                        value={password}
-                        name="password"
-                        onChange={({ target }) => setPassword(target.value)}
-                    />
+                    <input { ...passwordField }/>
                 </div>
                 <button type="submit"> login </button>
             </form>
