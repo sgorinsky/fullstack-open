@@ -1,7 +1,9 @@
 import React from 'react';
 import './App.css';
+// hooks
 import useCounter from './hooks/useCounter'
 import useField from './hooks/useField'
+import useResource from './hooks/useResource'
 
 const App = (props) => {
   const left = useCounter()
@@ -10,6 +12,17 @@ const App = (props) => {
   const name = useField('text')
   const born = useField('date')
   const height = useField('number')
+
+  const number = useField('text')
+  // didn't want to go through the trouble of bringing the two together into the same backend
+  // works in phonebook-backend
+  const [persons, personService] = useResource('http://localhost:3005/api/persons')
+
+  const handlePersonSubmit = (event) => {
+    event.preventDefault()
+    personService.create({ name: name.value, number: number.value })
+  }
+
   return (
     <>
       <div>
@@ -39,8 +52,6 @@ const App = (props) => {
       <br></br>
       <div>
         <form>
-          name:
-        <input {...name} />
           <br />
           birthdate:
         <input {...born} />
@@ -49,8 +60,18 @@ const App = (props) => {
         <input {...height} />
         </form>
         <div>
-          {name.value} {born.value} {height.value ? height.value + '"' : ''} 
+          {name.value} {born.value} {height.value ? height.value + '"' : ''}
         </div>
+      </div>
+
+      <div>
+        <h2>persons</h2>
+        <form onSubmit={handlePersonSubmit}>
+          name <input {...name} /> <br />
+          number <input {...number} />
+          <button>create</button>
+        </form>
+        {persons.map(n => <p key={n.id}>{n.name} {n.number}</p>)}
       </div>
     </>
   )

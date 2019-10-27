@@ -12,7 +12,7 @@ mongoose.set('useUnifiedTopology', true);
 mongoose.connect(url, {
     useNewUrlParser: true
     })
-    .then(result => {
+    .then(() => {
         console.log('connected to MongoDB phonebook')
     })
     .catch((error) => {

@@ -10,9 +10,9 @@ app.use(express.static('build'))
 app.use(cors())
 app.use(bodyParser.json())
 
-// for now, morgan request logger is for dev build 
+// for now, morgan request logger is for dev build
 const morgan = require('morgan')
-morgan.token('req-content', (req, res) => {
+morgan.token('req-content', (req) => {
   if (req['body']) {
     return JSON.stringify(req['body']);
   } else {
@@ -43,11 +43,13 @@ app.get('/info', (request, response) => {
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  
+
+  // eslint-disable-next-line no-unused-vars
   var name;
   Person.find({ name: body.name }).then(person => {
     name = person.name;
   })
+  // eslint-disable-next-line no-unused-vars
   var number;
   Person.find({ number: body.number }).then(person => {
     number = person.number;
@@ -91,7 +93,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body;
-  
+
   const person = {
     number: body.number,
     name: body.name,
@@ -104,12 +106,12 @@ app.put('/api/persons/:id', (request, response, next) => {
         response.json(updatedPerson.toJSON())
       })
       .catch(error => next(error))
-    
+
   } else {
     console.log(body)
     console.log(person)
     Person.findOneAndUpdate({ name: body.name }, person, { new: true })
-      .then(updatedPersons => {
+      .then(updatedPerson => {
         console.log(updatedPerson)
         response.json(updatedPerson.toJSON())
       })
@@ -122,7 +124,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
   console.log(request.params)
   Person
     .findByIdAndRemove(request.params.id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error));
@@ -136,7 +138,7 @@ app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
   console.error(error)
-  if (error.name === 'CastError' && error.kind == 'ObjectId') {
+  if (error.name === 'CastError' && error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'wrong id' })
   } else if (error.name === 'ValidationError') {
     return response.status(400).send({ error: error.message })
@@ -145,7 +147,7 @@ const errorHandler = (error, request, response, next) => {
 }
 app.use(errorHandler)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT2
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
