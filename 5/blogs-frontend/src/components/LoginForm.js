@@ -14,8 +14,8 @@ const LoginForm = ({ usernameField, passwordField, setUser, setNotification, set
             setUser(user);
             var blogs = await blogService.getAll();
             setBlogs(blogs)
-            //setUsername('')
-            //setPassword('')
+            usernameField.reset()
+            passwordField.reset()
             setNotification(`${user.username} logged in!`)
             
             setTimeout(() => {
@@ -39,11 +39,11 @@ const LoginForm = ({ usernameField, passwordField, setUser, setNotification, set
                 <div>
                     <h4> Blogs login </h4>
                     username
-                    <input { ...usernameField } />
+                    <input { ...usernameField } reset='nothing' />
                 </div>
                 <div>
                     password
-                    <input { ...passwordField }/>
+                    <input { ...passwordField } reset='nothing'/>
                 </div>
                 <button type="submit"> login </button>
             </form>
