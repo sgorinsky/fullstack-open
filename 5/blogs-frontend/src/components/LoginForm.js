@@ -7,11 +7,12 @@ const LoginForm = ({ usernameField, passwordField, setUser, setNotification, set
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
+            console.log(usernameField['input'])
             const user = await loginService.login({
-                "username": usernameField.value, "password": passwordField.value
+                "username": usernameField.input.value, "password": passwordField.input.value
             })
-            window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user));
-            setUser(user);
+            window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
+            setUser(user)
             var blogs = await blogService.getAll();
             setBlogs(blogs)
             usernameField.reset()
@@ -39,11 +40,11 @@ const LoginForm = ({ usernameField, passwordField, setUser, setNotification, set
                 <div>
                     <h4> Blogs login </h4>
                     username
-                    <input { ...usernameField } reset='nothing' />
+                    <input { ...usernameField.input } />
                 </div>
                 <div>
                     password
-                    <input { ...passwordField } reset='nothing'/>
+                    <input { ...passwordField.input } />
                 </div>
                 <button type="submit"> login </button>
             </form>
