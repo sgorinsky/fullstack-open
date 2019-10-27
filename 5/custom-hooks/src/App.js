@@ -10,13 +10,20 @@ const App = (props) => {
   const right = useCounter()
 
   const name = useField('text')
+  const number = useField('text')
   const born = useField('date')
   const height = useField('number')
+  
 
-  const number = useField('text')
-  // didn't want to go through the trouble of bringing the two together into the same backend
-  // works in phonebook-backend
   const [persons, personService] = useResource('http://localhost:3005/api/persons')
+  //const [notes, noteService] = useResource('http://localhost:3005/api/notes')
+
+  /*
+  const handleNoteSubmit = (event) => {
+    event.preventDefault()
+    noteService.create({ content: content.value })
+  }
+  */
 
   const handlePersonSubmit = (event) => {
     event.preventDefault()
@@ -52,6 +59,8 @@ const App = (props) => {
       <br></br>
       <div>
         <form>
+          name:
+        <input {...name} />
           <br />
           birthdate:
         <input {...born} />
@@ -65,6 +74,17 @@ const App = (props) => {
       </div>
 
       <div>
+        {/*
+        COMMENTING THIS PART OUT BECAUSE I DON'T HAVE THE NOTES BACKEND SET UP FOR THIS EXERCISE, JUST PHONEBOOK
+          <h2>notes</h2>
+          <form onSubmit={handleNoteSubmit}>
+            <input {...content} />
+            <button>create</button>
+          </form>
+          {notes.map(n => <p key={n.id}>{n.content}</p>)}
+        */}
+        
+
         <h2>persons</h2>
         <form onSubmit={handlePersonSubmit}>
           name <input {...name} /> <br />
