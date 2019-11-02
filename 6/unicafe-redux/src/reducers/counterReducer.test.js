@@ -5,6 +5,7 @@ describe('unicafe reducer', () => {
   const initialState = {
     good: 0,
     ok: 0,
+    neutral: 0,
     bad: 0
   }
 
@@ -12,6 +13,7 @@ describe('unicafe reducer', () => {
     const state = {
       good: 0,
       ok: 0,
+      neutral: 0,
       bad: 0
     }
 
@@ -34,6 +36,7 @@ describe('unicafe reducer', () => {
     expect(newState).toEqual({
       good: 1,
       ok: 0,
+      neutral: 0,
       bad: 0
     })
   })
@@ -49,6 +52,7 @@ describe('unicafe reducer', () => {
     expect(newState).toEqual({
       good: 0,
       ok: 1,
+      neutral: 0,
       bad: 0
     })
   })
@@ -64,6 +68,7 @@ describe('unicafe reducer', () => {
     expect(newState).toEqual({
       good: 0,
       ok: 0,
+      neutral: 0,
       bad: 1
     })
   })
@@ -79,6 +84,7 @@ describe('unicafe reducer', () => {
     expect(newState).toEqual({
       good: 0,
       ok: 0,
+      neutral: 0,
       bad: 0
     })
   })

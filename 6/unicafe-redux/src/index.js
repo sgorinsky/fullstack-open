@@ -1,26 +1,24 @@
+// react/redux dependencies
 import React from 'react';
 import ReactDOM from 'react-dom'
 import { createStore } from 'redux'
-import reducer from './reducer'
+//components
+import Feedback from './components/Feedback'
+// reducers
+import counterReducer from './reducers/counterReducer'
 
-const store = createStore(reducer)
+const store = createStore(counterReducer)
 
 const App = () => {
-  const good = () => {
-    store.dispatch({
-      type: 'GOOD'
-    })
-  }
+  
 
   return (
     <div>
-      <button onClick={good}>good</button>
-      <button>neutral</button>
-      <button>bad</button>
-      <button>reset stats</button>
-      <div>good {store.getState().good}</div>
-      <div>neutral</div>
-      <div>bad</div>
+      <button onClick={(e) => store.dispatch({type: 'GOOD'})}> good </button>
+      <button onClick={(e) => store.dispatch({ type: 'NEUTRAL' })}>neutral</button>
+      <button onClick={(e) => store.dispatch({ type: 'BAD' })}>bad</button>
+      <button onClick={(e) => store.dispatch({ type: 'ZERO' })}>reset stats</button>
+      <Feedback good={store.getState().good} bad={store.getState().bad} neutral={store.getState().neutral} />
     </div>
   )
 }
