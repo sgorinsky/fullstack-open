@@ -4,10 +4,11 @@ import Anecdote from './Anecdote'
 import { toggleImportanceOf } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = ({ store }) => {
+  const { anecdotes } = store.getState()
+
   return (
     <ul>
-      {store
-        .getState()
+      {anecdotes
         .sort((first, next) => next.votes - first.votes)
         .map(anecdote =>
           <Anecdote
