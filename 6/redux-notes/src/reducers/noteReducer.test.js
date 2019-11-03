@@ -53,5 +53,4 @@ describe('noteReducer', () => {
       id: 2
     })
   })
-  
 })
