@@ -1,11 +1,19 @@
 import React from 'react'
 import Anecdote from './Anecdote'
 
-import { toggleImportanceOf } from '../reducers/anecdoteReducer'
+import { upvote } from '../reducers/anecdoteReducer'
+import { notificationSet, notificationRemove } from '../reducers/notificationReducer'
 
 const AnecdoteList = ({ store }) => {
   const { anecdotes } = store.getState()
 
+  const handleUpvote = (anecdote) => {
+    return store.dispatch(upvote(anecdote.id)) 
+      && store.dispatch(notificationSet(anecdote.content))
+      && setTimeout(() => {
+        return store.dispatch(notificationRemove())
+      }, 2000)
+  }
   return (
     <ul>
       {anecdotes
@@ -14,9 +22,7 @@ const AnecdoteList = ({ store }) => {
           <Anecdote
             key={anecdote.id}
             anecdote={anecdote}
-            handleClick={() =>
-              store.dispatch(toggleImportanceOf(anecdote.id))
-            }
+            handleClick={() => handleUpvote(anecdote)}
           />
         )
       }

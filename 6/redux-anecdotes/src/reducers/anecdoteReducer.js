@@ -43,7 +43,7 @@ const anecdoteReducer = (state = initialState, action) => {
 const generateId = () =>
   Number((Math.random() * 1000000).toFixed(0))
 
-export const createAnecdote = (content) => { // highlight-line
+export const createAnecdote = (content) => {
   return {
     type: 'NEW_ANECDOTE',
     data: {
@@ -54,7 +54,7 @@ export const createAnecdote = (content) => { // highlight-line
   }
 }
 
-export const toggleImportanceOf = (id) => { // highlight-line
+export const upvote = (id) => {
   return {
     type: 'UPVOTE',
     data: { id }
