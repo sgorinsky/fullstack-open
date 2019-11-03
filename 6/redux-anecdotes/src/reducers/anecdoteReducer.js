@@ -24,7 +24,7 @@ const anecdoteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'NEW_ANECDOTE':
       return [...state, action.data]
-    case 'TOGGLE_IMPORTANCE':
+    case 'UPVOTE':
       const id = action.data.id
       const anecdoteToChange = state.find(n => n.id === id)
       const changedAnecdote = {
@@ -56,7 +56,7 @@ export const createAnecdote = (content) => { // highlight-line
 
 export const toggleImportanceOf = (id) => { // highlight-line
   return {
-    type: 'TOGGLE_IMPORTANCE',
+    type: 'UPVOTE',
     data: { id }
   }
 }
