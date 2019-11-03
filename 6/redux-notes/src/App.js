@@ -6,9 +6,9 @@ import VisibilityFilter from './components/VisibilityFilter'
 const App = ({ store }) => {
   return (
     <div>
-      <NewNote store={store} />
-      <VisibilityFilter store={store}/>
-      <Notes store={store} />
+      <NewNote  />
+      <VisibilityFilter />
+      <Notes  />
     </div>
   )
 }
