@@ -3,7 +3,7 @@ import Anecdote from './Anecdote'
 
 import { toggleImportanceOf } from '../reducers/anecdoteReducer'
 
-const Anecdotes = ({ store }) => {
+const AnecdoteList = ({ store }) => {
   return (
     <ul>
       {store
@@ -23,4 +23,4 @@ const Anecdotes = ({ store }) => {
   )
 }
 
-export default Anecdotes
+export default AnecdoteList
