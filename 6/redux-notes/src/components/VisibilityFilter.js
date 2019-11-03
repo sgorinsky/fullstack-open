@@ -10,9 +10,9 @@ const VisibilityFilter = (props) => {
     <div>
       <div>
         <input type="radio" name="filter" onChange={() => filterClicked('ALL')} /> all
-          <input type="radio" name="filter" onChange={() => filterClicked('IMPORTANT')} /> important
-          <input type="radio" name="filter" onChange={() => filterClicked('NONIMPORTANT')} /> nonimportant
-        </div>
+        <input type="radio" name="filter" onChange={() => filterClicked('IMPORTANT')} /> important
+        <input type="radio" name="filter" onChange={() => filterClicked('NONIMPORTANT')} /> nonimportant
+      </div>
     </div>
   )
 }
