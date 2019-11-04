@@ -10,7 +10,6 @@ const notificationReducer = (state=[], action) => {
 }
 
 export const notificationSet = (content) => {
-  console.log(`NOTIFICATION: ${content}`)
   return {
     type: 'NOTIFICATION_SET',
     notification: {

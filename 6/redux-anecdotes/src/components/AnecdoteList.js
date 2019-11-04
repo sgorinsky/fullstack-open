@@ -7,8 +7,6 @@ import { upvote } from '../reducers/anecdoteReducer'
 import { notificationSet, notificationRemove } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
-  console.log('PROPS')
-  console.log(props)
   const currentFilter = !props.filter.type ? props.filter : ''
 
   const handleUpvote = (anecdote) => {
@@ -20,27 +18,26 @@ const AnecdoteList = (props) => {
   }
   return (
     <ul>
-      {props.visibleAnecdotes.map(anecdote => anecdote.content.toLowerCase().includes(currentFilter.toLowerCase()) ?
-        <Anecdote
-          key={anecdote.id}
-          anecdote={anecdote}
-          handleClick={() => handleUpvote(anecdote)}
-        /> : ''
-      )}
+      {props.visibleAnecdotes
+        .map(anecdote => anecdote.content.toLowerCase().includes(currentFilter.toLowerCase()) ?
+          <Anecdote
+            key={anecdote.id}
+            anecdote={anecdote}
+            handleClick={() => handleUpvote(anecdote)}
+          /> : ''
+        )
+      }
     </ul>
   )
 }
 
 const showAnecdotes = ({ anecdotes }) => {
-  return anecdotes
-    .sort((first, next) => next.votes - first.votes)
+  return anecdotes.sort((first, next) => next.votes - first.votes)
 }
 
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     visibleAnecdotes: showAnecdotes(state),
-    anecdotes: state.anecdotes,
     filter: state.filter
   }
 }

@@ -7,7 +7,7 @@ const filterReducer = (state = [], action) => {
   }
 }
 
-export const filter = (stringToFilter) => {
+export const filterAnecdotes = (stringToFilter) => {
   return {
     type: 'FILTER',
     filter: stringToFilter ? stringToFilter : ''

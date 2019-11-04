@@ -8,8 +8,8 @@ const App = (props) => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      <Notification store={props.store} />
-      <Filter store={props.store} />
+      <Notification />
+      <Filter />
       <AnecdoteForm store={props.store} />
       <AnecdoteList />
     </div>
