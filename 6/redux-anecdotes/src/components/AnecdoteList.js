@@ -18,7 +18,7 @@ const AnecdoteList = (props) => {
   }
   return (
     <ul>
-      {props.visibleAnecdotes
+      {props.anecdotes
         .map(anecdote => anecdote.content.toLowerCase().includes(currentFilter.toLowerCase()) ?
           <Anecdote
             key={anecdote.id}
@@ -37,7 +37,7 @@ const showAnecdotes = ({ anecdotes }) => {
 
 const mapStateToProps = (state) => {
   return {
-    visibleAnecdotes: showAnecdotes(state),
+    anecdotes: showAnecdotes(state),
     filter: state.filter
   }
 }

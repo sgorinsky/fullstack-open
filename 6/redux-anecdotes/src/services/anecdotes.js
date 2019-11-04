@@ -1,5 +1,7 @@
 import axios from 'axios'
+
 const baseUrl = 'http://localhost:3001/anecdotes'
+const generateId = () => Number((Math.random() * 1000000).toFixed(0))
 
 const getAll = async () => {
   const response = await axios.get(baseUrl)
@@ -11,8 +13,8 @@ const getAll = async () => {
 const createNew = async (content) => {
   const newAnecdote = { 
     content, 
-    votes: 0, 
-    id: Number((Math.random() * 1000000).toFixed(0)) 
+    votes: 0,
+    id: generateId()
   }
   const response = await axios.post(baseUrl, newAnecdote)
   return response.data

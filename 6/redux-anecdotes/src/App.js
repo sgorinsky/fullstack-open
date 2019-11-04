@@ -10,7 +10,13 @@ import anecdoteService from './services/anecdotes'
 import { initializeAnecdotes } from './reducers/anecdoteReducer'
 
 const App = (props) => {
-  
+  useEffect(() => {
+    console.log('useEffect')
+    console.log(props.anecdotes)
+    anecdoteService
+      .getAll()
+      .then(anecdotes => props.initializeAnecdotes(anecdotes))
+  }, [props])
   return (
     <div>
       <h2>Anecdotes</h2>
@@ -24,5 +30,5 @@ const App = (props) => {
 
 export default connect(
   null,
-  initializeAnecdotes
+  { initializeAnecdotes }
 )(App)

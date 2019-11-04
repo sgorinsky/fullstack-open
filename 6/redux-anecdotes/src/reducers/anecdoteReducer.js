@@ -3,6 +3,8 @@ const anecdoteReducer = (state = [], action) => {
     case 'NEW_ANECDOTE':
       return [...state, action.data]
     case 'INIT_ANECDOTES':
+      console.log('DID WE MAKE IT?')
+      console.log(action)
       return action.data
     case 'UPVOTE':
       const id = action.data.id
@@ -19,10 +21,6 @@ const anecdoteReducer = (state = [], action) => {
   }
 }
 
-
-const generateId = () =>
-  Number((Math.random() * 1000000).toFixed(0))
-
 export const initializeAnecdotes = (anecdotes) => {
   return {
     type: 'INIT_ANECDOTES',
@@ -34,8 +32,7 @@ export const createAnecdote = ({ content }) => {
     type: 'NEW_ANECDOTE',
     data: {
       content,
-      votes: 0,
-      id: generateId()
+      votes: 0
     }
   }
 }
