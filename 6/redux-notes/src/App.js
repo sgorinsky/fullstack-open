@@ -11,7 +11,8 @@ import VisibilityFilter from './components/VisibilityFilter'
 
 const App = ( props ) => {
   useEffect(() => {
-    console.log('useEffect called')
+    console.log('USEEFFECT PROPS')
+    console.log(props)
     noteService.getAll().then(notes =>
       props.initializeNotes(notes)
     )

@@ -13,6 +13,8 @@ const noteReducer = (state = [], action) => {
         note.id !== id ? note : changedNote
       )
     case 'INIT_NOTES':
+      console.log('INIT_NOTES')
+      console.log(action.data)
       return action.data
     default:
       return state
@@ -23,6 +25,7 @@ const generateId = () =>
   Number((Math.random() * 1000000).toFixed(0))
 
 export const initializeNotes = (notes) => {
+  console.log(notes)
   return {
     type: 'INIT_NOTES',
     data: notes,

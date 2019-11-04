@@ -14,26 +14,6 @@
       "content": "new note",
       "important": false,
       "id": 3
-    },
-    {
-      "content": "another new one",
-      "important": false,
-      "id": 4
-    },
-    {
-      "content": "did this work?",
-      "important": false,
-      "id": 5
-    },
-    {
-      "content": "let's see",
-      "important": false,
-      "id": 6
-    },
-    {
-      "content": "another",
-      "important": false,
-      "id": 7
     }
   ]
 }
