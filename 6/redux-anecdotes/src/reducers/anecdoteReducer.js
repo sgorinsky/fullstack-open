@@ -3,8 +3,6 @@ const anecdoteReducer = (state = [], action) => {
     case 'NEW_ANECDOTE':
       return [...state, action.data]
     case 'INIT_ANECDOTES':
-      console.log('DID WE MAKE IT?')
-      console.log(action)
       return action.data
     case 'UPVOTE':
       const id = action.data.id
@@ -27,6 +25,7 @@ export const initializeAnecdotes = (anecdotes) => {
     data: anecdotes
   }
 }
+
 export const createAnecdote = ({ content }) => {
   return {
     type: 'NEW_ANECDOTE',
