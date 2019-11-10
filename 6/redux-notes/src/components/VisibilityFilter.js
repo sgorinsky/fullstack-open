@@ -14,4 +14,7 @@ const VisibilityFilter = (props) => {
   )
 }
 
-export default connect(null, { filterChange })(VisibilityFilter)
+export default connect(
+  null, 
+  { filterChange }
+)(VisibilityFilter)

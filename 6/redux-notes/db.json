@@ -21,13 +21,14 @@
       "id": 4
     },
     {
-      "content": {
-        "content": "does making a new note work with redux-thunk?",
-        "important": false,
-        "id": 4
-      },
+      "content": "i think so",
       "important": false,
       "id": 5
+    },
+    {
+      "content": "yes, it does!",
+      "important": false,
+      "id": 6
     }
   ]
 }

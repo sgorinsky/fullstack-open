@@ -1,9 +1,9 @@
-const filterReducer = (state = 'SET_FILTER', action) => {
-  console.log('FILTER REDUCER')
+const filterReducer = (state = 'ALL', action) => {
   switch(action.type) {
     case 'SET_FILTER':
       return action.filter
     default:
+      console.log(state)
       return state
   }
 }
