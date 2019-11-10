@@ -4,17 +4,15 @@ import { connect } from 'react-redux'
 import Anecdote from './Anecdote'
 
 import { upvote } from '../reducers/anecdoteReducer'
-import { notificationSet, notificationRemove } from '../reducers/notificationReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = (props) => {
   const currentFilter = !props.filter.type ? props.filter : ''
 
   const handleUpvote = (anecdote) => {
-    return props.upvote(anecdote.id)
-      && props.notificationSet(anecdote.content)
-      && setTimeout(() => {
-        return props.notificationRemove()
-      }, 5000)
+    return props.upvote(anecdote).then(() => {
+      props.setNotification(anecdote.content, 3)
+    })
   }
   return (
     <ul>
@@ -43,8 +41,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = {
   upvote,
-  notificationSet,
-  notificationRemove
+  setNotification
 }
 
 export default connect(
