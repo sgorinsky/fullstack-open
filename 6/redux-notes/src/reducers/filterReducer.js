@@ -3,7 +3,6 @@ const filterReducer = (state = 'ALL', action) => {
     case 'SET_FILTER':
       return action.filter
     default:
-      console.log(state)
       return state
   }
 }
