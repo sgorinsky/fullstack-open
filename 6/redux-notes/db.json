@@ -29,6 +29,11 @@
       "content": "yes, it does!",
       "important": false,
       "id": 6
+    },
+    {
+      "content": "we can check our redux state with a createNew note",
+      "important": false,
+      "id": 7
     }
   ]
 }

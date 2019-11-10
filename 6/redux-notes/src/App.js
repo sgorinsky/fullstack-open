@@ -11,6 +11,7 @@ const App = ( props ) => {
   useEffect(() => {
     props.initializeNotes()
   }, [props])
+  
   return (
     <div>
       <NewNote  />
