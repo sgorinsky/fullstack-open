@@ -14,7 +14,7 @@ const App = ( props ) => {
     noteService.getAll().then(notes =>
       props.initializeNotes(notes)
     )
-  }, [])
+  }, [props])
   return (
     <div>
       <NewNote  />
