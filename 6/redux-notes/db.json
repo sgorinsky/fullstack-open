@@ -14,6 +14,20 @@
       "content": "new note",
       "important": false,
       "id": 3
+    },
+    {
+      "content": "does making a new note work with redux-thunk?",
+      "important": false,
+      "id": 4
+    },
+    {
+      "content": {
+        "content": "does making a new note work with redux-thunk?",
+        "important": false,
+        "id": 4
+      },
+      "important": false,
+      "id": 5
     }
   ]
 }
