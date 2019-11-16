@@ -10,9 +10,9 @@ const Menu = () => {
   }
   return (
     <div>
-      <a href='#' style={padding}>anecdotes</a>
-      <a href='#' style={padding}>create new</a>
-      <a href='#' style={padding}>about</a>
+      <a href='/anecdotes' style={padding}>anecdotes</a>
+      <a href='/new' style={padding}>create new</a>
+      <a href='/about' style={padding}>about</a>
     </div>
   )
 }
