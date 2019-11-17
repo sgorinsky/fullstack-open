@@ -4,16 +4,30 @@ import {
   Route, Link, Redirect, withRouter
 } from 'react-router-dom'
 
-const Menu = () => {
+const Menu = ({ anecdotes, addNew}) => {
   const padding = {
     paddingRight: 5
   }
+  
   return (
     <div>
       <Router>
-        <Link href='/' style={padding}>anecdotes</Link>
-        <Link href='/new' style={padding}>create new</Link>
-        <Link href='/about' style={padding}>about</Link>
+        <div>
+          <div>
+            <Link to='/' style={padding}>anecdotes</Link>
+            <Link to='/new' style={padding}>create new</Link>
+            <Link to='/about' style={padding}>about</Link>
+          </div>
+
+          <div>
+            <Route exact path='/' render={() => <AnecdoteList anecdotes={anecdotes}/>} />
+            <Route exact path='/about' render={() => <About />} />
+            <Route exact path='/new' render={() => <CreateNew addNew={addNew} />} />
+          </div>
+          <div>
+
+          </div>
+        </div>
       </Router>
     </div>
   )
@@ -127,20 +141,10 @@ const App = () => {
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
-
   return (
     <div>
-      <Menu />
+      <Menu anecdotes={anecdotes} addNew={addNew} />
       <h1>Software anecdotes</h1>
-      <Router>
-        <div>
-          <div>
-            <Route exact path='/' render={() => <AnecdoteList anecdotes={anecdotes}/>} />
-            <Route exact path='/about' render={() => <About />} />
-            <Route exact path='/new' render={() => <CreateNew addNew={addNew} />} />
-          </div>
-        </div>
-      </Router>
       <br></br>
       <Footer />
     </div>
