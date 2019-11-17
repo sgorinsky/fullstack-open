@@ -4,15 +4,30 @@ import {
   Route, Link, Redirect, withRouter
 } from 'react-router-dom'
 
-const Menu = () => {
+const Menu = ({ anecdotes }) => {
   const padding = {
     paddingRight: 5
   }
   return (
     <div>
-      <a href='/anecdotes' style={padding}>anecdotes</a>
-      <a href='/new' style={padding}>create new</a>
-      <a href='/about' style={padding}>about</a>
+      <Router>
+        <div>
+          <div>
+            <Link style={padding} to="/">home</Link>
+            <Link style={padding} to="/about">about</Link>
+            <Link style={padding} to="/anecdotes">anecdotes</Link>
+            <Link style={padding} to="/new">new</Link>
+          </div>
+
+          <Route exact path="/" render={() => <Menu />} />
+          <Route exact path="/anecdotes" render={() => <AnecdoteList anecdotes={anecdotes} />} />
+          <Route exact path="/new" render={() => <CreateNew />} />
+        </div>
+      </Router>
+      <div>
+        <br />
+        <em> <Footer /></em>
+      </div>
     </div>
   )
 }
@@ -127,14 +142,7 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>Software anecdotes</h1>
-      <Menu />
-      <AnecdoteList anecdotes={anecdotes} />
-      <About />
-      <CreateNew addNew={addNew} />
-      <Footer />
-    </div>
+    <Menu anecdotes={anecdotes}/>
   )
 }
 
