@@ -1,29 +1,14 @@
 import React, { useState } from 'react'
 
-const Menu = ({ anecdotes }) => {
+const Menu = () => {
   const padding = {
     paddingRight: 5
   }
   return (
     <div>
-      <Router>
-        <div>
-          <div>
-            <Link style={padding} to="/">home</Link>
-            <Link style={padding} to="/about">about</Link>
-            <Link style={padding} to="/anecdotes">anecdotes</Link>
-            <Link style={padding} to="/new">new</Link>
-          </div>
-
-          <Route exact path="/" render={() => <Menu />} />
-          <Route exact path="/anecdotes" render={() => <AnecdoteList anecdotes={anecdotes} />} />
-          <Route exact path="/new" render={() => <CreateNew />} />
-        </div>
-      </Router>
-      <div>
-        <br />
-        <em> <Footer /></em>
-      </div>
+      <a href='#' style={padding}>anecdotes</a>
+      <a href='#' style={padding}>create new</a>
+      <a href='#' style={padding}>about</a>
     </div>
   )
 }
@@ -138,7 +123,14 @@ const App = () => {
   }
 
   return (
-    <Menu anecdotes={anecdotes}/>
+    <div>
+      <h1>Software anecdotes</h1>
+      <Menu />
+      <AnecdoteList anecdotes={anecdotes} />
+      <About />
+      <CreateNew addNew={addNew} />
+      <Footer />
+    </div>
   )
 }
 
