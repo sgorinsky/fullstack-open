@@ -49,7 +49,7 @@ const Users = () => (
 let Login = (props) => {
   const onSubmit = (event) => {
     event.preventDefault()
-    props.onLogin('mluukkai')
+    props.onLogin('samg')
     props.history.push('/')
   }
 
