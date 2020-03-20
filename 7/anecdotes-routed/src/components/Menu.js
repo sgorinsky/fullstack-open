@@ -11,7 +11,9 @@ const Menu = ({ anecdotes, addNew }) => {
   const padding = {
     paddingRight: 5
   }
-  const findAnecdote = (id) => anecdotes.find(anecdote => anecdote.id === Number.id)
+
+  const findAnecdote = (id) => anecdotes.find(anecdote => anecdote.id === Number(id))
+  
 
   return (
     <div>
