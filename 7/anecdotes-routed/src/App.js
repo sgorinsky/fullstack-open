@@ -1,13 +1,6 @@
 import React, { useState } from 'react'
 import Menu from './components/Menu'
-
-const Footer = () => (
-  <div>
-    Anecdote app for <a href='https://courses.helsinki.fi/fi/tkt21009'>Fullstack-open</a>.
-
-    See <a href='https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js'>https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js</a> for the source code.
-  </div>
-)
+import Footer from './components/Footer'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -27,8 +20,6 @@ const App = () => {
     }
   ])
 
-  const [notification, setNotification] = useState('')
-
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
@@ -47,6 +38,7 @@ const App = () => {
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
+
   return (
     <div>
       <h1>Software anecdotes</h1>
