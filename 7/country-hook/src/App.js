@@ -18,7 +18,25 @@ const useField = (type) => {
 const useCountry = (name) => {
   const [country, setCountry] = useState(null)
 
-  useEffect()
+  useEffect(() => {
+    if (name) {
+      axios
+        .get(`http://restcountries.eu/rest/v2/name/${name}`)
+        .then(response => {
+          console.log(response)
+          if (response.data.length === 1) {
+            setCountry(response.data[0])
+          } else {
+            setCountry({ name: null })
+          }
+        })
+        .catch(error => {
+          console.log(error)
+          setCountry({ name: null })
+        })
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name])
 
   return country
 }
@@ -28,7 +46,7 @@ const Country = ({ country }) => {
     return null
   }
 
-  if (!country.found) {
+  if (!country.name) {
     return (
       <div>
         not found...
@@ -38,10 +56,10 @@ const Country = ({ country }) => {
 
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div> 
-      <img src={country.data.flag} height='100' alt={`flag of ${country.data.name}`}/>  
+      <h3>{country.name} </h3>
+      <div>capital {country.capital} </div>
+      <div>population {country.population}</div> 
+      <img src={country.flag} height='100' alt={`flag of ${country.name}`}/>  
     </div>
   )
 }
@@ -58,6 +76,7 @@ const App = () => {
 
   return (
     <div>
+
       <form onSubmit={fetch}>
         <input {...nameInput} />
         <button>find</button>
