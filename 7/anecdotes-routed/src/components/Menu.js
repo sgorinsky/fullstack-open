@@ -14,7 +14,6 @@ const Menu = ({ anecdotes, setAnecdotes, addNew }) => {
 
   // Menu is never rerendered after new anecdotes are added so it can only find the id of the initialized anecdotes
   const findAnecdote = (id) => anecdotes.find(anecdote => anecdote.id === Number(id))
-  console.log(anecdotes)
 
   return (
     <div>

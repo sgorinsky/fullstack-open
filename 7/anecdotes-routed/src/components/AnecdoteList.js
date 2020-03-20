@@ -15,7 +15,6 @@ const AnecdoteList = ({ anecdotes, setAnecdotes }) => {
     }
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
-    console.log(anecdotes)
   }
 
   return (
@@ -23,15 +22,15 @@ const AnecdoteList = ({ anecdotes, setAnecdotes }) => {
       <h2>Anecdotes</h2>
       <ul>
         {anecdotes.map(anecdote =>
-          <>
-            <li key={anecdote.id}>
+          <div key={anecdote.id}>
+            <li>
               <Link to={`/anecdotes/${anecdote.id}`}>
                 {anecdote.content}
               </Link>
             </li>
             {`${anecdote.votes} votes `} 
             <button onClick={() => vote(anecdote.id)}>vote</button>
-          </>
+          </div>
       )}
       </ul>
     </div>
