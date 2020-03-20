@@ -1,31 +1,11 @@
 import React, { useState } from 'react'
 import Notification from './Notification'
+import NotificationHook from './hooks/NotificationHook'
 
 const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
-  const NotificationHook = () => {
-    const [notification, setNotification] = useState('')
-    const [shouldAppear, setShouldAppear] = useState(false)
-
-    const show = () => {
-      setShouldAppear(true)
-    }
-    
-    const hide = () => {
-      setShouldAppear(false)
-    }
-
-    return {
-      display: notification,
-      setDisplay: (display) => setNotification(display),
-      appear: shouldAppear,
-      show,
-      hide,
-    }
-  }
 
   const notification = NotificationHook()
 
