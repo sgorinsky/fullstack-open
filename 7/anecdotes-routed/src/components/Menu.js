@@ -7,13 +7,12 @@ import AnecdoteList from './AnecdoteList'
 import About from './About'
 import CreateNew from './CreateNew'
 
-const Menu = ({ anecdotes, addNew }) => {
+const Menu = ({ anecdotes, setAnecdotes, addNew }) => {
   const padding = {
     paddingRight: 5
   }
 
   const findAnecdote = (id) => anecdotes.find(anecdote => anecdote.id === Number(id))
-  
 
   return (
     <div>
@@ -25,7 +24,7 @@ const Menu = ({ anecdotes, addNew }) => {
             <Link to='/about' style={padding}>about</Link>
           </div>
           <div>
-            <Route exact path='/anecdotes' render={() => <AnecdoteList anecdotes={anecdotes} />} />
+            <Route exact path='/anecdotes' render={() => <AnecdoteList anecdotes={anecdotes} setAnecdotes={setAnecdotes} />} />
             <Route path='/anecdotes/:id' render={({ match }) => <Anecdote anecdote={findAnecdote(match.params.id)} />} />
             <Route path='/about' render={() => <About />} />
             <Route path='/new' render={() => <CreateNew addNew={addNew} />} />

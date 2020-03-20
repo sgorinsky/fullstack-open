@@ -1,9 +1,33 @@
 import React, { useState } from 'react'
+import Notification from './Notification'
 
 const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+
+  const NotificationHook = () => {
+    const [notification, setNotification] = useState('')
+    const [shouldAppear, setShouldAppear] = useState(false)
+
+    const show = () => {
+      setShouldAppear(true)
+    }
+    
+    const hide = () => {
+      setShouldAppear(false)
+    }
+
+    return {
+      display: notification,
+      setDisplay: (display) => setNotification(display),
+      appear: shouldAppear,
+      show,
+      hide,
+    }
+  }
+
+  const notification = NotificationHook()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -13,12 +37,15 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
-
+    notification.show()
+    notification.setDisplay(`Anecdote ${content} has been created!`)
+    setTimeout(() => notification.hide(), 1000)
   }
 
   return (
     <div>
       <h2>create a new anecdote</h2>
+      {notification.appear && <Notification content={notification.display} />}
       <form onSubmit={handleSubmit}>
         <div>
           content

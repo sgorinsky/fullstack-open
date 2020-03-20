@@ -5,7 +5,7 @@ const Anecdote = ({ anecdote }) => {
   let author = ''
   let content = ''
   let info = ''
-  
+
   if (anecdote) {
     author = anecdote.author ? anecdote.author : ''
     content = anecdote.content ? anecdote.content : ''
