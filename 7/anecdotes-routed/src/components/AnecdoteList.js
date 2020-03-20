@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom'
 
 const AnecdoteList = ({ anecdotes, setAnecdotes }) => {
 
-
   const anecdoteById = (id) => anecdotes.find(a => a.id === id)
 
   const vote = (id) => {
@@ -16,6 +15,7 @@ const AnecdoteList = ({ anecdotes, setAnecdotes }) => {
     }
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
+    console.log(anecdotes)
   }
 
   return (

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-const NotificationHook = () => {
+const useNotification = () => {
   const [notification, setNotification] = useState('')
   const [shouldAppear, setShouldAppear] = useState(false)
 
@@ -13,12 +13,12 @@ const NotificationHook = () => {
   }
 
   return {
-    display: notification,
-    setDisplay: (display) => setNotification(display),
-    appear: shouldAppear,
     show,
     hide,
+    appear: shouldAppear,
+    display: notification,
+    setDisplay: (display) => setNotification(display),
   }
 }
 
-export default NotificationHook
+export default useNotification

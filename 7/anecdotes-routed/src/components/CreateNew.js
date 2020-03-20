@@ -1,25 +1,26 @@
 import React, { useState } from 'react'
 import Notification from './Notification'
-import NotificationHook from './hooks/NotificationHook'
+import useNotification from './hooks/useNotification'
 
-const CreateNew = (props) => {
+const CreateNew = ({ addNew }) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
-  const notification = NotificationHook()
+  const notification = useNotification()
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    props.addNew({
+    addNew({
       content,
       author,
       info,
       votes: 0
     })
+
     notification.show()
     notification.setDisplay(`Anecdote ${content} has been created!`)
-    setTimeout(() => notification.hide(), 1000)
+    setTimeout(() => notification.hide(), 1500)
   }
 
   return (
@@ -43,7 +44,6 @@ const CreateNew = (props) => {
       </form>
     </div>
   )
-
 }
 
 export default CreateNew
