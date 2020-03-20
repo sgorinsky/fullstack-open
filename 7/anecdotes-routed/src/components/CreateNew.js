@@ -4,32 +4,35 @@ import useNotification from './hooks/useNotification'
 import useField from './hooks/useField'
 
 const CreateNew = ({ addNew }) => {
+  
+  const content = useField('content')
+  const author = useField('author')
+  const info = useField('info')
 
   const notification = useNotification()
-  const fields = useField()
 
   const clear = (event) => {
     event.preventDefault()
-    fields.clear()
-    notification.show()
-    notification.setDisplay('Cleared fields')
-    setTimeout(() => notification.hide(), 1000)
+    content.onChange('')
+    author.onChange('')
+    info.onChange('')
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
 
     addNew({
-      content: fields.content,
-      author: fields.author,
-      info: fields.info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
 
     notification.show()
-    notification.setDisplay(`Anecdote ${fields.content} has been created!`)
+    notification.setDisplay(`Anecdote ${content.value} has been created!`)
+
     setTimeout(() => {
-      fields.clear()
+      clear(event)
       notification.hide()
     }, 1500)
 
@@ -42,15 +45,15 @@ const CreateNew = ({ addNew }) => {
       <form>
         <div>
           content{' '}
-          <input name='content' value={fields.content} onChange={(e) => fields.setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author{' '}
-          <input name='author' value={fields.author} onChange={(e) => fields.setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info{' '}
-          <input name='info' value={fields.info} onChange={(e) => fields.setInfo(e.target.value)} />
+          <input {...info} />
         </div>
         <button name='submit' onClick={handleSubmit}>create</button>
         <button onClick={(e) => clear(e)}>reset</button>

@@ -22,7 +22,7 @@ const AnecdoteList = ({ anecdotes, setAnecdotes }) => {
       <h2>Anecdotes</h2>
       <ul>
         {anecdotes.map(anecdote =>
-          <div key={anecdote.id}>
+          <div key={`anecdote: ${anecdote.id}`}>
             <li>
               <Link to={`/anecdotes/${anecdote.id}`}>
                 {anecdote.content}
