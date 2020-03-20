@@ -18,7 +18,7 @@ const AnecdoteList = ({ anecdotes, setAnecdotes }) => {
   }
 
   return (
-    <div>
+    <>
       <h2>Anecdotes</h2>
       <ul>
         {anecdotes.map(anecdote =>
@@ -33,7 +33,7 @@ const AnecdoteList = ({ anecdotes, setAnecdotes }) => {
           </div>
       )}
       </ul>
-    </div>
+    </>
   )
 }
 
