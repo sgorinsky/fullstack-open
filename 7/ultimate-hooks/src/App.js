@@ -7,7 +7,8 @@ const useField = (type) => {
   const [value, setValue] = useState('')
 
   const onChange = (event) => {
-    setValue(event.target.value)
+    if (event.target) setValue(event.target.value)
+    else setValue(event)
   }
 
   return {
@@ -20,17 +21,21 @@ const useField = (type) => {
 
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
+  
+  useEffect(() => {
+    getAll()
+  }, [])
+
+  let token = '12345'
+
+  const setToken = newToken => {
+    token = `bearer ${newToken}`
+  }
 
   const getAll = async () => {
     const response = await axios.get(baseUrl)
     setResources(response.data)
     return response.data
-  }
-  getAll()
-  let token = '12345'
-
-  const setToken = newToken => {
-    token = `bearer ${newToken}`
   }
 
   const get = async (id) => {
@@ -45,6 +50,7 @@ const useResource = (baseUrl) => {
     }
 
     const response = await axios.post(baseUrl, newObject, config)
+    setResources(resources.concat(response.data))
     return response.data
   }
   const update = async (id, newObject) => {
@@ -78,11 +84,14 @@ const App = () => {
   const handleNoteSubmit = (event) => {
     event.preventDefault()
     noteService.create({ content: content.value })
+    content.onChange('')
   }
  
   const handlePersonSubmit = (event) => {
     event.preventDefault()
     personService.create({ name: name.value, number: number.value})
+    name.onChange('')
+    number.onChange('')
   }
 
   return (
