@@ -19,12 +19,12 @@ const useField = (type) => {
 
 
 const useResource = (baseUrl) => {
+  const [resources, setResources] = useState([])
   const getAll = async () => {
-    const response = await axios.get(`${baseUrl}`)
+    const response = await axios.get(baseUrl)
+    setResources(response.data)
     return response.data
   }
-  const [resources, setResources] = useState([getAll()])
-
   let token = '12345'
 
   const setToken = newToken => {
