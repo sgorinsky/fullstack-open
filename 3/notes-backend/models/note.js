@@ -8,6 +8,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
 mongoose.connect(url, { useNewUrlParser: true })
+    // eslint-disable-next-line no-unused-vars
     .then(result => {
         console.log('connected to MongoDB')
     })
