@@ -2,9 +2,20 @@
 // It hasn't been refactored into separate components
 // And only needs be imported as MaterialUIApp in index.js
 import React, { useState } from 'react'
-import ReactDOM from 'react-dom'
+import {
+  Switch,
+  Route,
+  Link,
+  Redirect,
+  useRouteMatch,
+  useHistory,
+} from 'react-router-dom'
 
 import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Button,
   Container,
   Paper,
   Table,
@@ -14,16 +25,7 @@ import {
   TableRow,
   TextField,
 } from '@material-ui/core'
-
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-  useRouteMatch,
-  useHistory,
-} from "react-router-dom"
+import { Alert } from '@material-ui/lab'
 
 const Home = () => (
   <div>
@@ -45,22 +47,23 @@ const Note = ({ note }) => {
 const Notes = ({ notes }) => (
   <div>
     <h2>Notes</h2>
-    <Table striped>
-      <tbody>
-        {notes.map(note =>
-          <tr key={note.id}>
-            <td>
-              <Link to={`/notes/${note.id}`}>
-                {note.content}
-              </Link>
-            </td>
-            <td>
-              {note.user}
-            </td>
-          </tr>
-        )}
-      </tbody>
-    </Table>
+
+    <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          {notes.map(note => (
+            <TableRow key={note.id}>
+              <TableCell>
+                <Link to={`/notes/${note.id}`}>{note.content}</Link>
+              </TableCell>
+              <TableCell>
+                {note.name}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   </div>
 )
 
@@ -134,11 +137,7 @@ const App = () => {
     setMessage(`welcome ${user}`)
     setTimeout(() => {
       setMessage(null)
-    }, 10000)
-  }
-
-  const padding = {
-    padding: 5
+    }, 5000)
   }
 
   const match = useRouteMatch('/notes/:id')
@@ -147,58 +146,60 @@ const App = () => {
     : null
 
   return (
-    <div class="container">
-      {(message &&
-        <Alert variant="success">
-          {message}
-        </Alert>
-      )}
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/">home</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/notes">notes</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
-              <Link style={padding} to="/users">users</Link>
-            </Nav.Link>
-            <Nav.Link href="#" as="span">
+    <Container>
+      <div class="container">
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton edge="start" color="inherit" aria-label="menu">
+            </IconButton>
+            <Button color="inherit">
+              <Link to="/">home</Link>
+            </Button>
+            <Button color="inherit">
+              <Link to="/notes">notes</Link>
+            </Button>
+            <Button color="inherit">
+              <Link to="/users">users</Link>
+            </Button>
+            <Button color="inherit">
               {user
                 ? <em>{user} logged in</em>
                 : <Link to="/login">login</Link>
               }
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+            </Button>
+          </Toolbar>
+        </AppBar>
 
-      <Switch>
-        <Route path="/notes/:id">
-          <Note note={note} />
-        </Route>
-        <Route path="/notes">
-          <Notes notes={notes} />
-        </Route>
-        <Route path="/users">
-          {user ? <Users /> : <Redirect to="/login" />}
-        </Route>
-        <Route path="/login">
-          <Login onLogin={login} />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-      <div>
-        <br />
-        <em>Note app, Department of Computer Science 2020</em>
+        {(message &&
+          <Alert variant="success">
+            {message}
+          </Alert>
+        )}
+
+        <Switch>
+          <Route path="/notes/:id">
+            <Note note={note} />
+          </Route>
+          <Route path="/notes">
+            <Notes notes={notes} />
+          </Route>
+          <Route path="/users">
+            {user ? <Users /> : <Redirect to="/login" />}
+          </Route>
+          <Route path="/login">
+            <Login onLogin={login} />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+        <div>
+          <br />
+          <em>Note app, Department of Computer Science 2020</em>
+        </div>
       </div>
-    </div>
-  )
+    </Container>
+    )
 }
 
 export default App
