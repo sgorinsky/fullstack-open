@@ -1,10 +1,11 @@
 import React from 'react'
 import { Form, Button } from 'react-bootstrap'
+import { withRouter } from 'react-router-dom'
 
 const Login = (props) => {
   const onSubmit = (event) => {
     event.preventDefault()
-    props.onLogin('mluukkai')
+    props.onLogin('samg')
     props.history.push('/')
   }
 
@@ -31,4 +32,4 @@ const Login = (props) => {
   )
 }
 
-export default Login
+export default withRouter(Login)

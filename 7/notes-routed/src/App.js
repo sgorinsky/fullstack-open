@@ -1,78 +1,19 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Route, Link, Redirect, withRouter
+  Route, Link, Redirect
 } from 'react-router-dom'
 import { Alert, Nav, Navbar } from 'react-bootstrap'
 
-const Home = () => (
-  <div>
-    <h2>TKTL notes app</h2>
-
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-  </div>
-)
-
-const Note = ({ note }) => {
-  return (
-    <div>
-      <h2>{note.content}</h2>
-      <div>{note.user}</div>
-      <div><strong>{note.important ? 'important' : ''}</strong></div>
-    </div>
-  )
-}
-
-const Notes = (props) => (
-  <div>
-    <h2>Notes</h2>
-    <ul>
-      {props.notes.map(note =>
-        <li key={note.id}>
-          <Link to={`/notes/${note.id}`}>{note.content}</Link>
-        </li>
-      )}
-    </ul>
-  </div>
-)
-
-const Users = () => (
-  <div>
-    <h2>TKTL notes app</h2>
-    <ul>
-      <li>Matti Luukkainen</li>
-      <li>Juha Tauriainen</li>
-      <li>Arto Hellas</li>
-    </ul>
-  </div>
-)
-
-let Login = (props) => {
-  const onSubmit = (event) => {
-    event.preventDefault()
-    props.onLogin('samg')
-    props.history.push('/')
-  }
-
-  return (
-    <div>
-      <h2>login</h2>
-      <form onSubmit={onSubmit}>
-        <div>
-          username: <input />
-        </div>
-        <div>
-          password: <input type='password' />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  )
-}
-
-Login = withRouter(Login)
+import Home from './components/Home'
+import Note from './components/Note'
+import Notes from './components/Notes'
+import Login from './components/Login'
+import Users from './components/Users'
 
 const App = () => {
+  const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(null)
   const [notes, setNotes] = useState([
     {
       id: 1,
@@ -93,9 +34,6 @@ const App = () => {
       user: 'Arto Hellas'
     }
   ])
-
-  const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
 
   const login = (user) => {
     setUser(user)
@@ -160,7 +98,7 @@ const App = () => {
         <em>Note app, Department of Computer Science 2019</em>
       </div>
     </div>
-  )
+    )
 }
 
 export default App;
