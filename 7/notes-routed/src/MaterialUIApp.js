@@ -171,7 +171,7 @@ const App = () => {
         </AppBar>
 
         {(message &&
-          <Alert variant="success">
+          <Alert severity="success">
             {message}
           </Alert>
         )}
