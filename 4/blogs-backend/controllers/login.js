@@ -16,7 +16,7 @@ loginRouter.post('/', async (request, response) => {
     const passwordCorrect = !user 
     ? false 
     // for some reason, hash at registration (POST request to /api/users) is different than hash used to compare
-    : await bcrypt.compare(body.password, user.passwordHash) || bcrypt.compare(body.password, hashedPass)
+    : await bcrypt.compare(body.password, hashedPass)
     console.log(`passwordCorrect: ${passwordCorrect}`)
 
     if (!(user && passwordCorrect)) {
@@ -25,12 +25,17 @@ loginRouter.post('/', async (request, response) => {
         })
     }
 
+    /*
     const userForToken = {
         username: user.username,
         id: user._id,
     }
-
+    */
+    
     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVkOTc4MjhmNzM5ZmUxYWNjYzJmYTllOCIsImlhdCI6MTU3MjE0ODQ1OX0.LrJk3mWXP2qQ-d1zaLwl_RqniapVu5lBfgVAJfENsRQ'
+
+    // Something wrong with verify method of token
+    // const decodedToken = jwt.verify(token, process.env.SECRET)
 
     const updatedUser = await User.findByIdAndUpdate(user.id, { 'token': token }, { upsert: true });
     console.log(`updatedUser: ${updatedUser}`)
