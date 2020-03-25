@@ -7,7 +7,6 @@ const LoginForm = ({ usernameField, passwordField, setUser, setNotification, set
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
-            console.log(usernameField['input'])
             const user = await loginService.login({
                 "username": usernameField.input.value, "password": passwordField.input.value
             })

@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = '/api/blogs'
+const baseUrl = 'http://localhost:3001/api/blogs'
 
 const create = async (newObject, token) => {
     const config = {
