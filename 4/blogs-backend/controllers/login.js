@@ -12,7 +12,10 @@ loginRouter.post('/', async (request, response) => {
     const hashedPass = await bcrypt.hash(body.password, 10)
     console.log(`hashedPass: ${hashedPass}`)
     console.log(`user.passwordHash: ${user.passwordHash}`)
-    const passwordCorrect = true
+
+    const passwordCorrect = !user 
+    ? false 
+    : await bcrypt.compare(body.password, user.passwordHash) || bcrypt.compare(body.password, hashedPass)
     console.log(`passwordCorrect: ${passwordCorrect}`)
 
     if (!(user && passwordCorrect)) {
