@@ -28,6 +28,18 @@ usersRouter.get('/:id', async (request, response, next) => {
     }
 })
 
+/*  
+Create user requests are of the form:
+    curl \
+        -X POST \
+        -H Content-Type:application/json \
+        -d '{ \
+                "user": "pass", \
+                "name": "pass", \
+                "password": "pass" \
+            }' \
+        http://localhost:3001/api/users
+*/
 usersRouter.post('/', async (request, response, next) => {
     try {
         const body = request.body;
