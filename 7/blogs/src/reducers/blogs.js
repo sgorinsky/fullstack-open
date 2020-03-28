@@ -15,4 +15,15 @@ const blogReducer = (state = [], action) => {
   }
 }
 
+// Dispatchers
+export const initializeBlogs = (state, action) => {
+  return async (dispatch) => {
+    const blogs = await blogService.getAll()
+    dispatch({
+      type: 'INIT_BLOGS',
+      data: blogs,
+    })
+  }
+}
+
 export default blogReducer
