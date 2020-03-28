@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import useField from '../hooks/useField'
 
@@ -11,14 +11,14 @@ const LoginForm = ({ user, login, setNotification, setError }) => {
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
-            const username = usernameField.input.value
-            login({ username, password: passwordField.input.value })
+            const tempUsername = usernameField.input.value
+            login({ username: tempUsername, password: passwordField.input.value })
 
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
 
             usernameField.reset()
             passwordField.reset()
-            setNotification(`${username} logged in!`)
+            setNotification(`${tempUsername} logged in!`)
 
             setTimeout(() => {
                 setNotification(null);
@@ -63,4 +63,4 @@ const mapDispatchToProps = {
     login,
 }
 
-export default connect(null, mapDispatchToProps)(LoginForm)
+export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)

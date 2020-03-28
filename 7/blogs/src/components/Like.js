@@ -2,9 +2,9 @@ import React from 'react'
 
 const Like = ({ handleLikes, likeButton }) => {
     return (
-    <button className='like' onClick={handleLikes}>
-        {likeButton ? 'unlike' : 'like'}
-    </button>   
+        <button className='like' onClick={handleLikes}>
+            {likeButton ? 'unlike' : 'like'}
+        </button>   
     )
 }
 

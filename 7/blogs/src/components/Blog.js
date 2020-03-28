@@ -3,24 +3,17 @@ import { connect } from 'react-redux'
 
 import refService from '../services/refs'
 import blogService from '../services/blogs'
+import { getBlogs } from '../reducers/blogs'
 import userService from '../services/users'
 
 import Togglable from './Togglable'
 import Like from './Like'
 import BlogForm from './BlogForm'
 
-const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user }) => {
+const Blog = ({ user, blog, blogs, getBlogs, setNotification, setError }) => {
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
-    useEffect(() => {
-        const loadIn = async () => {
-            const initialBlogs = await blogService.getAll()
-            setBlogs(initialBlogs);
-
-        }
-        loadIn()
-    }, []);
     
-    const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(false)
     const [likes, setLikes] = useState(blog.likes)
     
     
@@ -73,7 +66,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user }) => {
         if (window.confirm(`Are you sure you want to delete ${title}?`)) {
             await blogService.remove( blog.id, user.token);
             const temps = await blogService.getAll();
-            setBlogs(temps);
+            getBlogs(temps);
             setError(true);
             setNotification(`${title} deleted!`)
 
@@ -103,7 +96,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user }) => {
                         blog={blog}
                         user={user}
                         blogs={blogs}
-                        setBlogs={setBlogs}
+                        getBlogs={getBlogs}
                         setNotification={setNotification}
                         setError={setError}
                         PostNotPut={false}
@@ -117,7 +110,12 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user }) => {
 
 const mapStateToProps = (state, action) => {
     return {
-        user: state.user
+        user: state.user,
+        blogs: state.blogs,
     }
 }
-export default connect(mapStateToProps)(Blog);
+
+const mapDispatchToProps = {
+    getBlogs,
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Blog);

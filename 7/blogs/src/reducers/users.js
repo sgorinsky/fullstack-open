@@ -11,9 +11,9 @@ const userReducer = (state = null, action) => {
 }
 
 // Dispatchers
-export const login = (username, password) => {
+export const login = (credentials) => {
   return async (dispatch) => {
-    const user = await loginService.login(username, password)
+    const user = await loginService.login(credentials)
     dispatch({
       type: 'CHANGE_USER',
       data: user

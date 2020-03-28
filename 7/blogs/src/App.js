@@ -62,21 +62,17 @@ const App = (props) => {
             </li>
           </div>
       }
-      {/*
+      {props.blogs
       && props.blogs
           .map(blog => 
             <Blog 
               key={blog.id} 
-              blog={blog} 
-              blogs={blogs}
-              user={props.user} 
-              setUser={setUser}
+              blog={blog}
               setNotification={setNotification}
-              setBlogs={setBlogs}
               setError={setError}
             />
           )
-          */}
+      }
     </>
   )
 }
