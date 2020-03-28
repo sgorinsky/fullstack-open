@@ -44,7 +44,6 @@ blogsRouter.post('/', async (request, response, next) => {
         */
         const body = request.body
         const user = await User.findById(body.user)
-        console.log(user)
         if (body['title'] && user && user._id) {
             
             body.user = user._id
@@ -60,7 +59,6 @@ blogsRouter.post('/', async (request, response, next) => {
             const savedBlog = await blog.save();
             response.status(201).json(savedBlog.toJSON());
         } else {
-            console.log(body)
             response.status(400).end()
         }
 
@@ -81,9 +79,7 @@ blogsRouter.put('/:id', async(request, response, next) => {
         */
        
         const body = request.body;
-        console.log(body);
         const updated = await Blog.findByIdAndUpdate(request.params.id, body, {new: true});
-        console.log(updated);
         if (updated ) {
             response.status(200).json(updated.toJSON());
         } else {
