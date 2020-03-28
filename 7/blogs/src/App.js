@@ -12,14 +12,14 @@ import Logout from './components/Logout'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-const App = (props) => {
+const App = ({ user, blogs, getBlogs }) => {
   // const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
-  
+
   useEffect(() => {
-    props.getBlogs()
-  }, []);
+    getBlogs()
+  }, [user, blogs]);
   
   /*
   useEffect(() => {
@@ -36,7 +36,7 @@ const App = (props) => {
     <>
       <Notification message={notification} error={error} />
       {
-        !props.user ?
+        !user ?
         <Togglable buttonLabel="login?" start={true}>
             <LoginForm
               setNotification={setNotification}
@@ -46,7 +46,7 @@ const App = (props) => {
           :
           <div className='logout'>
             <li>
-              {props.user.username} logged in
+              {user.username} logged in
               <Togglable buttonLabel="logout?">
                 <Logout
                   setNotification={setNotification}
@@ -62,8 +62,8 @@ const App = (props) => {
             </li>
           </div>
       }
-      {props.blogs
-      && props.blogs
+      {blogs
+      && blogs
           .map(blog => 
             <Blog 
               key={blog.id} 
