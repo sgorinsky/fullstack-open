@@ -1,61 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
+
+import useField from '../hooks/useField'
+import { createBlog } from '../reducers/blogs'
+
 import blogService from '../services/blogs'
 import refService from '../services/refs'
 
-const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', PostNotPut=true }) => {
-    const [title, setTitle] = useState('');
-    const [body, setBody] = useState('');
+const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, createBlog, blog='', PostNotPut=true }) => {
+    const titleField = useField('text', 'title')
+    const bodyField = useField('text', 'body')
 
     const handleBlog = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
         try {
+            
             const newBlog = {
-                title: title,
-                body: body,
+                title: titleField.input.value,
+                body: bodyField.input.value,
                 author:  user.username,
                 likes: 0,
                 user:  user.id
             }
             
-            const response = await blogService.create(newBlog, user.token);
-            setBlogs(blogs.concat(response));
-            setNotification(`${title} created by ${ user.username}!`);
-            setTitle('');
-            setBody('');
+            const response = createBlog(newBlog, user.token)
+            setNotification(`${titleField.input.value} created by ${ user.username}!`)
+            titleField.reset()
+            bodyField.reset()
             setTimeout(() => {
-                setNotification(null);
+                setNotification(null)
             }, 1500)
 
         } catch {
-            setError(true);
-            setNotification(`error posting ${title}`)
+            setError(true)
+            setNotification(`error posting ${titleField.input.value}`)
 
             setTimeout(() => {
-                setError(false);
+                setError(false)
                 setNotification(null)
             }, 2500)
         }
     }
 
     const updateBlog = async (event) => {
-        event.preventDefault();
+        event.preventDefault()
         try {
-            await blogService.update( blog.id, { title:title, body:body })
-            const temps = await blogService.getAll();
-            setBlogs(temps);
-            setNotification(`${title} updated!`)
-            setTitle('');
-            setBody('');
-            refService.blogUpdateRef.current.toggleVisibility();
+            await blogService.update(blog.id, { title: titleField.input.value, body: bodyField.input.value })
+            const temps = await blogService.getAll()
+            setBlogs(temps)
+            setNotification(`${titleField.input.value} updated!`)
+            titleField.reset()
+            bodyField.reset()
+            refService.blogUpdateRef.current.toggleVisibility()
             setTimeout(() => {
                 setNotification(null)
             }, 2500)
         } catch {
-            setError(true);
-            setNotification(`error updating ${title}`)
+            setError(true)
+            setNotification(`error updating ${titleField.input.value}`)
 
             setTimeout(() => {
-                setError(false);
+                setError(false)
                 setNotification(null)
             }, 2500)
         }
@@ -66,25 +71,20 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
         <form onSubmit={PostNotPut ? handleBlog : updateBlog}>
             <div>
                 title
-                <input
-                    type='text'
-                    value={title}
-                    onChange={({ target }) => setTitle(target.value)}
-                    name='title'
-                />
+                <input {...titleField.input} />
             </div>
 
             <div>
                 content
-                <input
-                    type='text'
-                    value={body}
-                    onChange={({ target }) => setBody(target.value)}
-                    name='body'
-                />
+                <input {...bodyField.input} />
             </div>
             <button type='submit'>submit</button>
         </form>
     )
 }
-export default BlogForm;
+
+const mapDispatchToProps = {
+    createBlog,
+}
+
+export default connect(null, mapDispatchToProps)(BlogForm)

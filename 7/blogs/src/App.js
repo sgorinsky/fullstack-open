@@ -20,7 +20,7 @@ const App = (props) => {
   useEffect(() => {
     props.initializeBlogs()
     setBlogs(props.blogs)
-  }, []);
+  }, [props.blogs]);
   
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')

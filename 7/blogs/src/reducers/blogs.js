@@ -5,6 +5,8 @@ const blogReducer = (state = [], action) => {
   switch (action.type) {
     case 'INIT_BLOGS':
       return [...action.data]
+    case 'CREATE_BLOG':
+      return [...state, action.data]
     default:
       return state
   }
@@ -17,6 +19,16 @@ export const initializeBlogs = () => {
     dispatch({
       type: 'INIT_BLOGS',
       data: blogs,
+    })
+  }
+}
+
+export const createBlog = (newBlog, token) => {
+  return async (dispatch) => {
+    const blog = await blogService.create(newBlog, token)
+    dispatch({
+      type: 'CREATE_BLOG',
+      data: blog
     })
   }
 }
