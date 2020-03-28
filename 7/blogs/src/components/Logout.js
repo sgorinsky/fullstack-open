@@ -1,10 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-const Logout = ({user, setUser, setError, setNotification }) => {
+import { logout } from '../reducers/users'
+
+const Logout = ({ user, logout, setError, setNotification}) => {
     const handleClick = async () => {
         const temp = user.username;
-        setUser(null)
+        logout()
         window.localStorage.clear()
         setError(true);
         setNotification(`${temp} has logged out`)
@@ -19,4 +21,13 @@ const Logout = ({user, setUser, setError, setNotification }) => {
     )
 }
 
-export default Logout
+const mapStateToProps = (state) => {
+    return {
+        user: state.users
+    }
+}
+const mapDispatchToProps = {
+    logout,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Logout)

@@ -1,29 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import useField from '../hooks/useField'
-import loginService from '../services/login'
-import blogService from '../services/blogs'
 
-// userReducer and blogReducer can be next here
-const LoginForm = ({ setUser, setNotification, setError, setBlogs }) => {
+import { login } from '../reducers/users'
+
+const LoginForm = ({ user, login, setNotification, setError }) => {
     const usernameField = useField('text', 'username');
     const passwordField = useField('password', 'password');
 
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
-            const user = await loginService.login({
-                "username": usernameField.input.value, "password": passwordField.input.value
-            })
+            const username = usernameField.input.value
+            login({ username, password: passwordField.input.value })
 
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
-            setUser(user)
 
-            var blogs = await blogService.getAll(); // here
-            setBlogs(blogs)
             usernameField.reset()
             passwordField.reset()
-            setNotification(`${user.username} logged in!`)
-            
+            setNotification(`${username} logged in!`)
+
             setTimeout(() => {
                 setNotification(null);
                 setError(false);
@@ -57,5 +53,14 @@ const LoginForm = ({ setUser, setNotification, setError, setBlogs }) => {
         </>
     )
 }
+const mapStateToProps = (state) => {
+    return {
+        user: state.users
+    }
+}
 
-export default LoginForm
+const mapDispatchToProps = {
+    login,
+}
+
+export default connect(null, mapDispatchToProps)(LoginForm)

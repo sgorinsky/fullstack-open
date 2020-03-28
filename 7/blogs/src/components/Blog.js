@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 
 import refService from '../services/refs'
 import blogService from '../services/blogs'
@@ -8,7 +9,7 @@ import Togglable from './Togglable'
 import Like from './Like'
 import BlogForm from './BlogForm'
 
-const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser }) => {
+const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user }) => {
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
     useEffect(() => {
         const loadIn = async () => {
@@ -41,7 +42,6 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
                 currentUserLikes[blog.id] = true;
                 currentUser.likedBlogs = currentUserLikes;
                 await userService.update(user.id, { likedBlogs: currentUserLikes })
-                setUser(currentUser);
             } else if (user) {
                 delete currentBlogLikes[user.id]
                 setLikeButton(!likeButton)
@@ -49,9 +49,7 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
                 await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
                 const currentUser = user
                 delete currentUser.likedBlogs[blog.id];
-                setUser(currentUser);
                 await userService.update(user.id, { likedBlogs: currentUser.likedBlogs })
-                
             } else {
                 setNotification('Login to like a post');
                 setError(true);
@@ -117,4 +115,9 @@ const Blog = ({ blog, blogs, setBlogs, setNotification, setError, user, setUser 
     )
 }
 
-export default Blog;
+const mapStateToProps = (state, action) => {
+    return {
+        user: state.user
+    }
+}
+export default connect(mapStateToProps)(Blog);

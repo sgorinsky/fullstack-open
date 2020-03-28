@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 
 import { getBlogs } from './reducers/blogs'
+import { login } from './reducers/users'
 
 // components
 import BlogForm from './components/BlogForm'
@@ -12,16 +13,15 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 const App = (props) => {
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
-  const [blogs, setBlogs] = useState([]);
   
   useEffect(() => {
     props.getBlogs()
-    setBlogs(props.blogs)
   }, []);
   
+  /*
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
     if (loggedUserJSON) {
@@ -30,38 +30,31 @@ const App = (props) => {
       setUser(user);
     }
   }, [])
+  */
 
   return (
     <>
       <Notification message={notification} error={error} />
       {
-        user === null ?
+        !props.user ?
         <Togglable buttonLabel="login?" start={true}>
             <LoginForm
-              setUser={setUser}
               setNotification={setNotification}
-              setBlogs={setBlogs}
               setError={setError}
             />
         </Togglable>
           :
           <div className='logout'>
             <li>
-              {user.username} logged in
+              {props.user.username} logged in
               <Togglable buttonLabel="logout?">
                 <Logout
-                  user={user}
-                  setUser={setUser}
                   setNotification={setNotification}
                   setError={setError}
-                  setBlogs={setBlogs}
                 />
               </Togglable>              
               <Togglable buttonLabel="new blog?">
                 <BlogForm
-                  user={user}
-                  blogs={blogs} 
-                  setBlogs={setBlogs} 
                   setNotification={setNotification} 
                   setError={setError}
                 />
@@ -69,32 +62,35 @@ const App = (props) => {
             </li>
           </div>
       }
-      { props.blogs && 
-        props.blogs
+      {/*
+      && props.blogs
           .map(blog => 
             <Blog 
               key={blog.id} 
               blog={blog} 
               blogs={blogs}
-              user={user} 
+              user={props.user} 
               setUser={setUser}
               setNotification={setNotification}
               setBlogs={setBlogs}
               setError={setError}
             />
           )
-      }
+          */}
     </>
   )
 }
 const mapStateToProps = (state) => {
+  console.log(state)
   return {
-    blogs: state.blogs
+    blogs: state.blogs,
+    user: state.users,
   }
 }
 
 const mapDispatchToProps = {
   getBlogs,
+  login,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
