@@ -95,8 +95,6 @@ const App = (props) => {
   )
 }
 const mapStateToProps = (state) => {
-  console.log('STATE')
-  console.log(state)
   return {
     blogs: state.blogs
   }

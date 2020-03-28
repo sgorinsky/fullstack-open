@@ -9,11 +9,6 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
     const handleBlog = async (event) => {
         event.preventDefault();
         try {
-            console.log('Checking user, along with title and body of POST request')
-            console.log(user)
-            console.log(body)
-            console.log(title)
-            
             const newBlog = {
                 title: title,
                 body: body,
@@ -21,21 +16,17 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
                 likes: 0,
                 user:  user.id
             }
-            console.log('newBlog')
-            console.log(newBlog)
+            
             const response = await blogService.create(newBlog, user.token);
-            console.log(3)
             setBlogs(blogs.concat(response));
-            console.log(4)
             setNotification(`${title} created by ${ user.username}!`);
-            console.log(5)
             setTitle('');
             setBody('');
             setTimeout(() => {
                 setNotification(null);
             }, 1500)
+
         } catch {
-            console.log('howd we get here?')
             setError(true);
             setNotification(`error posting ${title}`)
 
@@ -44,17 +35,13 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
                 setNotification(null)
             }, 2500)
         }
-        console.log('where are we')
     }
 
     const updateBlog = async (event) => {
         event.preventDefault();
         try {
-            console.log(1)
             await blogService.update( blog.id, { title:title, body:body })
-            console.log(2)
             const temps = await blogService.getAll();
-            console.log(3)
             setBlogs(temps);
             setNotification(`${title} updated!`)
             setTitle('');
@@ -64,7 +51,6 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
                 setNotification(null)
             }, 2500)
         } catch {
-            console.log('In the error')
             setError(true);
             setNotification(`error updating ${title}`)
 

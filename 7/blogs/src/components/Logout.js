@@ -1,13 +1,15 @@
 import React from 'react';
-import blogService from '../services/blogs'
+import { connect } from 'react-redux'
 
-const Logout = ({user, setUser, setError, setNotification, setBlogs}) => {
+import { initializeBlogs } from '../reducers/blogs'
+
+const Logout = ({user, setUser, setError, setNotification, setBlogs, initializeBlogs}) => {
     return (
         <button onClick={async () => {
             const temp = user.username;
             setUser(null)
             window.localStorage.clear()
-            const blogs = await blogService.getAll()
+            const blogs = initializeBlogs()
             setBlogs(blogs)
             setError(true);
             setNotification(`${temp} has logged out`)
@@ -19,4 +21,9 @@ const Logout = ({user, setUser, setError, setNotification, setBlogs}) => {
         }}> are you sure? </button>
     )
 }
-export default Logout
+
+const mapDispatchToProps = {
+    initializeBlogs,
+}
+
+export default connect(null, mapDispatchToProps)(Logout)

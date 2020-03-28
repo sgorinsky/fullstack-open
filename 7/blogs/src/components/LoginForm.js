@@ -7,14 +7,13 @@ const LoginForm = ({ usernameField, passwordField, setUser, setNotification, set
     const handleLogin = async (event) => {
         event.preventDefault()
         try {
-            
             const user = await loginService.login({
                 "username": usernameField.input.value, "password": passwordField.input.value
             })
-            console.log(user)
+
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
             setUser(user)
-            console.log(user)
+
             var blogs = await blogService.getAll();
             setBlogs(blogs)
             usernameField.reset()
