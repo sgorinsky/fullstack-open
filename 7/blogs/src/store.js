@@ -4,11 +4,11 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 
 // Reducer
 import blogs from './reducers/blogs'
-import users from './reducers/users'
+import user from './reducers/user'
 
 const reducer = combineReducers({
   blogs,
-  users,
+  user,
 })
 
 const store = createStore(

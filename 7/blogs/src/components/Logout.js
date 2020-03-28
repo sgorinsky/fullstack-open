@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { logout } from '../reducers/users'
+import { logout } from '../reducers/user'
 
 const Logout = ({ user, logout, setError, setNotification}) => {
     const handleClick = async () => {
@@ -23,7 +23,7 @@ const Logout = ({ user, logout, setError, setNotification}) => {
 
 const mapStateToProps = (state) => {
     return {
-        user: state.users
+        user: state.user
     }
 }
 const mapDispatchToProps = {

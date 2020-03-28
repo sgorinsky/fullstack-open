@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import useField from '../hooks/useField'
 
-import { login } from '../reducers/users'
+import { login } from '../reducers/user'
 
 const LoginForm = ({ user, login, setNotification, setError }) => {
     const usernameField = useField('text', 'username');
@@ -55,7 +55,7 @@ const LoginForm = ({ user, login, setNotification, setError }) => {
 }
 const mapStateToProps = (state) => {
     return {
-        user: state.users
+        user: state.user
     }
 }
 

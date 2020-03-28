@@ -13,11 +13,15 @@ const userReducer = (state = null, action) => {
 // Dispatchers
 export const login = (credentials) => {
   return async (dispatch) => {
-    const user = await loginService.login(credentials)
-    dispatch({
-      type: 'CHANGE_USER',
-      data: user
-    })
+    try {
+      const user = await loginService.login(credentials)
+      dispatch({
+        type: 'CHANGE_USER',
+        data: user
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
 

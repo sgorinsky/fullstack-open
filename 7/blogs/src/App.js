@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 
 import { getBlogs } from './reducers/blogs'
-import { login } from './reducers/users'
+import { login } from './reducers/user'
 
 // components
 import BlogForm from './components/BlogForm'
@@ -79,7 +79,7 @@ const App = (props) => {
 const mapStateToProps = (state) => {
   return {
     blogs: state.blogs,
-    user: state.users,
+    user: state.user,
   }
 }
 

@@ -14,7 +14,7 @@ const BlogForm = ({ user, getBlogs, createBlog, setNotification, setError, blog,
     const handleBlog = async (event) => {
         event.preventDefault()
         try {
-            
+            console.log(user)
             const newBlog = {
                 title: titleField.input.value,
                 body: bodyField.input.value,
