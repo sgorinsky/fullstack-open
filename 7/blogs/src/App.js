@@ -81,7 +81,6 @@ const App = (props) => {
   )
 }
 const mapStateToProps = (state) => {
-  console.log(state)
   return {
     blogs: state.blogs,
     user: state.users,
