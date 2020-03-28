@@ -9,9 +9,7 @@ const blogReducer = (state = [], action) => {
         blogs: action.data
       }
     default:
-      return {
-        ...state
-      }
+      return state
   }
 }
 

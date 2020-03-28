@@ -9,7 +9,7 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
     const handleBlog = async (event) => {
         event.preventDefault();
         try {
-            console.log(1)
+            console.log('Checking user, along with title and body of POST request')
             console.log(user)
             console.log(body)
             console.log(title)
@@ -21,8 +21,9 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, blog='', P
                 likes: 0,
                 user:  user.id
             }
-            console.log(2)
-            const response = await blogService.create(newBlog,  user.token);
+            console.log('newBlog')
+            console.log(newBlog)
+            const response = await blogService.create(newBlog, user.token);
             console.log(3)
             setBlogs(blogs.concat(response));
             console.log(4)

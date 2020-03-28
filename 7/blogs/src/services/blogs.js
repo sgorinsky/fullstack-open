@@ -1,7 +1,9 @@
 import axios from 'axios';
+
 const baseUrl = 'http://localhost:3001/api/blogs'
 
 const create = async (newObject, token) => {
+    console.log(token)
     const config = {
         headers: {
             "Authorization": `bearer ${token}`
