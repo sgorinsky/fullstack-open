@@ -7,7 +7,7 @@ import { getBlogs, createBlog } from '../reducers/blogs'
 import blogService from '../services/blogs'
 import refService from '../services/refs'
 
-const BlogForm = ({ user, setBlogs, setNotification, setError, createBlog, blog='', PostNotPut=true }) => {
+const BlogForm = ({ user, setNotification, setError, getBlogs, createBlog, blog='', PostNotPut=true }) => {
     const titleField = useField('text', 'title')
     const bodyField = useField('text', 'body')
 
@@ -23,10 +23,11 @@ const BlogForm = ({ user, setBlogs, setNotification, setError, createBlog, blog=
                 user:  user.id
             }
             
-            const response = createBlog(newBlog, user.token)
+            createBlog(newBlog, user.token)
             setNotification(`${titleField.input.value} created by ${ user.username}!`)
             titleField.reset()
             bodyField.reset()
+            
             setTimeout(() => {
                 setNotification(null)
             }, 1500)
@@ -46,8 +47,7 @@ const BlogForm = ({ user, setBlogs, setNotification, setError, createBlog, blog=
         event.preventDefault()
         try {
             await blogService.update(blog.id, { title: titleField.input.value, body: bodyField.input.value })
-            const temps = await blogService.getAll()
-            setBlogs(temps)
+            getBlogs()
             setNotification(`${titleField.input.value} updated!`)
             titleField.reset()
             bodyField.reset()
