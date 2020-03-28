@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux'
+
+import { initializeBlogs } from './reducers/blogs'
+
 // components
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
@@ -6,11 +10,11 @@ import Blog from './components/Blog'
 import Logout from './components/Logout'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import blogService from './services/blogs'
+
 // hooks
 import useField from './hooks/useField'
 
-function App() {
+const App = (props) => {
   const [user, setUser] = useState(null);
   const usernameField = useField('text', 'username');
   const passwordField = useField('password', 'password');
@@ -19,12 +23,8 @@ function App() {
   const [blogs, setBlogs] = useState([]);
   
   useEffect(() => {
-    const loadIn = async () => {
-      const initialBlogs = await blogService.getAll()
-      setBlogs(initialBlogs);
-    }
-    loadIn()
-    
+    props.initializeBlogs()
+    setBlogs(props.blogs)
   }, []);
   
   useEffect(() => {
@@ -76,8 +76,8 @@ function App() {
             </li>
           </div>
       }
-      {
-        blogs
+      { props.blogs && 
+        props.blogs
           .map(blog => 
             <Blog 
               key={blog.id} 
@@ -94,5 +94,16 @@ function App() {
     </>
   )
 }
+const mapStateToProps = (state) => {
+  console.log('STATE')
+  console.log(state)
+  return {
+    blogs: state.blogs
+  }
+}
 
-export default App;
+const mapDispatchToProps = {
+  initializeBlogs,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

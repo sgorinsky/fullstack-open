@@ -3,10 +3,10 @@ import thunk from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
 // Reducer
-import blogReducer from './reducers/blogs'
+import blogs from './reducers/blogs'
 
 const reducer = combineReducers({
-  blogReducer,
+  blogs,
 })
 
 const store = createStore(
