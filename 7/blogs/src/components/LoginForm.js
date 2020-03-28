@@ -1,10 +1,13 @@
 import React from 'react';
+import useField from '../hooks/useField'
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
 // userReducer and blogReducer can be next here
-const LoginForm = ({ usernameField, passwordField, setUser, setNotification, setError, setBlogs }) => {
-    
+const LoginForm = ({ setUser, setNotification, setError, setBlogs }) => {
+    const usernameField = useField('text', 'username');
+    const passwordField = useField('password', 'password');
+
     const handleLogin = async (event) => {
         event.preventDefault()
         try {

@@ -11,13 +11,8 @@ import Logout from './components/Logout'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-// hooks
-import useField from './hooks/useField'
-
 const App = (props) => {
   const [user, setUser] = useState(null);
-  const usernameField = useField('text', 'username');
-  const passwordField = useField('password', 'password');
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
   const [blogs, setBlogs] = useState([]);
@@ -43,8 +38,6 @@ const App = (props) => {
         user === null ?
         <Togglable buttonLabel="login?" start={true}>
             <LoginForm
-              usernameField={usernameField}
-              passwordField={passwordField}
               setUser={setUser}
               setNotification={setNotification}
               setBlogs={setBlogs}
