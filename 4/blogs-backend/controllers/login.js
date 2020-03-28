@@ -16,7 +16,7 @@ loginRouter.post('/', async (request, response) => {
     const passwordCorrect = !user 
     ? false 
     // for some reason, hash at registration (POST request to /api/users) is different than hash used to compare
-    : await bcrypt.compare(body.password, hashedPass)
+    : await bcrypt.compare(body.password, hashedPass) || bcrypt.compare(body.password, user.passwordHash)
     console.log(`passwordCorrect: ${passwordCorrect}`)
 
     if (!(user && passwordCorrect)) {
