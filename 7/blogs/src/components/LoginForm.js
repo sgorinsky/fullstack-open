@@ -2,6 +2,7 @@ import React from 'react';
 import loginService from '../services/login'
 import blogService from '../services/blogs'
 
+// userReducer and blogReducer can be next here
 const LoginForm = ({ usernameField, passwordField, setUser, setNotification, setError, setBlogs }) => {
     
     const handleLogin = async (event) => {
