@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 
-import { initializeBlogs } from './reducers/blogs'
+import { getBlogs } from './reducers/blogs'
 
 // components
 import BlogForm from './components/BlogForm'
@@ -18,9 +18,9 @@ const App = (props) => {
   const [blogs, setBlogs] = useState([]);
   
   useEffect(() => {
-    props.initializeBlogs()
+    props.getBlogs()
     setBlogs(props.blogs)
-  }, [props.blogs]);
+  }, []);
   
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
@@ -94,7 +94,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-  initializeBlogs,
+  getBlogs,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 // Action Handler
 const blogReducer = (state = [], action) => {
   switch (action.type) {
-    case 'INIT_BLOGS':
+    case 'GET_BLOGS':
       return [...action.data]
     case 'CREATE_BLOG':
       return [...state, action.data]
@@ -13,11 +13,11 @@ const blogReducer = (state = [], action) => {
 }
 
 // Dispatchers
-export const initializeBlogs = () => {
+export const getBlogs = () => {
   return async (dispatch) => {
     const blogs = await blogService.getAll()
     dispatch({
-      type: 'INIT_BLOGS',
+      type: 'GET_BLOGS',
       data: blogs,
     })
   }

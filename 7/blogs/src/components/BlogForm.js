@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 import useField from '../hooks/useField'
-import { createBlog } from '../reducers/blogs'
+import { getBlogs, createBlog } from '../reducers/blogs'
 
 import blogService from '../services/blogs'
 import refService from '../services/refs'
 
-const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, createBlog, blog='', PostNotPut=true }) => {
+const BlogForm = ({ user, setBlogs, setNotification, setError, createBlog, blog='', PostNotPut=true }) => {
     const titleField = useField('text', 'title')
     const bodyField = useField('text', 'body')
 
@@ -84,6 +84,7 @@ const BlogForm = ({ user, blogs, setBlogs, setNotification, setError, createBlog
 }
 
 const mapDispatchToProps = {
+    getBlogs,
     createBlog,
 }
 
