@@ -15,7 +15,7 @@ const LoginForm = ({ usernameField, passwordField, setUser, setNotification, set
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
             setUser(user)
 
-            var blogs = await blogService.getAll();
+            var blogs = await blogService.getAll(); // here
             setBlogs(blogs)
             usernameField.reset()
             passwordField.reset()
