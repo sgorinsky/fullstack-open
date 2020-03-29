@@ -19,7 +19,7 @@ const App = ({ user, blogs, getBlogs }) => {
 
   useEffect(() => {
     getBlogs()
-  }, [user, blogs]);
+  }, [user]);
   
   /*
   useEffect(() => {
