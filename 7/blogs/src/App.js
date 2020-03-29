@@ -12,8 +12,7 @@ import Logout from './components/Logout'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-const App = ({ user, blogs, getBlogs }) => {
-  // const [user, setUser] = useState(null);
+const App = ({ user, login, blogs, getBlogs }) => {
   const [notification, setNotification] = useState(null);
   const [error, setError] = useState(false);
 
@@ -21,16 +20,13 @@ const App = ({ user, blogs, getBlogs }) => {
     getBlogs()
   }, [user]);
   
-  /*
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      console.log(user)      
-      setUser(user);
+      login(user);
     }
   }, [])
-  */
 
   return (
     <>
