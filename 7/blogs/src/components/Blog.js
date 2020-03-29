@@ -80,16 +80,17 @@ const Blog = ({ user, blog, blogs, getBlogs, setNotification, setError }) => {
     return (
         <div className='blog'>
             <div onClick={() => setVisible(!visible)}>
-            <li className='title' > <h5>title: { blog.title}</h5></li>
-            <div style={showWhenVisible}>
-                <li className='author'> <h6>author: { blog.author}</h6></li>
-                <li className='body'>{ blog.body}</li>
-            </div>
-            {likes + ' likes'}
+                <li className='title' > <h5>title: {blog.title}</h5></li>
+                    <div style={showWhenVisible}>
+                        <li className='author'> 
+                            <h6>author: { blog.author}</h6>
+                        </li>
+                        <li className='body'>{ blog.body}</li>
+                    </div>
+                {likes + ' likes'}
             </div>
             <Like handleLikes={handleLikes} likeButton={likeButton} />
-            
-            
+                        
             <div style={showIfUser}>
                 <Togglable buttonLabel="edit?" ref={refService.blogUpdateRef}>
                     <BlogForm
