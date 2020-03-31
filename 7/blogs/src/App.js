@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 
 import { getBlogs } from './reducers/blogs'
@@ -13,8 +13,6 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 const App = ({ user, login, blogs, getBlogs }) => {
-  const [notification, setNotification] = useState(null);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     getBlogs()
@@ -34,41 +32,22 @@ const App = ({ user, login, blogs, getBlogs }) => {
       {
         !user ?
         <Togglable buttonLabel="login?" start={true}>
-            <LoginForm
-              setNotification={setNotification}
-              setError={setError}
-            />
+            <LoginForm />
         </Togglable>
           :
           <div className='logout'>
             <li>
               {user.username} logged in
               <Togglable buttonLabel="logout?">
-                <Logout
-                  setNotification={setNotification}
-                  setError={setError}
-                />
+                <Logout />
               </Togglable>              
               <Togglable buttonLabel="new blog?">
-                <BlogForm
-                  setNotification={setNotification} 
-                  setError={setError}
-                />
+                <BlogForm />
               </Togglable>
             </li>
           </div>
       }
-      {blogs
-      && blogs
-          .map(blog => 
-            <Blog 
-              key={blog.id} 
-              blog={blog}
-              setNotification={setNotification}
-              setError={setError}
-            />
-          )
-      }
+      {blogs && blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
     </>
   )
 }

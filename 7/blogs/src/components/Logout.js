@@ -10,11 +10,11 @@ const Logout = ({ user, logout, clearAllNotifications, setErrorNotification }) =
 
         logout()
         window.localStorage.clear()
-        
+
         setErrorNotification(`${temp} has logged out`)
         setTimeout(() => {
             clearAllNotifications()
-        }, 1000)
+        }, 3000)
     }
 
     return (

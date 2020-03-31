@@ -1,23 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux'
 
 const Notification = ({ success, error }) => {
-    if (success) {
-        return (
-            <div className='success'>
-                {success}
-            </div>
-        )
-    }
-    if (error) {
-        return (
-            <div className='error'>
-                {error}
-            </div>
-        )
-    }
+    const [className, setClassName] = useState(null)
 
-    return null
+    useEffect(() => {
+        if (success) {
+            setClassName('success')
+        } else if (error) {
+            setClassName('error')
+        } else {
+            setClassName(null)
+        }
+    }, [success, error])
+
+    return (
+        <div className={className}>
+            {error || success}
+        </div>
+    )
 }
 
 const mapStateToProps = (state) => {
