@@ -1,32 +1,30 @@
+// Action handler
 const notificationReducer = (state, action) => {
   switch (action.type) {
     case 'SET_SUCCESS':
       return {
         ...state,
         success: action.message,
-        error: null
       }
     case 'SET_ERROR':
       return {
         ...state,
         error: action.message,
-        success: null
       }
     case 'CLEAR_ALL':
       return {
-        ...state,
         error: null,
         success: null
       }
     default:
       return {
-        ...state,
         error: null,
         success: null
       }
   }
 }
 
+// Dispatchers
 export const setSuccessNotification = (message) => {
   return async (dispatch) => {
     dispatch({

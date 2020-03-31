@@ -30,7 +30,7 @@ const App = ({ user, login, blogs, getBlogs }) => {
 
   return (
     <>
-      <Notification message={notification} error={error} />
+      <Notification />
       {
         !user ?
         <Togglable buttonLabel="login?" start={true}>

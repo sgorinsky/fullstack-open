@@ -2,19 +2,20 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import useField from '../hooks/useField'
+
 import { getBlogs, createBlog } from '../reducers/blogs'
+import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
 import blogService from '../services/blogs'
 import refService from '../services/refs'
 
-const BlogForm = ({ user, getBlogs, createBlog, setNotification, setError, blog, PostNotPut=true }) => {
+const BlogForm = ({ user, getBlogs, createBlog, clearAllNotifications, setSuccessNotification, setErrorNotification, blog, PostNotPut=true }) => {
     const titleField = useField('text', 'title')
     const bodyField = useField('text', 'body')
 
     const handleBlog = async (event) => {
         event.preventDefault()
         try {
-            console.log(user)
             const newBlog = {
                 title: titleField.input.value,
                 body: bodyField.input.value,
@@ -24,21 +25,19 @@ const BlogForm = ({ user, getBlogs, createBlog, setNotification, setError, blog,
             }
             
             createBlog(newBlog, user.token)
-            setNotification(`${titleField.input.value} created by ${ user.username}!`)
+            setSuccessNotification(`${titleField.input.value} created by ${ user.username}!`)
             titleField.reset()
             bodyField.reset()
             
             setTimeout(() => {
-                setNotification(null)
+                clearAllNotifications()
             }, 1500)
 
         } catch {
-            setError(true)
-            setNotification(`error posting ${titleField.input.value}`)
+            setErrorNotification(`error posting ${titleField.input.value}`)
 
             setTimeout(() => {
-                setError(false)
-                setNotification(null)
+                clearAllNotifications()
             }, 2500)
         }
     }
@@ -48,20 +47,18 @@ const BlogForm = ({ user, getBlogs, createBlog, setNotification, setError, blog,
         try {
             await blogService.update(blog.id, { title: titleField.input.value, body: bodyField.input.value })
             getBlogs()
-            setNotification(`${titleField.input.value} updated!`)
+            setSuccessNotification(`${titleField.input.value} updated!`)
             titleField.reset()
             bodyField.reset()
             refService.blogUpdateRef.current.toggleVisibility()
             setTimeout(() => {
-                setNotification(null)
+                clearAllNotifications()
             }, 2500)
         } catch {
-            setError(true)
-            setNotification(`error updating ${titleField.input.value}`)
+            setErrorNotification(`error updating ${titleField.input.value}`)
 
             setTimeout(() => {
-                setError(false)
-                setNotification(null)
+                clearAllNotifications()
             }, 2500)
         }
 
@@ -92,6 +89,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = {
     getBlogs,
     createBlog,
+    clearAllNotifications,
+    setSuccessNotification,
+    setErrorNotification,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BlogForm)

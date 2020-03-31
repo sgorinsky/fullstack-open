@@ -1,16 +1,19 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
+
+import { getBlogs } from '../reducers/blogs'
+import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
+
 import refService from '../services/refs'
 import blogService from '../services/blogs'
-import { getBlogs } from '../reducers/blogs'
 import userService from '../services/users'
 
 import Togglable from './Togglable'
 import Like from './Like'
 import BlogForm from './BlogForm'
 
-const Blog = ({ user, blog, blogs, getBlogs, setNotification, setError }) => {
+const Blog = ({ user, blog, blogs, getBlogs, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
     
     const [visible, setVisible] = useState(false)
@@ -44,19 +47,15 @@ const Blog = ({ user, blog, blogs, getBlogs, setNotification, setError }) => {
                 delete currentUser.likedBlogs[blog.id];
                 await userService.update(user.id, { likedBlogs: currentUser.likedBlogs })
             } else {
-                setNotification('Login to like a post');
-                setError(true);
+                setErrorNotification('Login to like a post');
                 setTimeout(() => {
-                    setError(false);
-                    setNotification(null);
+                    clearAllNotifications(null);
                 }, 1200)
             }
         } catch {
-            setNotification('Error');
-            setError(true);
+            setErrorNotification('Error');
             setTimeout(() => {
-                setError(false);
-                setNotification(null);
+                clearAllNotifications()
             }, 1200)
         }
             
@@ -64,15 +63,15 @@ const Blog = ({ user, blog, blogs, getBlogs, setNotification, setError }) => {
     const deletePost = async () => {
         const title =  blog.title;
         if (window.confirm(`Are you sure you want to delete ${title}?`)) {
+
             await blogService.remove( blog.id, user.token);
             const temps = await blogService.getAll();
+
             getBlogs(temps);
-            setError(true);
-            setNotification(`${title} deleted!`)
+            setErrorNotification(`${title} deleted!`)
 
             setTimeout(() => {
-                setError(false);
-                setNotification(null)
+                clearAllNotifications()
             }, 2500)
         }
     }
@@ -98,8 +97,6 @@ const Blog = ({ user, blog, blogs, getBlogs, setNotification, setError }) => {
                         user={user}
                         blogs={blogs}
                         getBlogs={getBlogs}
-                        setNotification={setNotification}
-                        setError={setError}
                         PostNotPut={false}
                     />
                 </Togglable>
@@ -118,5 +115,8 @@ const mapStateToProps = (state, action) => {
 
 const mapDispatchToProps = {
     getBlogs,
+    setSuccessNotification,
+    setErrorNotification,
+    clearAllNotifications,
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Blog);
