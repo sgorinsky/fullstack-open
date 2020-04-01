@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const usersRouter = require('express').Router()
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 usersRouter.get('/', async (request, response, next) => {
     try {
@@ -46,14 +47,15 @@ usersRouter.post('/', async (request, response, next) => {
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(body.password, saltRounds);
         
+        const token = jwt.sign({ username: body.username, name: body.name, password: passwordHash }, process.env.SECRET)
         const user = new User({
             username: body.username,
             passwordHash,
             name: body.name,
-            token: body.token,
+            token,
             likedBlogs:{}
         })
-
+        console.log(user)
         if (user.username && user.passwordHash && user.name) {
             await user.save()
             response.status(201).json(user.toJSON());
