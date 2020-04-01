@@ -7,7 +7,6 @@ import { getBlogs, createBlog } from '../reducers/blogs'
 import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
 import blogService from '../services/blogs'
-import refService from '../services/refs'
 
 const BlogForm = ({ user, getBlogs, createBlog, clearAllNotifications, setSuccessNotification, setErrorNotification, blog, PostNotPut=true }) => {
     const titleField = useField('text', 'title')
@@ -50,7 +49,6 @@ const BlogForm = ({ user, getBlogs, createBlog, clearAllNotifications, setSucces
             setSuccessNotification(`${titleField.input.value} updated!`)
             titleField.reset()
             bodyField.reset()
-            refService.blogUpdateRef.current.toggleVisibility()
             setTimeout(() => {
                 clearAllNotifications()
             }, 2500)

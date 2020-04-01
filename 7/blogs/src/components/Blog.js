@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { getBlogs } from '../reducers/blogs'
 import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
-import refService from '../services/refs'
 import blogService from '../services/blogs'
 import userService from '../services/users'
 
@@ -91,7 +90,7 @@ const Blog = ({ user, blog, blogs, getBlogs, clearAllNotifications, setSuccessNo
             <Like handleLikes={handleLikes} likeButton={likeButton} />
                         
             <div style={showIfUser}>
-                <Togglable buttonLabel="edit?" ref={refService.blogUpdateRef}>
+                <Togglable buttonLabel="edit?">
                     <BlogForm
                         blog={blog}
                         user={user}

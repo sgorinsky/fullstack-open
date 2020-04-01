@@ -31,9 +31,7 @@ const App = ({ user, login, blogs, getBlogs }) => {
       <Notification />
       {
         !user ?
-        <Togglable buttonLabel="login?" start={true}>
-            <LoginForm />
-        </Togglable>
+        <LoginForm />
           :
           <div className='logout'>
             <li>

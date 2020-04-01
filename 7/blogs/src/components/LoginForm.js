@@ -9,7 +9,7 @@ const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification,
     const usernameField = useField('text', 'username');
     const passwordField = useField('password', 'password');
 
-    const handleLogin = async (event) => {
+    const handleLogin = (event) => {
         event.preventDefault()
         try {
             const tempUsername = usernameField.input.value
