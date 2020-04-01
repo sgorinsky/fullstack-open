@@ -8,7 +8,7 @@ const blogReducer = (state = [], action) => {
     case 'CREATE_BLOG':
       return [...state, action.data]
     case 'UPDATE_BLOG':
-      
+      return state.map(blog => action.data.id !== blog.id ? blog : action.data)
     case 'DELETE_BLOG':
       return state.filter(blog => blog.id === action.data.id)
     default:
