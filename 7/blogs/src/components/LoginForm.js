@@ -9,7 +9,7 @@ import {
     setErrorNotification, 
 } from '../reducers/notifications'
 
-const LoginForm = ({ user, login, clearSuccessNotification, clearErrorNotification, setSuccessNotification, setErrorNotification }) => {
+const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
     const usernameField = useField('text', 'username');
     const passwordField = useField('password', 'password');
 
@@ -23,7 +23,7 @@ const LoginForm = ({ user, login, clearSuccessNotification, clearErrorNotificati
 
             usernameField.reset()
             passwordField.reset()
-            if (!response) {
+            if (response.username !== tempUsername) {
                 setErrorNotification('Wrong credentials')
             } else {
                 setSuccessNotification(`${tempUsername} logged in!`)
