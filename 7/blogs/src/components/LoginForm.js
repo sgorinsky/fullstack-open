@@ -3,9 +3,14 @@ import { connect } from 'react-redux'
 import useField from '../hooks/useField'
 
 import { login } from '../reducers/user'
-import { clearAllNotifications , setSuccessNotification, setErrorNotification, } from '../reducers/notifications'
+import { 
+    clearSuccessNotification, 
+    clearErrorNotification, 
+    setSuccessNotification, 
+    setErrorNotification, 
+} from '../reducers/notifications'
 
-const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
+const LoginForm = ({ user, login, clearSuccessNotification, clearErrorNotification, setSuccessNotification, setErrorNotification }) => {
     const usernameField = useField('text', 'username');
     const passwordField = useField('password', 'password');
 
@@ -22,14 +27,14 @@ const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification,
             setSuccessNotification(`${tempUsername} logged in!`)
 
             setTimeout(() => {
-                clearAllNotifications()
+                clearSuccessNotification()
             }, 1000)
             
         } catch (exception) {
             console.log(exception)
             setErrorNotification('Wrong credentials');
             setTimeout(() => {
-                clearAllNotifications()
+                clearErrorNotification()
             }, 3000)
             
         }
@@ -59,7 +64,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     login,
-    clearAllNotifications,
+    clearSuccessNotification,
+    clearErrorNotification,
     setSuccessNotification,
     setErrorNotification,
 }

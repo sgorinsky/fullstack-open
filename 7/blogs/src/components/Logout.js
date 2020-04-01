@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { clearAllNotifications, setErrorNotification } from '../reducers/notifications'
+import { clearErrorNotification, setErrorNotification } from '../reducers/notifications'
 import { logout } from '../reducers/user'
 
-const Logout = ({ user, logout, clearAllNotifications, setErrorNotification }) => {
-    const handleClick = () => {
+const Logout = ({ user, logout, clearErrorNotification, setErrorNotification }) => {
+    const handleClick = async () => {
         const temp = user.username
 
         logout()
-        window.localStorage.clear()
 
         setErrorNotification(`${temp} has logged out`)
         setTimeout(() => {
-            clearAllNotifications()
+            clearErrorNotification()
         }, 3000)
+        window.localStorage.clear()
     }
 
     return (
@@ -29,7 +29,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = {
     logout,
-    clearAllNotifications,
+    clearErrorNotification,
     setErrorNotification
 }
 
