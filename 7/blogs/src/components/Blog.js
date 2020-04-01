@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux'
 
 
-import { getBlogs } from '../reducers/blogs'
+import { getBlogs, deleteBlog } from '../reducers/blogs'
 import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
 import blogService from '../services/blogs'
@@ -12,7 +12,7 @@ import Togglable from './Togglable'
 import Like from './Like'
 import BlogForm from './BlogForm'
 
-const Blog = ({ user, blog, blogs, getBlogs, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
+const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
     
     const [visible, setVisible] = useState(false)
@@ -63,10 +63,7 @@ const Blog = ({ user, blog, blogs, getBlogs, clearAllNotifications, setSuccessNo
         const title =  blog.title;
         if (window.confirm(`Are you sure you want to delete ${title}?`)) {
 
-            await blogService.remove( blog.id, user.token);
-            const temps = await blogService.getAll();
-
-            getBlogs(temps);
+            deleteBlog( blog.id, user.token);
             setErrorNotification(`${title} deleted!`)
 
             setTimeout(() => {
@@ -114,6 +111,7 @@ const mapStateToProps = (state, action) => {
 
 const mapDispatchToProps = {
     getBlogs,
+    deleteBlog,
     setSuccessNotification,
     setErrorNotification,
     clearAllNotifications,
