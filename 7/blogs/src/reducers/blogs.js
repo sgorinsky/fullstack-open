@@ -50,7 +50,6 @@ export const updateBlog = (id, newObject) => {
 export const deleteBlog = (id, token) => {
   return async (dispatch) => {
     const deletedBlog = await blogService.remove(id, token)
-    console.log(deletedBlog)
     dispatch({
       type: 'DELETE_BLOG',
       data: deletedBlog
