@@ -1,10 +1,10 @@
 import axios from 'axios';
 const baseUrl = '/api/users'
 
-const create = async (newObject, token) => {
+const create = async (newObject) => {
     const config = {
         headers: {
-            "Authorization": `bearer ${token}`
+            "Authorization": `bearer ${process.env.TOKEN}`
         }
     }
     const response = await axios.post(baseUrl, newObject, config)
