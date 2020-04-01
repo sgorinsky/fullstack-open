@@ -72,7 +72,7 @@ export const clearErrorNotification = () => {
 export const clearAllNotifications = () => {
   return async (dispatch) => {
     dispatch({
-      type: 'CLEAR_ALL_NOTIFICATIONS'
+      type: 'CLEAR_ALL'
     })
   }
 }
