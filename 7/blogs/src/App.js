@@ -13,11 +13,11 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 const App = ({ user, login, blogs, getBlogs }) => {
-
+  
   useEffect(() => {
     getBlogs()
-  }, [user]);
-  
+  }, [user])
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
     if (loggedUserJSON) {

@@ -4,8 +4,7 @@ import useField from '../hooks/useField'
 
 import { login } from '../reducers/user'
 import { 
-    clearSuccessNotification, 
-    clearErrorNotification, 
+    clearAllNotifications,
     setSuccessNotification, 
     setErrorNotification, 
 } from '../reducers/notifications'
@@ -14,27 +13,31 @@ const LoginForm = ({ user, login, clearSuccessNotification, clearErrorNotificati
     const usernameField = useField('text', 'username');
     const passwordField = useField('password', 'password');
 
-    const handleLogin = (event) => {
+    const handleLogin = async (event) => {
         event.preventDefault()
         try {
             const tempUsername = usernameField.input.value
-            login({ username: tempUsername, password: passwordField.input.value })
+            const response = await login({ username: tempUsername, password: passwordField.input.value })
 
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
 
             usernameField.reset()
             passwordField.reset()
-            setSuccessNotification(`${tempUsername} logged in!`)
+            if (!response) {
+                setErrorNotification('Wrong credentials')
+            } else {
+                setSuccessNotification(`${tempUsername} logged in!`)
+            }
 
             setTimeout(() => {
-                clearSuccessNotification()
+                clearAllNotifications()
             }, 1000)
             
         } catch (exception) {
             console.log(exception)
             setErrorNotification('Wrong credentials');
             setTimeout(() => {
-                clearErrorNotification()
+                clearAllNotifications()
             }, 3000)
             
         }
@@ -64,8 +67,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
     login,
-    clearSuccessNotification,
-    clearErrorNotification,
+    clearAllNotifications,
     setSuccessNotification,
     setErrorNotification,
 }

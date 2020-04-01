@@ -19,8 +19,9 @@ export const login = (credentials) => {
         type: 'CHANGE_USER',
         data: user
       })
+      return user
     } catch (error) {
-      console.log(error)
+      return error
     }
   }
 }
