@@ -45,7 +45,6 @@ usersRouter.post('/', async (request, response, next) => {
         const body = request.body;
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(body.password, saltRounds);
-        console.log(`passwordhash: ${passwordHash}`)
         
         const user = new User({
             username: body.username,
@@ -79,6 +78,15 @@ usersRouter.put('/:id', async (request, response, next) => {
         }
 
     } catch (error) {
+        next(error)
+    }
+})
+
+usersRouter.delete('/', async (request, response, next) => {
+    try {
+        await User.deleteMany({})
+        return response.status(204).end()
+    } catch(error) {
         next(error)
     }
 })
