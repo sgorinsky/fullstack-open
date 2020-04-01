@@ -94,11 +94,13 @@ blogsRouter.put('/:id', async(request, response, next) => {
 blogsRouter.delete('/:id', async (request, response, next) => {
     try {
         const token = middleware.tokenExtractor(request)
-        const decodedToken = jwt.verify(token, process.env.SECRET)
-        const user = await User.findOne({token: token})
+        console.log('before')
+        // const decodedToken = jwt.verify(token, process.env.SECRET)
+        console.log('after')
+        const user = await User.findOne({ token: token })
         const blog = await Blog.findById(request.params.id)
         
-        if (!token || !decodedToken.id || (user._id.toString() !== blog.user.toString())) {
+        if (!token || /* !decodedToken.id || */ (user._id.toString() !== blog.user.toString())) {
             return response.status(401).json({ error: 'token missing or invalid' })
         }
         await Blog.findByIdAndRemove(request.params.id);
