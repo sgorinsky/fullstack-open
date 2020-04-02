@@ -21,7 +21,6 @@ const blogSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    usersLiked: {}
 })
 blogSchema.plugin(uniqueValidator);
 blogSchema.set('toJSON', {
