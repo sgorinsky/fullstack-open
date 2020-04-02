@@ -38,13 +38,15 @@ export const createBlog = (newBlog, token) => {
   }
 }
 
-export const updateBlog = (id, newObject) => {
+export const updateBlog = (id, token, newObject) => {
   return async (dispatch) => {
-    const updatedBlog = await blogService.update(id, newObject)
+    const updatedBlog = await blogService.update(id, token, newObject)
+    console.log(updatedBlog)
     dispatch({
       type: 'UPDATE_BLOG',
       data: updatedBlog
     })
+    return updatedBlog
   }
 }
 

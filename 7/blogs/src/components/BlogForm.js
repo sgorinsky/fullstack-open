@@ -3,12 +3,19 @@ import { connect } from 'react-redux'
 
 import useField from '../hooks/useField'
 
-import { getBlogs, createBlog } from '../reducers/blogs'
+import { createBlog, updateBlog } from '../reducers/blogs'
 import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
-import blogService from '../services/blogs'
-
-const BlogForm = ({ user, getBlogs, createBlog, clearAllNotifications, setSuccessNotification, setErrorNotification, blog, PostNotPut=true }) => {
+const BlogForm = ({ 
+    user, 
+    createBlog,
+    updateBlog,
+    clearAllNotifications, 
+    setSuccessNotification, 
+    setErrorNotification, 
+    blog, 
+    PostNotPut=true 
+}) => {
     const titleField = useField('text', 'title')
     const bodyField = useField('text', 'body')
 
@@ -45,29 +52,34 @@ const BlogForm = ({ user, getBlogs, createBlog, clearAllNotifications, setSucces
         }
     }
 
-    const updateBlog = async (event) => {
+    const changeBlog = async (event) => {
         event.preventDefault()
         try {
-            await blogService.update(blog.id, { title: titleField.input.value, body: bodyField.input.value })
-            getBlogs()
-            setSuccessNotification(`${titleField.input.value} updated!`)
-            titleField.reset()
-            bodyField.reset()
+            const tempTitle = blog.title
+            const updated = await updateBlog(blog.id, user.token, { title: titleField.input.value, body: bodyField.input.value })
+
+            if (updated.id) {
+                setSuccessNotification(`\"${tempTitle}\" updated to \"${titleField.input.value}\"!`)
+                titleField.reset()
+                bodyField.reset()
+            } else {
+                setErrorNotification('Error updating blog')
+            }
             setTimeout(() => {
                 clearAllNotifications()
             }, 2500)
-        } catch {
-            setErrorNotification(`error updating ${titleField.input.value}`)
 
+        } catch (error) {
+            console.log(error)
+            setErrorNotification(`Error updating ${titleField.input.value}`)
             setTimeout(() => {
                 clearAllNotifications()
             }, 2500)
         }
-
     }
 
     return (
-        <form onSubmit={PostNotPut ? handleBlog : updateBlog}>
+        <form onSubmit={PostNotPut ? handleBlog : changeBlog}>
             <div>
                 title
                 <input {...titleField.input} />
@@ -84,13 +96,13 @@ const BlogForm = ({ user, getBlogs, createBlog, clearAllNotifications, setSucces
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.user,
     }
 }
 
 const mapDispatchToProps = {
-    getBlogs,
     createBlog,
+    updateBlog,
     clearAllNotifications,
     setSuccessNotification,
     setErrorNotification,

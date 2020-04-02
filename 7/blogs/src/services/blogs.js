@@ -28,8 +28,13 @@ const remove = async (id, token) => {
     return response.data;
 }
 
-const update = async (id, newObject) => {
-    const request = await axios.put(`${baseUrl}/${id}`, newObject);
+const update = async (id, token, newObject) => {
+    const config = {
+        headers: {
+            "Authorization": `bearer ${token}`
+        }
+    }
+    const request = await axios.put(`${baseUrl}/${id}`, newObject, config);
     return request.data;
 }
 

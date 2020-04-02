@@ -12,7 +12,7 @@ import Togglable from './Togglable'
 import Like from './Like'
 import BlogForm from './BlogForm'
 
-const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
+const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {
     const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
     
     const [visible, setVisible] = useState(false)
