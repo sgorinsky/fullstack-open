@@ -10,9 +10,7 @@ import Like from './Like'
 import BlogForm from './BlogForm'
 
 const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {
-    const [visible, setVisible] = useState(false)
-    const [likes, setLikes] = useState(blog.likes)
-    
+    const [visible, setVisible] = useState(false)    
     
     const showWhenVisible = { display: visible ? '' : 'none' }
     const id = user ? user.id : 'null'
@@ -46,9 +44,9 @@ const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, 
                         </li>
                         <li className='body'>{ blog.body}</li>
                     </div>
-                {likes + ' likes'}
+                {blog.likes + ' likes'}
             </div>
-            <Like handleLikes={handleLikes} likeButton={likeButton} />
+            <Like blog={blog} />
                         
             <div style={showIfUser}>
                 <Togglable buttonLabel="edit?">
