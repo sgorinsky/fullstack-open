@@ -1,5 +1,6 @@
 import loginService from '../services/login'
 import userService from '../services/users'
+import blogService from '../services/blogs'
 
 // Reducer
 const userReducer = (state = null, action) => {
@@ -43,7 +44,7 @@ export const logout = () => {
 export const likeBlog = (user, blog) => {
   return async (dispatch) => {
     const updatedUser = await userService.update(user.id, user.token, { likedBlogs: { ...user.likedBlogs, [blog.id]: true }})
-    await blogsService.update(blog.id, user.token, { likes: blog.likes + 1 })
+    await blogService.update(blog.id, user.token, { likes: blog.likes + 1 })
     dispatch({
       type: 'LIKE_BLOG',
       data: updatedUser,
@@ -54,7 +55,7 @@ export const likeBlog = (user, blog) => {
 export const unlikeBlog = (user, blog) => {
   return async (dispatch) => {
     const updatedUser = await userService.update(user.id, user.token, { likedBlogs: {...user.likedBlogs, [blog.id]: false }})
-    await blogsService.update(blog.id, user.token, { likes: blog.likes - 1 })
+    await blogService.update(blog.id, user.token, { likes: blog.likes - 1 })
     dispatch({
       type: 'UNLIKE_BLOG',
       data: updatedUser,
