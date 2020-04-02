@@ -59,7 +59,7 @@ const BlogForm = ({
             const updated = await updateBlog(blog.id, user.token, { title: titleField.input.value, body: bodyField.input.value })
 
             if (updated.id) {
-                setSuccessNotification(`\"${tempTitle}\" updated to \"${titleField.input.value}\"!`)
+                setSuccessNotification(`"${tempTitle}" updated to "${titleField.input.value}"!`)
                 titleField.reset()
                 bodyField.reset()
             } else {
