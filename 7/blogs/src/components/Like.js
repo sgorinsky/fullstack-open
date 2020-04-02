@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { get } from 'lodash'
+
 import { updateBlog } from '../reducers/blogs'
 import { likeBlog, unlikeBlog } from '../reducers/user'
-import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
+import { clearAllNotifications, setErrorNotification } from '../reducers/notifications'
 
 const Like = ({ 
     blog,
@@ -12,13 +14,20 @@ const Like = ({
     likeBlog,
     unlikeBlog,
     clearAllNotifications,
-    setSuccessNotification,
     setErrorNotification,
 }) => {
     const handleLikes = async () => {
         try {
             if (user) {
-                
+                let likes = blog.likes
+                if (get(user, ['likedBlogs', blog.id], null)) {
+                    unlikeBlog(user, blog)
+                    --likes
+                } else {
+                    likeBlog(user, blog)
+                    ++likes
+                }
+                updateBlog(blog.id, user.token, { likes })
             } else {
                 setErrorNotification('Login to like a post');
                 setTimeout(() => {
@@ -34,7 +43,7 @@ const Like = ({
     }
     return (
         <button className='like' onClick={handleLikes}>
-            {true ? 'like' : 'unlike'}
+            {get(user, ['likedBlogs', blog.id], null) ? 'unlike' : 'like'}
         </button>   
     )
 }
@@ -50,7 +59,6 @@ const mapDispatchToProps = {
     likeBlog,
     unlikeBlog,
     clearAllNotifications,
-    setSuccessNotification,
     setErrorNotification,
 }
 
