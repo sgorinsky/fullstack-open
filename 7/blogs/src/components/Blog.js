@@ -44,7 +44,7 @@ const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, 
                         </li>
                         <li className='body'>{ blog.body}</li>
                     </div>
-                {blog.likes + ' likes'}
+                {`${blog.likes} ${blog.likes == 1 ? 'like': 'likes'}`}
             </div>
             <Like blog={blog} />
                         
