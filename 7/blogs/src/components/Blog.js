@@ -5,16 +5,11 @@ import { connect } from 'react-redux'
 import { getBlogs, deleteBlog } from '../reducers/blogs'
 import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
-import blogService from '../services/blogs'
-import userService from '../services/users'
-
 import Togglable from './Togglable'
 import Like from './Like'
 import BlogForm from './BlogForm'
 
 const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {
-    const [likeButton, setLikeButton] = useState(user && user.hasOwnProperty('likedBlogs') && user.likedBlogs.hasOwnProperty(blog.id))
-    
     const [visible, setVisible] = useState(false)
     const [likes, setLikes] = useState(blog.likes)
     
@@ -23,42 +18,6 @@ const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, 
     const id = user ? user.id : 'null'
     const author = user ? user.username : 'null'
     const showIfUser = { display: id ===  blog.user ||  blog.author === author ? '' : 'none' }
-
-    const handleLikes = async () => { 
-        try {
-            const currentUserLikes = user && user.hasOwnProperty('likedBlogs') ? user.likedBlogs : {};
-            const currentBlogLikes = blog && blog.hasOwnProperty('usersLiked') ? blog.usersLiked : {};
-            if (user && !currentUserLikes.hasOwnProperty(blog.id)) {
-                currentBlogLikes[user.id]=true;
-                setLikeButton(!likeButton)
-                setLikes(Object.keys(currentBlogLikes).length)
-                await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
-                const currentUser = user
-                currentUserLikes[blog.id] = true;
-                currentUser.likedBlogs = currentUserLikes;
-                await userService.update(user.id, { likedBlogs: currentUserLikes })
-            } else if (user) {
-                delete currentBlogLikes[user.id]
-                setLikeButton(!likeButton)
-                setLikes(Object.keys(currentBlogLikes).length)
-                await blogService.update(blog.id, { likes: Object.keys(currentBlogLikes).length, usersLiked: currentBlogLikes })
-                const currentUser = user
-                delete currentUser.likedBlogs[blog.id];
-                await userService.update(user.id, { likedBlogs: currentUser.likedBlogs })
-            } else {
-                setErrorNotification('Login to like a post');
-                setTimeout(() => {
-                    clearAllNotifications(null);
-                }, 1200)
-            }
-        } catch {
-            setErrorNotification('Error');
-            setTimeout(() => {
-                clearAllNotifications()
-            }, 1200)
-        }
-            
-    }
     const deletePost = async () => {
         try {
             const title = blog.title;
