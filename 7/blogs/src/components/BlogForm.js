@@ -23,8 +23,12 @@ const BlogForm = ({ user, getBlogs, createBlog, clearAllNotifications, setSucces
                 user:  user.id
             }
             
-            createBlog(newBlog, user.token)
-            setSuccessNotification(`${titleField.input.value} created by ${ user.username}!`)
+            const response = await createBlog(newBlog, user.token)
+            if (response.user) {
+                setSuccessNotification(`${titleField.input.value} created by ${user.username}!`)
+            } else {
+                setErrorNotification(`error posting ${titleField.input.value}`)
+            }
             titleField.reset()
             bodyField.reset()
             

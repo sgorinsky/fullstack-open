@@ -34,6 +34,7 @@ export const createBlog = (newBlog, token) => {
       type: 'CREATE_BLOG',
       data: blog
     })
+    return blog
   }
 }
 
