@@ -63,7 +63,7 @@ const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, 
         const title =  blog.title;
         if (window.confirm(`Are you sure you want to delete ${title}?`)) {
 
-            deleteBlog( blog.id, user.token);
+            deleteBlog(blog.id, user.token);
             setErrorNotification(`${title} deleted!`)
 
             setTimeout(() => {

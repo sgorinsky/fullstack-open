@@ -10,7 +10,7 @@ const blogReducer = (state = [], action) => {
     case 'UPDATE_BLOG':
       return state.map(blog => action.data.id !== blog.id ? blog : action.data)
     case 'DELETE_BLOG':
-      return state.filter(blog => blog.id === action.data.id)
+      return state.filter(blog => blog.id !== action.id)
     default:
       return state
   }
@@ -53,7 +53,8 @@ export const deleteBlog = (id, token) => {
     const deletedBlog = await blogService.remove(id, token)
     dispatch({
       type: 'DELETE_BLOG',
-      data: deletedBlog
+      data: deletedBlog,
+      id,
     })
   }
 }
