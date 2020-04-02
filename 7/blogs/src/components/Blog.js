@@ -60,15 +60,20 @@ const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, 
             
     }
     const deletePost = async () => {
-        const title =  blog.title;
-        if (window.confirm(`Are you sure you want to delete ${title}?`)) {
-
-            deleteBlog(blog.id, user.token);
-            setErrorNotification(`${title} deleted!`)
-
+        try {
+            const title = blog.title;
+            if (window.confirm(`Are you sure you want to delete ${title}?`)) {
+                deleteBlog(blog.id, user.token);
+                setErrorNotification(`${title} deleted!`)
+                setTimeout(() => {
+                    clearAllNotifications()
+                }, 2500)
+            }
+        } catch(error) {
+            setErrorNotification(error)
             setTimeout(() => {
                 clearAllNotifications()
-            }, 2500)
+            }, 4000)
         }
     }
     
