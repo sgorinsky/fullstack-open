@@ -17,9 +17,7 @@ const userSchema = new mongoose.Schema({
         ref: 'Blog'
     }],
     token: String,
-    likedBlogs: {
-        type: {}
-    }
+    likedBlogs: Object,
 })
 
 userSchema.plugin(uniqueValidator);

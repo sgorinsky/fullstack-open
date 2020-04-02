@@ -53,9 +53,9 @@ usersRouter.post('/', async (request, response, next) => {
             passwordHash,
             name: body.name,
             token,
-            likedBlogs:{}
+            likedBlogs: {},
         })
-        console.log(user)
+
         if (user.username && user.passwordHash && user.name) {
             await user.save()
             response.status(201).json(user.toJSON());
@@ -70,15 +70,23 @@ usersRouter.post('/', async (request, response, next) => {
 usersRouter.put('/:id', async (request, response, next) => {
     try {
         const body = request.body;
-        console.log(body);
         const updated = await User.findByIdAndUpdate(request.params.id, body, { new: true });
-        console.log(updated);
+
         if (updated) {
             response.status(200).json(updated.toJSON());
         } else {
             response.status(400).end()
         }
 
+    } catch (error) {
+        next(error)
+    }
+})
+
+usersRouter.delete('/:id', async (request, response, next) => {
+    try {
+        await User.findByIdAndDelete(request.params.id)
+        return response.status(204).end()
     } catch (error) {
         next(error)
     }
