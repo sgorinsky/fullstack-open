@@ -70,14 +70,14 @@ blogsRouter.put('/:id', async(request, response, next) => {
     try {
         const token = middleware.tokenExtractor(request)
         const decodedToken = jwt.verify(token, process.env.SECRET)
-        if (!token || !decodedToken.id) {
+        if (!token || !decodedToken.iat) {
             return response.status(401).json({ error: 'token missing or invalid' })
         }
        
-        const body = request.body;
-        const updated = await Blog.findByIdAndUpdate(request.params.id, body, {new: true});
-        if (updated ) {
-            response.status(200).json(updated.toJSON());
+        const body = request.body
+        const updated = await Blog.findByIdAndUpdate(request.params.id, body, {new: true})
+        if (updated) {
+            response.status(200).json(updated.toJSON())
         } else {
             response.status(400).end()
         }
@@ -95,7 +95,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
         const blog = await Blog.findById(request.params.id)
         
         if (!token || !decodedToken.iat || (user._id.toString() !== blog.user.toString())) {
-            return response.status(401).json({ error: 'token missing or invalid' })
+            return response.status(401).json({ error: 'user cannot delete this post' })
         }
         await Blog.findByIdAndRemove(request.params.id);
         response.status(204).end();
