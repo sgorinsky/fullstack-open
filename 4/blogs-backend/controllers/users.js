@@ -53,7 +53,7 @@ usersRouter.post('/', async (request, response, next) => {
             passwordHash,
             name: body.name,
             token,
-            likedBlogs: {},
+            likedBlogs: null,
         })
 
         if (user.username && user.passwordHash && user.name) {
