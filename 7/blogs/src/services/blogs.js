@@ -13,8 +13,8 @@ const create = async (newObject, token) => {
 }
 
 const getAll = async () => {
-    const response = await axios.get(baseUrl);
-    return response.data.sort((first, second) => first.likes > second.likes ? -1 : 1);
+    const response = await axios.get(baseUrl)
+    return response.data
     
 }
 
