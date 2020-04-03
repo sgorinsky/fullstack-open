@@ -27,9 +27,10 @@ const userReducer = (state = { user: null, all: null }, action) => {
 }
 
 // Dispatchers
-export const allUsers = () => {
+export const getAllUsers = () => {
   return async (dispatch) => {
     const users = await userService.getAll()
+    console.log(users)
     dispatch({
       type: 'ALL_USERS',
       data: users

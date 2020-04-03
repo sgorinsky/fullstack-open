@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { login } from '../reducers/users'
+import { getAllUsers, login } from '../reducers/users'
 
 import LoginForm from '../components/LoginForm'
 import Logout from '../components/Logout'
@@ -10,11 +10,13 @@ import Togglable from '../components/Togglable'
 const Users = ({
   user,
   allUsers,
+  getAllUsers,
   login
 }) => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
+    getAllUsers()
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       login(user);
@@ -37,7 +39,7 @@ const Users = ({
           </div>
       }
       <h2>Users</h2>
-      {allUsers && allUsers.map(u => <div> <h3>{u.username + ' ' + u.blogs.length}</h3> </div>)}
+      {allUsers && allUsers.map(u => <div> <h5>{`${u.username} created ${u.blogs.length} blogs`}</h5> </div>)}
     </div>
   )
 }
@@ -51,6 +53,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   login,
+  getAllUsers,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users)
