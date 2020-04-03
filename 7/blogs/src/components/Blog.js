@@ -12,7 +12,7 @@ import BlogForm from './BlogForm'
 const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {
     const [visible, setVisible] = useState(false)    
     
-    const showWhenVisible = { display: visible ? '' : 'none' }
+    const showWhenVisible = { display: visible ? 'block' : 'none' }
     const id = user ? user.id : 'null'
     const author = user ? user.username : 'null'
     const showIfUser = { display: id ===  blog.user ||  blog.author === author ? '' : 'none' }
@@ -37,16 +37,15 @@ const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, 
     return (
         <div className='blog'>
             <div onClick={() => setVisible(!visible)}>
-                <li className='title' > <h5>title: {blog.title}</h5></li>
-                    <div style={showWhenVisible}>
-                        <li className='author'> 
-                            <h6>author: { blog.author}</h6>
-                        </li>
-                        <li className='body'>{ blog.body}</li>
-                    </div>
-                {`${blog.likes} ${blog.likes == 1 ? 'like': 'likes'}`}
+                <div className='title' > 
+                    <h5>{blog.title}</h5>
+                </div>
+                <div style={showWhenVisible}>
+                    <h6>author: {blog.author}</h6>
+                    <p className='body'>{blog.body}</p>
+                </div>                
             </div>
-            <Like blog={blog} />
+            <Like blog={blog} /> {`${blog.likes} ${blog.likes == 1 ? 'like' : 'likes'}`}
                         
             <div style={showIfUser}>
                 <Togglable buttonLabel="edit?">
