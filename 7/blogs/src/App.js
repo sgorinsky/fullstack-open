@@ -1,22 +1,18 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 
-import { getBlogs } from './reducers/blogs'
 import { login } from './reducers/user'
 
 // components
-import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
-import Blog from './components/Blog'
 import Logout from './components/Logout'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
-const App = ({ user, login, blogs, getBlogs }) => {
-  
-  useEffect(() => {
-    getBlogs()
-  }, [user])
+// pages
+import Blogs from './pages/Blogs'
+
+const App = ({ user, login }) => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
@@ -39,25 +35,20 @@ const App = ({ user, login, blogs, getBlogs }) => {
               <Togglable buttonLabel="logout?">
                 <Logout />
               </Togglable>              
-              <Togglable buttonLabel="new blog?">
-                <BlogForm />
-              </Togglable>
             </li>
           </div>
       }
-      {blogs && blogs.map(blog => <Blog key={blog.id} blog={blog}/>)}
+      <Blogs />
     </>
   )
 }
 const mapStateToProps = (state) => {
   return {
-    blogs: state.blogs,
     user: state.user,
   }
 }
 
 const mapDispatchToProps = {
-  getBlogs,
   login,
 }
 
