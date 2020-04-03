@@ -45,7 +45,7 @@ const Blog = ({ user, blog, blogs, getBlogs, deleteBlog, clearAllNotifications, 
                     <p className='body'>{blog.body}</p>
                 </div>                
             </div>
-            <Like blog={blog} /> {`${blog.likes} ${blog.likes == 1 ? 'like' : 'likes'}`}
+            <Like blog={blog} /> {`${blog.likes} ${blog.likes === 1 ? 'like' : 'likes'}`}
                         
             <div style={showIfUser}>
                 <Togglable buttonLabel="edit?">
