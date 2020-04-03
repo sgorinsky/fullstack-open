@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { get } from 'lodash'
 
 import { updateBlog } from '../reducers/blogs'
-import { likeBlog, unlikeBlog } from '../reducers/user'
+import { likeBlog, unlikeBlog } from '../reducers/users'
 import { clearAllNotifications, setErrorNotification } from '../reducers/notifications'
 
 const Like = ({ 
@@ -50,7 +50,7 @@ const Like = ({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.users.user
     }
 }
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { login } from '../reducers/user'
+import { login } from '../reducers/users'
 
 import LoginForm from '../components/LoginForm'
 import Logout from '../components/Logout'
@@ -9,6 +9,7 @@ import Togglable from '../components/Togglable'
 
 const Users = ({
   user,
+  allUsers,
   login
 }) => {
 
@@ -35,13 +36,16 @@ const Users = ({
             </li>
           </div>
       }
+      <h2>Users</h2>
+      {allUsers && allUsers.map(u => <div> <h3>{u.username + ' ' + u.blogs.length}</h3> </div>)}
     </div>
   )
 }
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.users.user,
+    allUsers: state.users.all
   }
 }
 

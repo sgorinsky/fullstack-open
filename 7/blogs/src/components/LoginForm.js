@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import useField from '../hooks/useField'
 
-import { login } from '../reducers/user'
+import { login } from '../reducers/users'
 import { 
     clearAllNotifications,
     setSuccessNotification, 
@@ -64,7 +64,7 @@ const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification,
 }
 const mapStateToProps = (state) => {
     return {
-        user: state.user
+        user: state.users.user
     }
 }
 

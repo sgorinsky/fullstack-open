@@ -3,20 +3,40 @@ import userService from '../services/users'
 import blogService from '../services/blogs'
 
 // Reducer
-const userReducer = (state = null, action) => {
+const userReducer = (state = { user: null, all: null }, action) => {
   switch (action.type) {
+    case 'ALL_USERS':
+      return {
+        all: action.data
+      }
     case 'CHANGE_USER':
-      return action.data
+      return {
+        user: action.data
+      }
     case 'LIKE_BLOG':
-      return action.data
+      return {
+        user: action.data
+      }
     case 'UNLIKE_BLOG':
-      return action.data
+      return {
+        user: action.data
+      }
     default:
       return state
   }
 }
 
 // Dispatchers
+export const allUsers = () => {
+  return async (dispatch) => {
+    const users = await userService.getAll()
+    dispatch({
+      type: 'ALL_USERS',
+      data: users
+    })
+  }
+}
+
 export const login = (credentials) => {
   return async (dispatch) => {
     try {
