@@ -39,7 +39,14 @@ const Users = ({
           </div>
       }
       <h2>Users</h2>
-      {allUsers && allUsers.map(u => <div> <h5>{`${u.username} created ${u.blogs.length} blogs`}</h5> </div>)}
+      {allUsers && allUsers.map(u => 
+        <div> 
+          <strong>{u.username + ' '}</strong>
+          created 
+          <strong>{' ' + u.blogs.length + ' '} </strong>
+          {u.blogs.length === 1 ? 'blog' : 'blogs'}
+        </div>
+      )}
     </div>
   )
 }
