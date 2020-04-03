@@ -17,12 +17,15 @@ const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification,
         event.preventDefault()
         try {
             const tempUsername = usernameField.input.value
+
+            // If resetted after login dispatch, error for potential memory leak is raised
+            usernameField.reset()
+            passwordField.reset()
+
             const response = await login({ username: tempUsername, password: passwordField.input.value })
 
             window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
 
-            usernameField.reset()
-            passwordField.reset()
             if (response.username !== tempUsername) {
                 setErrorNotification('Wrong credentials')
             } else {
