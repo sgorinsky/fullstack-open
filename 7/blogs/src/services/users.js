@@ -1,11 +1,10 @@
 import axios from 'axios';
 const baseUrl = '/api/users'
 
-
+// Making requests to api and receiving responses
 const getAll = async () => {
-    const request = await axios.get(baseUrl)
-    console.log(request)
-    return request.data
+    const response = await axios.get(baseUrl)
+    return response.data
 }
 
 const create = async (newObject) => {
@@ -24,8 +23,9 @@ const update = async (id, token, newObject) => {
             "Authorization": `bearer ${token}`
         }
     }
-    const request = await axios.put(`${baseUrl}/${id}`, newObject, config);
-    return request.data;
+
+    const response = await axios.put(`${baseUrl}/${id}`, newObject, config);
+    return response.data;
 }
 
 export default { getAll, create, update };
