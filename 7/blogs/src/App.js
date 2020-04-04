@@ -1,5 +1,5 @@
 // Modules
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Route, Link
@@ -9,12 +9,18 @@ import { connect } from 'react-redux'
 // components
 import Notification from './components/Notification'
 import Blog from './components/Blog'
+// dispatchers
+import { getBlogs } from './reducers/blogs'
 // pages
 import Blogs from './pages/Blogs'
 import Login from './pages/Login'
 import Users from './pages/Users'
 
-const App = ({ blogs }) => {
+const App = ({ blogs, getBlogs }) => {
+  useEffect(() => {
+    getBlogs()
+  }, [getBlogs])
+
   const getBlogByID = (id) => blogs.find(blog => id === blog.id)
   const padding = { padding: 5 }
 
@@ -52,4 +58,8 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(App)
+const mapDispatchToProps = {
+  getBlogs
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App)

@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getBlogs } from '../reducers/blogs'
 
 import BlogForm from '../components/BlogForm'
 import Togglable from '../components/Togglable'
@@ -11,14 +10,7 @@ import Table from 'react-bootstrap/Table'
 const Blogs = ({
   user,
   blogs,
-  getBlogs,
 }) => {
-  
-
-  useEffect(() => {
-    getBlogs()
-  }, [getBlogs])
-
   return (
       <div>
         <h2>Blogs</h2>
@@ -54,7 +46,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = {
-  getBlogs,
-}
-export default connect(mapStateToProps, mapDispatchToProps)(Blogs)
+export default connect(mapStateToProps)(Blogs)
