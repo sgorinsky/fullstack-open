@@ -56,7 +56,7 @@ const LoginForm = ({ login, loginFromLocalStorage, clearAllNotifications, setSuc
         }
     }
     return (
-        <>
+        <div className='container'>
             <form onSubmit={handleLogin} className='login'>
                 <div>
                     <h4> Blogs login </h4>
@@ -67,9 +67,9 @@ const LoginForm = ({ login, loginFromLocalStorage, clearAllNotifications, setSuc
                     password
                     <input { ...passwordField.input } />
                 </div>
-                <button type="submit"> login </button>
+                <button className='btn btn-primary mt-1' type='submit'> login </button>
             </form>
-        </>
+        </div>
     )
 }
 

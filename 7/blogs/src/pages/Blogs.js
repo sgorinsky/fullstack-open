@@ -12,7 +12,7 @@ const Blogs = ({
   blogs,
 }) => {
   return (
-      <div>
+      <div className='container'>
         <h2>Blogs</h2>
         {user &&
           <Togglable buttonLabel="new blog?">

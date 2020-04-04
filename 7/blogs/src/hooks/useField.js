@@ -11,6 +11,7 @@ const useField = (type, name) => {
     return {
         input: 
         {
+            className: 'form-control',
             type,
             name,
             value,
