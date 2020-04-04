@@ -10,11 +10,13 @@ import Like from './Like'
 import BlogForm from './BlogForm'
 
 const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {
-    console.log(blog)
     const [visible, setVisible] = useState(false)    
     const showWhenVisible = { display: visible ? 'block' : 'none' }
     const showIfUser = { display: user && (blog.user === user.id || blog.author === user.username) ? '' : 'none' }
 
+    if (!blog) {
+        return null
+    }
     const deletePost = async () => {
         try {
             const title = blog.title;

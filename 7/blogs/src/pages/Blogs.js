@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { getBlogs } from '../reducers/blogs'
 
-import Blog from '../components/Blog'
 import BlogForm from '../components/BlogForm'
 import Togglable from '../components/Togglable'
 
@@ -14,17 +13,13 @@ const Blogs = ({
   blogs,
   getBlogs,
 }) => {
-  const getBlogByID = (id) => blogs.find(blog => {
-    return id === blog.id
-  })
+  
 
   useEffect(() => {
     getBlogs()
   }, [])
 
   return (
-    <Router>
-      <Route exact path='/blogs/:id' render={({ match }) => <Blog blog={getBlogByID(match.params.id) || blogs[0]} />} />
       <div>
         <h2>Blogs</h2>
         {user &&
@@ -32,26 +27,23 @@ const Blogs = ({
             <BlogForm />
           </Togglable>
         }
-        {blogs
-          && 
-          <Table striped hover>
-            <tbody>
-              {blogs.map(blog =>
-                <tr key={blog.id}>
-                  <td>
-                    <Link to={`/blogs/${blog.id}`}>
-                        {blog.title}
-                    </Link>
-                  </td>
-                  <td>
-                    {`${blog.likes} likes`}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </Table>}
+        <Table striped hover>
+          <tbody>
+            {blogs.map(blog =>
+              <tr key={blog.id}>
+                <td>
+                  <Link to={`/blogs/${blog.id}`}>
+                      {blog.title}
+                  </Link>
+                </td>
+                <td>
+                  {`${blog.likes} likes`}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
       </div>
-    </Router>
   )
 }
 
