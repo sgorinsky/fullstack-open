@@ -21,7 +21,7 @@ const LoginForm = ({ login, loginFromLocalStorage, clearAllNotifications, setSuc
             const u = JSON.parse(loggedUserJSON)
             loginFromLocalStorage(u);
         }
-    }, [])
+    }, [loginFromLocalStorage])
 
     const handleLogin = async (event) => {
         event.preventDefault()

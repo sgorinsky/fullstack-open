@@ -9,7 +9,7 @@ const Users = ({
 }) => {
   useEffect(() => {
     getAllUsers()
-  }, [])
+  }, [getAllUsers])
 
   return (
     <div>

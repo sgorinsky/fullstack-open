@@ -41,7 +41,7 @@ const App = ({ blogs }) => {
       <Route exact path='/' render={() => <Login />} />
       <Route exact path='/users' render={() => <Users />} />
       <Route exact path='/blogs' render={() => <Blogs />} />
-      <Route exact path='/blogs/:id' render={({ match }) => <Blog blog={getBlogByID(match.params.id) || blogs[0]} />} />
+      <Route exact path='/blogs/:id' render={({ match }) => <Blog blog={getBlogByID(match.params.id)} />} />
     </Router>
   )
 }

@@ -1,22 +1,20 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 
-import { getBlogs, deleteBlog } from '../reducers/blogs'
+import { deleteBlog } from '../reducers/blogs'
 import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
 import Togglable from './Togglable'
 import Like from './Like'
 import BlogForm from './BlogForm'
 
-const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {
-    const [visible, setVisible] = useState(false)    
-    const showWhenVisible = { display: visible ? 'block' : 'none' }
+const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {  
     const showIfUser = { display: user && (blog.user === user.id || blog.author === user.username) ? '' : 'none' }
 
     if (!blog) {
         return null
     }
+
     const deletePost = async () => {
         try {
             const title = blog.title;
@@ -37,15 +35,13 @@ const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNo
     
     return (
         <div className='blog'>
-            <div onClick={() => setVisible(!visible)}>
-                <div className='title'>
-                    <h5>{blog.title}</h5>
-                </div>
-                <div style={showWhenVisible}>
-                    <h6>author: {blog.author}</h6>
-                    <p className='body'>{blog.body}</p>
-                </div>                
+            <div className='title'>
+                <h5>{blog.title}</h5>
             </div>
+            <div>
+                <h6>author: {blog.author}</h6>
+                <p className='body'>{blog.body}</p>
+            </div>                
             <Like blog={blog} /> {`${blog.likes} ${blog.likes === 1 ? 'like' : 'likes'}`}
                         
             <div style={showIfUser}>
@@ -62,7 +58,7 @@ const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNo
     )
 }
 
-const mapStateToProps = (state, action) => {
+const mapStateToProps = (state) => {
     return {
         user: state.users.user,
         blogs: state.blogs,
