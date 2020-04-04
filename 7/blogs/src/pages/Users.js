@@ -1,20 +1,15 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 
-import { getAllUsers, login } from '../reducers/users'
-
-import LoginForm from '../components/LoginForm'
-import Logout from '../components/Logout'
-import Togglable from '../components/Togglable'
+import { getAllUsers } from '../reducers/users'
 
 const Users = ({
-  user,
   allUsers,
   getAllUsers,
 }) => {
   useEffect(() => {
     getAllUsers()
-  }, [user])
+  }, [])
 
   return (
     <div>
@@ -33,13 +28,11 @@ const Users = ({
 
 const mapStateToProps = (state) => {
   return {
-    user: state.users.user,
     allUsers: state.users.all
   }
 }
 
 const mapDispatchToProps = {
-  login,
   getAllUsers,
 }
 

@@ -7,18 +7,22 @@ const userReducer = (state = { user: null, all: null }, action) => {
   switch (action.type) {
     case 'ALL_USERS':
       return {
+        ...state,
         all: action.data
       }
     case 'CHANGE_USER':
       return {
+        ...state,
         user: action.data
       }
     case 'LIKE_BLOG':
       return {
+        ...state,
         user: action.data
       }
     case 'UNLIKE_BLOG':
       return {
+        ...state,
         user: action.data
       }
     default:
