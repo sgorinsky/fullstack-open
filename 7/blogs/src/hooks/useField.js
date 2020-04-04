@@ -9,8 +9,7 @@ const useField = (type, name) => {
     const reset = () => setValue('')
 
     return {
-        input: 
-        {
+        input: {
             className: 'form-control',
             type,
             name,

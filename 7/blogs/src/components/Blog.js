@@ -4,9 +4,10 @@ import { connect } from 'react-redux'
 import { deleteBlog } from '../reducers/blogs'
 import { clearAllNotifications, setSuccessNotification, setErrorNotification } from '../reducers/notifications'
 
-import Togglable from './Togglable'
-import Like from './Like'
 import BlogForm from './BlogForm'
+import CommentForm from './CommentForm'
+import Like from './Like'
+import Togglable from './Togglable'
 
 const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNotification }) => {  
     const showIfUser = { display: user && (blog.user === user.id || blog.author === user.username) ? '' : 'none' }
@@ -34,13 +35,13 @@ const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNo
     }
     
     return (
-        <div className='blog'>
-            <div className='title'>
+        <div className='container'>
+            <div>
                 <h5>{blog.title}</h5>
             </div>
             <div>
                 <h6>author: {blog.author}</h6>
-                <p className='body'>{blog.body}</p>
+                <p>{blog.body}</p>
             </div>                
             <Like blog={blog} /> {`${blog.likes} ${blog.likes === 1 ? 'like' : 'likes'}`}
                         
@@ -52,8 +53,9 @@ const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNo
                         PostNotPut={false}
                     />
                 </Togglable>
-                <button style={showIfUser} onClick={deletePost}>delete</button>
+                <button className='btn btn-link' style={showIfUser} onClick={deletePost}>delete</button>
             </div>
+            <CommentForm />
         </div>
     )
 }

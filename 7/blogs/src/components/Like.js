@@ -42,7 +42,7 @@ const Like = ({
         }
     }
     return (
-        <button className='like' onClick={handleLikes}>
+        <button className='btn btn-secondary m-1' onClick={handleLikes}>
             {get(user, ['likedBlogs', blog.id], null) ? 'unlike' : 'like'}
         </button>   
     )
