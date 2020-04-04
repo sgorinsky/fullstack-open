@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { BrowserRouter as Router } from 'react-router-dom'
-// import App from './App'
-import MaterialUIApp from './MaterialUIApp'
+import App from './App'
+// import MaterialUIApp from './MaterialUIApp'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <Router>
-    <MaterialUIApp />
+    <App />
   </Router>,
   document.getElementById('root')
 )
