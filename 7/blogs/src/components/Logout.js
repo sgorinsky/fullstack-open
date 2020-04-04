@@ -9,12 +9,12 @@ const Logout = ({ user, logout, clearErrorNotification, setErrorNotification }) 
         const temp = user.username
 
         logout()
+        window.localStorage.clear()
 
         setErrorNotification(`${temp} has logged out`)
         setTimeout(() => {
             clearErrorNotification()
         }, 3000)
-        window.localStorage.clear()
     }
 
     return (
