@@ -96,7 +96,7 @@ const BlogForm = ({
 
 const mapStateToProps = (state) => {
     return {
-        user: state.user,
+        user: state.users.user,
     }
 }
 
