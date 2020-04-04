@@ -10,6 +10,11 @@ const userReducer = (state = { user: null, all: null }, action) => {
         ...state,
         all: action.data
       }
+    case 'SAVE_STATE':
+      return {
+        ...state,
+        user: action.data
+      }
     case 'CHANGE_USER':
       return {
         ...state,
@@ -53,6 +58,15 @@ export const login = (credentials) => {
     } catch (error) {
       return error
     }
+  }
+}
+
+export const loginFromLocalStorage = (user) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'SAVE_STATE',
+      data: user
+    })
   }
 }
 

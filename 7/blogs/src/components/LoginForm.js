@@ -2,24 +2,26 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import useField from '../hooks/useField'
 
-import { login } from '../reducers/users'
+import { login, loginFromLocalStorage } from '../reducers/users'
 import { 
     clearAllNotifications,
     setSuccessNotification, 
     setErrorNotification, 
 } from '../reducers/notifications'
 
-const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
+const LoginForm = ({ login, loginFromLocalStorage, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
     const usernameField = useField('text', 'username');
     const passwordField = useField('password', 'password');
 
     useEffect(() => {
         const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
-        if (typeof loggedUserJSON === 'object') {
+
+        // Client-side, window.localStorage stores null values as string 'undefined'
+        if (loggedUserJSON !== 'undefined') {
             const u = JSON.parse(loggedUserJSON)
-            login(u);
+            loginFromLocalStorage(u);
         }
-    })
+    }, [])
 
     const handleLogin = async (event) => {
         event.preventDefault()
@@ -70,17 +72,13 @@ const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification,
         </>
     )
 }
-const mapStateToProps = (state) => {
-    return {
-        user: state.users.user
-    }
-}
 
 const mapDispatchToProps = {
     login,
+    loginFromLocalStorage,
     clearAllNotifications,
     setSuccessNotification,
     setErrorNotification,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginForm)
+export default connect(null, mapDispatchToProps)(LoginForm)
