@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux'
 import useField from '../hooks/useField'
 
@@ -12,6 +12,14 @@ import {
 const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification, setErrorNotification }) => {
     const usernameField = useField('text', 'username');
     const passwordField = useField('password', 'password');
+
+    useEffect(() => {
+        const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
+        if (typeof loggedUserJSON === 'object') {
+            const u = JSON.parse(loggedUserJSON)
+            login(u);
+        }
+    })
 
     const handleLogin = async (event) => {
         event.preventDefault()

@@ -11,16 +11,10 @@ const Users = ({
   user,
   allUsers,
   getAllUsers,
-  login
 }) => {
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
     getAllUsers()
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      login(user);
-    }
   }, [])
 
   return (
@@ -39,8 +33,8 @@ const Users = ({
           </div>
       }
       <h2>Users</h2>
-      {allUsers && allUsers.map(u => 
-        <div> 
+      {allUsers && allUsers.map((u, idx) => 
+        <div key={`${u.name} ${idx}`}> 
           <strong>{u.username + ' '}</strong>
           created 
           <strong>{' ' + u.blogs.length + ' '} </strong>
