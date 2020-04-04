@@ -10,6 +10,7 @@ import Notification from './components/Notification'
 
 // pages
 import Blogs from './pages/Blogs'
+import Login from './pages/Login'
 import Users from './pages/Users'
 
 const App = () => {
@@ -21,6 +22,9 @@ const App = () => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="#" as="span">
+                <Link style={padding} to="/">login</Link>
+              </Nav.Link>
+              <Nav.Link href="#" as="span">
                 <Link style={padding} to="/users">users</Link>
               </Nav.Link>
               <Nav.Link href="#" as="span">
@@ -31,6 +35,7 @@ const App = () => {
         </Navbar>
       </div>
       <Notification />
+      <Route exact path='/' render={() => <Login />} />
       <Route exact path='/users' render={() => <Users />} />
       <Route exact path='/blogs' render={() => <Blogs />} />
     </Router>

@@ -32,7 +32,7 @@ const LoginForm = ({ user, login, clearAllNotifications, setSuccessNotification,
 
             const response = await login({ username: tempUsername, password: passwordField.input.value })
 
-            window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(user))
+            window.localStorage.setItem('loggedInBlogsUser', JSON.stringify(response))
 
             if (response.username !== tempUsername) {
                 setErrorNotification('Wrong credentials')

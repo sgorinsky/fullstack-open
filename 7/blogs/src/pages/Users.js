@@ -12,26 +12,12 @@ const Users = ({
   allUsers,
   getAllUsers,
 }) => {
-
   useEffect(() => {
     getAllUsers()
-  }, [])
+  }, [user])
 
   return (
     <div>
-      {
-        !user ?
-          <LoginForm />
-          :
-          <div className='logout'>
-            <li>
-              {user.username} logged in
-              <Togglable buttonLabel="logout?">
-                <Logout />
-              </Togglable>
-            </li>
-          </div>
-      }
       <h2>Users</h2>
       {allUsers && allUsers.map((u, idx) => 
         <div key={`${u.name} ${idx}`}> 
