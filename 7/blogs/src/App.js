@@ -11,15 +11,27 @@ import Notification from './components/Notification'
 import Blog from './components/Blog'
 // dispatchers
 import { getBlogs } from './reducers/blogs'
+import { loginFromLocalStorage } from './reducers/users'
 // pages
 import Blogs from './pages/Blogs'
 import Login from './pages/Login'
 import Users from './pages/Users'
 
-const App = ({ blogs, getBlogs }) => {
+const App = ({ user, loginFromLocalStorage, blogs, getBlogs }) => {
+
+  // On App mount, initializes necessities for whole app (since App is root node)
+  //    For instance, we wouldn't want to go to another page just to login user 
+  //    And we need to grab blogs in order to render /blog/:id routes
   useEffect(() => {
+    // Initializes blogs from backend and saves their state
     getBlogs()
-  }, [getBlogs])
+    // Client-side, window.localStorage stores null values as string 'undefined'
+    const loggedUserJSON = window.localStorage.getItem('loggedInBlogsUser')
+    if (loggedUserJSON !== 'undefined') {
+      const u = JSON.parse(loggedUserJSON)
+      loginFromLocalStorage(u);
+    }
+  }, [getBlogs, loginFromLocalStorage])
 
   const getBlogByID = (id) => blogs.find(blog => id === blog.id)
   const padding = { padding: 5 }
@@ -31,7 +43,7 @@ const App = ({ blogs, getBlogs }) => {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link href="#" as="span">
-                <Link style={padding} to="/">login</Link>
+                <Link style={padding} to="/">{user ? `${user.username} logged in` : 'login'}</Link>
               </Nav.Link>
               <Nav.Link href="#" as="span">
                 <Link style={padding} to="/users">users</Link>
@@ -54,12 +66,14 @@ const App = ({ blogs, getBlogs }) => {
 
 const mapStateToProps = (state) => {
   return {
-    blogs: state.blogs
+    blogs: state.blogs,
+    user: state.users.user
   }
 }
 
 const mapDispatchToProps = {
-  getBlogs
+  getBlogs,
+  loginFromLocalStorage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
