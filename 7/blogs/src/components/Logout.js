@@ -5,7 +5,7 @@ import { clearErrorNotification, setErrorNotification } from '../reducers/notifi
 import { logout } from '../reducers/users'
 
 const Logout = ({ user, logout, clearErrorNotification, setErrorNotification }) => {
-    const handleClick = async () => {
+    const handleClick = () => {
         let tempUsername;
         try {
             tempUsername = user.username

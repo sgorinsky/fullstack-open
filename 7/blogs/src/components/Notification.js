@@ -5,13 +5,17 @@ import { Alert } from 'react-bootstrap'
 const Notification = ({ success, error }) => {
     if (success) {
         return (
-            <Alert variant='success'> {success} </Alert>
+            <div className='container my-2'>
+                <Alert variant='success'> {success} </Alert>
+            </div>
         )
     }
 
     if (error) {
         return (
-            <Alert variant='warning'> {error} </Alert>
+            <div className='container my-2'>
+                <Alert variant='warning'> {error} </Alert>
+            </div>
         )
     }
 
