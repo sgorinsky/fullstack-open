@@ -89,7 +89,7 @@ const BlogForm = ({
                 content
                 <input {...bodyField.input} />
             </div>
-            <button type='submit'>submit</button>
+            <button className='btn btn-primary my-1' type='submit'>submit</button>
         </form>
     )
 }
