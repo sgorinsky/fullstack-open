@@ -11,7 +11,7 @@ const Notification = ({ success, error }) => {
 
     if (error) {
         return (
-            <Alert variant='danger'> {error} </Alert>
+            <Alert variant='warning'> {error} </Alert>
         )
     }
 
@@ -24,4 +24,5 @@ const mapStateToProps = (state) => {
         error: state.notifications.error
     }
 }
+
 export default connect(mapStateToProps)(Notification);

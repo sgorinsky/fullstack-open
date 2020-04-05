@@ -6,15 +6,11 @@ import { logout } from '../reducers/users'
 
 const Logout = ({ user, logout, clearErrorNotification, setErrorNotification }) => {
     const handleClick = async () => {
-        const temp = user.username
-
-        logout()
         window.localStorage.clear()
-
-        setErrorNotification(`${temp} has logged out`)
+        setErrorNotification(`${user.username} logged out`)
         setTimeout(() => {
             clearErrorNotification()
-        }, 3000)
+        }, 2000)
     }
 
     return (
@@ -27,6 +23,7 @@ const mapStateToProps = (state) => {
         user: state.users.user
     }
 }
+
 const mapDispatchToProps = {
     logout,
     clearErrorNotification,

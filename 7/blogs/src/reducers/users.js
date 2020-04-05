@@ -71,11 +71,12 @@ export const loginFromLocalStorage = (user) => {
 }
 
 export const logout = () => {
-  return async (dispatch) => {
+  return (dispatch) => {
     dispatch({
       type: 'CHANGE_USER',
       data: null
     })
+    return 'Logged out'
   }
 }
 
