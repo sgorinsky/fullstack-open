@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
 import { deleteBlog } from '../reducers/blogs'
@@ -55,7 +55,8 @@ const Blog = ({ user, blog, blogs, deleteBlog, clearAllNotifications, setErrorNo
                 </Togglable>
                 <button className='btn btn-link' style={showIfUser} onClick={deletePost}>delete</button>
             </div>
-            <CommentForm />
+            <CommentForm blog={blog} />
+            {blog.comments && blog.comments.map(c => <li>{c}</li>)}
         </div>
     )
 }

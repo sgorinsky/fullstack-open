@@ -49,6 +49,17 @@ export const updateBlog = (id, token, newObject) => {
   }
 }
 
+export const makeComment = (id, newObject) => {
+  return async (dispatch) => {
+    const commentedBlog = await blogService.update(id, process.env.TOKEN, newObject)
+    dispatch({
+      type: 'UPDATE_BLOG',
+      data: commentedBlog
+    })
+    return commentedBlog
+  }
+}
+
 export const deleteBlog = (id, token) => {
   return async (dispatch) => {
     const deletedBlog = await blogService.remove(id, token)

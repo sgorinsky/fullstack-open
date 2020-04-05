@@ -18,7 +18,6 @@ import Login from './pages/Login'
 import Users from './pages/Users'
 
 const App = ({ user, loginFromLocalStorage, blogs, getBlogs }) => {
-
   // On App mount, initializes necessities for whole app (since App is root node)
   //    For instance, we wouldn't want to go to another page just to login user 
   //    And we need to grab blogs in order to render /blog/:id routes
