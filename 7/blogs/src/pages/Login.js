@@ -6,19 +6,20 @@ import Logout from '../components/Logout'
 import Togglable from '../components/Togglable'
 
 const Login = ({ user }) => {
-  console.log(user)
   return (
     <div className='container'>
-      {!user && <LoginForm />}
-      {user && 
-        <div className='logout'>
-          <li>
-            {user.username} logged in
-            <Togglable buttonLabel="logout?">
-              <Logout />
-            </Togglable>
-          </li>
-        </div>
+      {
+        !user ?
+          <LoginForm />
+          :
+          <div className='logout'>
+            <li>
+              {user.username} logged in
+              <Togglable buttonLabel="logout?">
+                <Logout />
+              </Togglable>
+            </li>
+          </div>
       }
     </div>
   )

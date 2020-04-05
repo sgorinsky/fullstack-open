@@ -71,7 +71,7 @@ export const loginFromLocalStorage = (user) => {
 }
 
 export const logout = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch({
       type: 'CHANGE_USER',
       data: null
