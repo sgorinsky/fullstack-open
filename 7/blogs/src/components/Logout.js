@@ -21,6 +21,8 @@ const Logout = ({ user, logout, clearErrorNotification, setErrorNotification }) 
                 //      from this timeout and removing all things tied to user state, in App.js, there is still no notification
                 //      rendered after logout
                 logout()
+                // I'm beginning to suspect it's an redux-thunk async middleware issue because even if I take out 
+                //      clearErrorNotification(), the Notification still doesn't appear
                 clearErrorNotification()
             }, 1500)
         }

@@ -12,8 +12,8 @@ const CommentForm = ({ blog, makeComment, clearAllNotifications, setSuccessNotif
     try {
       const comments = blog.comments ? blog.comments.concat(comment.input.value) : [comment.input.value]
       await makeComment(blog.id, { comments })
-      setSuccessNotification('Comment posted!')
       comment.reset()
+      setSuccessNotification('New comment posted!')
     } catch(error) {
       console.error(error)
       setErrorNotification('Error posting comment')
