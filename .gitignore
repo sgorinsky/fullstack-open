@@ -1,3 +1,4 @@
 *.sh
 *.env
 node_modules
+*constants
