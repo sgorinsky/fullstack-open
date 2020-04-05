@@ -29,7 +29,7 @@ const Logout = ({ user, logout, clearErrorNotification, setErrorNotification }) 
     }
 
     return (
-        <button className='btn btn-warning m-1' onClick={handleClick}> are you sure? </button>
+        <button className='btn btn-danger m-1' onClick={handleClick}> are you sure? </button>
     )
 }
 
