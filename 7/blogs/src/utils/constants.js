@@ -1,3 +1,3 @@
 export default {
-  token: '123'
+  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJuYW1lIjoicm9vdCIsInBhc3N3b3JkIjoiJDJiJDEwJFpoU0hpcGc2b2NrMWVhdU90a0dzQU9JTDFUT1BTRXdQbnNUVVBHemhRdk1aM2YvTm9ZeHNXIiwiaWF0IjoxNTg1ODAzMDQ3fQ.CDXklyQretSeaCRz7NgqvTRoL2yCC3W_sGWELo6zdDw'
 }
