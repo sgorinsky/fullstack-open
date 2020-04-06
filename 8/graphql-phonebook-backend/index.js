@@ -59,6 +59,13 @@ const resolvers = {
     findPerson: (root, args) =>
       persons.find(p => p.name === args.name)
   },
+  Mutation: {
+    addPerson: (root, args) => {
+      const person = { ...args, id: uuid() }
+      persons = persons.concat(person)
+      return person
+    }
+  },
   Person: {
     address: (root) => {
       return { 
