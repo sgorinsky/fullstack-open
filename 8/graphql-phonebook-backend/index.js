@@ -61,7 +61,14 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     personCount: () => persons.length,
-    allPersons: () => persons,
+    allPersons: (root, args) => {
+      if (!args.phone) {
+        return persons
+      }
+      const byPhone = (person) =>
+        args.phone === 'YES' ? person.phone : !person.phone
+      return persons.filter(byPhone)
+    },
     findPerson: (root, args) =>
       persons.find(p => p.name === args.name)
   },
