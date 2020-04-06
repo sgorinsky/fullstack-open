@@ -63,6 +63,27 @@ const typeDefs = gql`
   }
 `
 
+// Possible to name queries as well
+// Here, main query is phoneOwnership while subqueries are named after allPersons(phone: YesNo)
+/*
+query phoneOwnership {
+  havePhone: allPersons(phone: YES){
+    name,
+    address {
+      street,
+      city
+    }
+  }
+  phoneless: allPersons(phone: NO){
+    name,
+    address {
+      street,
+      city
+    }
+  }
+}
+*/
+
 const resolvers = {
   Query: {
     personCount: () => persons.length,
