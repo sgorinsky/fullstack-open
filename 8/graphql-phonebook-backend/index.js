@@ -55,6 +55,11 @@ const typeDefs = gql`
       street: String!
       city: String!
     ): Person
+
+    editPhone(
+      name: String!
+      phone: String!
+    ): Person
   }
 `
 
@@ -82,6 +87,16 @@ const resolvers = {
 
       const person = { ...args, id: uuid() }
       persons = persons.concat(person)
+      return person
+    },
+    editPhone: (root, args) => {
+      if (!args.name || !args.phone) {
+        throw new UserInputError('Must input name and number to edit person\'s phone number', {
+          invalidArgs: {...args}
+        })
+      }
+      persons = persons.map(p => p.name === args.name ? {...p, phone: args.phone} : p)
+      const person = persons.find(p => p.name === args.name)
       return person
     }
   },
