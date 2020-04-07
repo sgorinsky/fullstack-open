@@ -184,6 +184,10 @@ const resolvers = {
         })
       }
       const author = authors.find(a => a.name === args.name)
+      if (!author) {
+        return null
+      }
+
       authors = authors.map(a => author.name === a.name ? {...a, born: author.born} : a)
       return author
     }
