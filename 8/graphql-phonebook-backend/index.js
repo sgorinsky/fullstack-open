@@ -67,14 +67,14 @@ const typeDefs = gql`
 // Here, main query is phoneOwnership while subqueries are named after allPersons(phone: YesNo)
 /*
 query phoneOwnership {
-  havePhone: allPersons(phone: YES){
+  havePhone: allPersons(phone: YES) {
     name,
     address {
       street,
       city
     }
   }
-  phoneless: allPersons(phone: NO){
+  phoneless: allPersons(phone: NO) {
     name,
     address {
       street,
