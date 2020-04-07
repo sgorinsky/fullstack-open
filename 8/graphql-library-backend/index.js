@@ -1,4 +1,5 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql, UserInputError } = require('apollo-server')
+const uuid = require('uuid/v1')
 
 const authors = [
   {
@@ -84,12 +85,38 @@ const books = [
 ]
 
 const typeDefs = gql`
+  type Author {
+    name: String!
+    born: Int
+    id: String!
+  }
+
+  type Book {
+    title: String!
+    published: Int!
+    author: Author!
+    id: String!
+    genres: [String!]!
+  }
+
   type Query {
+    findAuthor(name: String!): Author!
+    allAuthors: [Author!]!
+    findBook(title: String!): Book!
+    allBooks: [Book!]!
   }
 `
 
 const resolvers = {
+  Book: {
+    author: (root) => {
+      return {
+        name: root.name
+      }
+    }
+  },
   Query: {
+    
   }
 }
 
