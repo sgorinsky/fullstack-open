@@ -100,8 +100,11 @@ const typeDefs = gql`
   }
 
   type Query {
+    authorCount: Int!
     findAuthor(name: String!): Author!
     allAuthors: [Author!]!
+
+    bookCount: Int!
     findBook(title: String!): Book!
     allBooks: [Book!]!
   }
@@ -109,6 +112,8 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
+    // Author-related queries
+    authorCount: () => authors.length,
     findAuthor: (root, args) => {
       if (!args.name) {
         throw new UserInputError('Name must be used to search through authors', {
@@ -118,6 +123,9 @@ const resolvers = {
       return authors.find(a => a.name === args.name)
     },
     allAuthors: () => authors,
+
+    // Book-related queries
+    bookCount: () => books.length,
     findBook: (root, args) => {
       if (!args.title) {
         throw new UserInputError('Title needed to search for book', {
