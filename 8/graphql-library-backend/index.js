@@ -108,13 +108,6 @@ const typeDefs = gql`
 `
 
 const resolvers = {
-  Book: {
-    author: (root) => {
-      return {
-        name: root.name
-      }
-    }
-  },
   Query: {
     findAuthor: (root, args) => {
       if (!args.name) {
@@ -131,9 +124,22 @@ const resolvers = {
           invalidArgs: args.title
         })
       }
-      return books.find(b => b.title.includes(args.title) || args.title.includes(b.title))
+      const book = books.find(b => b.title === args.title)
+      if (!book) {
+        throw new UserInputError('No book found', {
+          invalidArgs: args.title
+        })
+      }
+      return book
     },
     allBooks: () => books
+  },
+  Book: {
+    author: (root) => {
+      return {
+        name: root.author
+      }
+    }
   }
 }
 
