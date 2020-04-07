@@ -1,7 +1,7 @@
 const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const uuid = require('uuid/v1')
 
-const authors = [
+let authors = [
   {
     name: 'Robert Martin',
     id: "afa51ab0-344d-11e9-a414-719c6709cf3e",
@@ -32,7 +32,7 @@ const authors = [
  * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
 */
 
-const books = [
+let books = [
   {
     title: 'Clean Code',
     published: 2008,
@@ -109,6 +109,18 @@ const typeDefs = gql`
     findBook(title: String!): Book!
     allBooks(author: String, genre: String): [Book!]!
   }
+
+  type Mutation {
+    addAuthor(
+      name: String!
+      born: Int
+    ): Author
+
+    editAuthor(
+      name: String!
+      born: Int!
+    ): Author
+  }
 `
 
 const resolvers = {
@@ -152,6 +164,31 @@ const resolvers = {
       return books
     }
   },
+
+  Mutation: {
+    addAuthor: (root, args) => {
+      if (authors.find(a => a.name === args.name)) {
+        return UserInputError('Author already exists', {
+          invalidArgs: args.name
+        })
+      }
+
+      const author = {...args, id: uuid()}
+      authors = authors.concat(author)
+      return author
+    },
+    editAuthor: (root, args) => {
+      if (!args.name || !args.born) {
+        throw new UserInputError('Need name and born fields to edit author\'s birthdate', {
+          invalidArgs: {...args}
+        })
+      }
+      const author = authors.find(a => a.name === args.name)
+      authors = authors.map(a => author.name === a.name ? {...a, born: author.born} : a)
+      return author
+    }
+  },
+
   Author: {
     bookCount: (root) => {
       let count = 0;
@@ -163,6 +200,7 @@ const resolvers = {
       return count
     }
   },
+
   Book: {
     author: (root) => {
       return {
