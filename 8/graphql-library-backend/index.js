@@ -116,7 +116,24 @@ const resolvers = {
     }
   },
   Query: {
-    
+    findAuthor: (root, args) => {
+      if (!args.name) {
+        throw new UserInputError('Name must be used to search through authors', {
+          invalidArgs: args.name
+        })
+      }
+      return authors.find(a => a.name === args.name)
+    },
+    allAuthors: () => authors,
+    findBook: (root, args) => {
+      if (!args.title) {
+        throw new UserInputError('Title needed to search for book', {
+          invalidArgs: args.title
+        })
+      }
+      return books.find(b => b.title.includes(args.title) || args.title.includes(b.title))
+    },
+    allBooks: () => books
   }
 }
 
