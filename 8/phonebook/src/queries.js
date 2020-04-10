@@ -43,9 +43,9 @@ mutation createPerson($name: String!, $street: String!, $city: String!, $phone: 
 }
 `
 
-export const EDIT_NUMBER = gql`
-mutation editNumber($name: String!, $phone: String!) {
-  editNumber(name: $name, phone: $phone)  {
+export const EDIT_PHONE = gql`
+mutation editPhone($name: String!, $phone: String!) {
+  editPhone(name: $name, phone: $phone)  {
     name
     phone
     address {
