@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { ADD_AUTHOR, ALL_AUTHORS } from '../queries'
+import { ADD_AUTHOR, EDIT_AUTHOR, ALL_AUTHORS } from '../queries'
 
-const AuthorForm = ({ setError }) => {
+const AuthorForm = ({ isAddAuthor = true, setError }) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
+
+  const [editAuthor] = useMutation(EDIT_AUTHOR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    }
+  })
 
   const [addAuthor] = useMutation(ADD_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
@@ -16,7 +23,11 @@ const AuthorForm = ({ setError }) => {
   const submit = async (event) => {
     event.preventDefault()
     const birthdate = Number(born)
-    addAuthor({ variables: { name, born: birthdate } })
+    if (isAddAuthor) {
+      addAuthor({ variables: { name, born: birthdate } })
+    } else {
+      editAuthor({ variables: { name, born: birthdate } })
+    }
 
     setName('')
     setBorn('')
@@ -24,7 +35,7 @@ const AuthorForm = ({ setError }) => {
 
   return (
     <div>
-      <h2>create new</h2>
+      <h2>{isAddAuthor ? 'create new' : 'change author birthdate'}</h2>
       <form onSubmit={submit}>
         <div>
           name 
@@ -38,7 +49,7 @@ const AuthorForm = ({ setError }) => {
             onChange={({ target }) => setBorn(target.value)}
           />
         </div>
-        <button type='submit'>add!</button>
+        <button type='submit'>{isAddAuthor ? 'add!' : 'edit!'}</button>
       </form>
     </div>
   )
