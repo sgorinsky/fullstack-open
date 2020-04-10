@@ -6,6 +6,7 @@ export const ALL_AUTHORS = gql`
   allAuthors {
     name,
     born,
+    bookCount,
     id
   }
 }
@@ -16,6 +17,7 @@ query findAuthor($name: String!) {
   findAuthor(name: $name) {
     name,
     born,
+    bookCount,
     id
   }
 }
@@ -26,6 +28,7 @@ mutation addAuthor($name: String!, $born: Int!) {
   addAuthor(name: $name, born: $born) {
     name,
     born,
+    bookCount,
     id
   }
 }
@@ -36,6 +39,7 @@ mutation editAuthor($name: String!, $born: Int!) {
   editAuthor(name: $name, born: $born) {
     name,
     born,
+    bookCount,
     id
   }
 }
