@@ -51,7 +51,7 @@ export const ALL_BOOKS = gql`
   allBooks {
     title
     author,
-    genre,
+    genres,
     id
   }
 }
@@ -62,7 +62,7 @@ query findBook($title: String!) {
   findAuthor(title: $title) {
     title,
     author,
-    genre,
+    genres,
     id
   }
 }

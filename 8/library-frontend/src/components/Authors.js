@@ -16,7 +16,6 @@ const Authors = ({ authors }) => {
     <div>
       <h2>Authors</h2>
       <table>
-
         <thead>
           <tr>
             <th scope='col'></th>
