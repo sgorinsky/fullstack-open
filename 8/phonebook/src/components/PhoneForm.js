@@ -1,18 +1,20 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
 
-import { EDIT_NUMBER, ALL_PERSONS } from '../queries'
+import { EDIT_NUMBER } from '../queries'
 
 const PhoneForm = () => {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
 
-  const [changeNumber] = useMutation(EDIT_NUMBER)
+  const [changeNumber] = useMutation(EDIT_NUMBER, {
+    onError: () => console.log('We seem to have an error')
+  })
 
   const submit = async (event) => {
     event.preventDefault()
 
-    changeNumber({ variables: { name, phone } })
+    changeNumber({ variables: { name, phone } },)
 
     setName('')
     setPhone('')
@@ -24,7 +26,8 @@ const PhoneForm = () => {
 
       <form onSubmit={submit}>
         <div>
-          name <input
+          name 
+          <input
             value={name}
             onChange={({ target }) => setName(target.value)}
           />
