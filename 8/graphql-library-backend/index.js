@@ -185,7 +185,9 @@ const resolvers = {
       }
       const author = authors.find(a => a.name === args.name)
       if (!author) {
-        return null
+        throw new UserInputError('Author doesn\'t exist in database', {
+          invalidArgs: { ...args }
+        })
       }
 
       authors = authors.map(a => author.name === a.name ? {...a, born: author.born} : a)
