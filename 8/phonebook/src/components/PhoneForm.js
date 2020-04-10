@@ -8,13 +8,14 @@ const PhoneForm = ({ setError }) => {
   const [phone, setPhone] = useState('')
 
   const [changeNumber, result] = useMutation(EDIT_PHONE, {
-    onError: () => console.log('We seem to have an error')
+    onError: (error) => {
+      setError(error.graphQLErrors[0].message)
+    }
   })
 
-
   useEffect(() => {
-    if (result.data && result.data.editNumber === null) {
-      setError('person not found')
+    if (result.data && !result.data.editNumber) {
+      setError('Person not found')
     }
   }, [result.data])
 
