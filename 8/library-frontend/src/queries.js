@@ -49,10 +49,12 @@ mutation editAuthor($name: String!, $born: Int!) {
 export const ALL_BOOKS = gql`
 {
   allBooks {
-    title
-    author,
+    title,
+    published,
     genres,
-    id
+    author {
+      name
+    }
   }
 }
 `

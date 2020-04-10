@@ -4,21 +4,25 @@ import { useQuery } from '@apollo/client'
 import Authors from './components/Authors'
 import Books from './components/Books'
 
-import { ALL_AUTHORS } from './queries';
+import { ALL_AUTHORS, ALL_BOOKS } from './queries';
 
 const App = () => {
-  const result = useQuery(ALL_AUTHORS)
-  const [view, setView] = useState(false)
+  const authors = useQuery(ALL_AUTHORS)
+  const books = useQuery(ALL_BOOKS)
+  const [view, setView] = useState(true)
 
-  if (result.loading) {
+  if (authors.loading || books.loading) {
     return <div>loading...</div>
   }
 
   return (
     <div>
-      <button onClick={() => setView(false)}>Authors</button>
-      <button onClick={() => setView(true)}>Books</button>
-      {!view ? <Authors authors={result.data.allAuthors} /> : null}
+      <button onClick={() => setView(true)}>Authors</button>
+      <button onClick={() => setView(false)}>Books</button>
+      {view ? 
+        <Authors authors={authors.data.allAuthors} /> 
+      : <Books books={books.data.allBooks} />
+      }
     </div>
   )
 }
