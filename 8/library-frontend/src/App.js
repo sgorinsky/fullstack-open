@@ -6,6 +6,7 @@ import { ALL_AUTHORS } from './queries';
 const App = () => {
   const result = useQuery(ALL_AUTHORS)
   const [view, setView] = useState(false)
+
   if (result.loading) {
     return <div>loading...</div>
   }

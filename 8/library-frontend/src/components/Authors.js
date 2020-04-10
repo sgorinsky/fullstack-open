@@ -17,25 +17,28 @@ const Authors = ({ authors }) => {
       <h2>Authors</h2>
       <table>
 
-        <tr>
-          <th scope='col'></th>
-          <th scope='col'>born</th>
-          <th scope='col'>books</th>
-        </tr>
+        <thead>
+          <tr>
+            <th scope='col'></th>
+            <th scope='col'>born</th>
+            <th scope='col'>books</th>
+          </tr>
+        </thead>
         {authors.map(a => {
-          console.log(a)
           return (
-            <tr key={a.name}>
-              <td>
-                {a.name}
-              </td>
-              <td>
-                {a.born}
-              </td>
-              <td>
-                {a.bookCount}
-              </td>
-            </tr>
+            <tbody key={a.name}>
+              <tr>
+                <td>
+                  {a.name}
+                </td>
+                <td>
+                  {a.born}
+                </td>
+                <td>
+                  {a.bookCount}
+                </td>
+              </tr>
+            </tbody>
           )
         }
       )}
