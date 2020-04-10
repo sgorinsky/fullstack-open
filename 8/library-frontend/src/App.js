@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/client'
 
 import Authors from './components/Authors'
+import AuthorForm from './components/AuthorForm'
 import Books from './components/Books'
 import Notify from './components/Notify'
 
@@ -30,6 +31,7 @@ const App = () => {
         <Authors authors={authors.data.allAuthors} /> 
       : <Books books={books.data.allBooks} />
       }
+      <AuthorForm setError={setErrorMessage} />
     </div>
   )
 }

@@ -28,7 +28,6 @@ mutation addAuthor($name: String!, $born: Int!) {
   addAuthor(name: $name, born: $born) {
     name,
     born,
-    bookCount,
     id
   }
 }

@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client'
-import { CREATE_AUTHOR, ALL_AUTHORS } from '../queries'
+import { ADD_AUTHOR, ALL_AUTHORS } from '../queries'
 
 const AuthorForm = ({ setError }) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
 
-  const [createAuthor] = useMutation(CREATE_AUTHOR, {
+  const [addAuthor] = useMutation(ADD_AUTHOR, {
     refetchQueries: [{ query: ALL_AUTHORS }],
     onError: (error) => {
       setError(error.graphQLErrors[0].message)
@@ -15,8 +15,8 @@ const AuthorForm = ({ setError }) => {
 
   const submit = async (event) => {
     event.preventDefault()
-
-    createAuthor({ variables: { name, born } })
+    const birthdate = Number(born)
+    addAuthor({ variables: { name, born: birthdate } })
 
     setName('')
     setBorn('')
