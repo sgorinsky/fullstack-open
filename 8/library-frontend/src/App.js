@@ -28,10 +28,10 @@ const App = () => {
       <button onClick={() => setView(true)}>Authors</button>
       <button onClick={() => setView(false)}>Books</button>
       {view ? 
-        <>
+        <div>
           <Authors authors={authors.data.allAuthors} />
           <AuthorForm isAddAuthor={false} setError={setErrorMessage} />
-        </>
+        </div>
       : <Books books={books.data.allBooks} />
       }
       <AuthorForm setError={setErrorMessage} />
