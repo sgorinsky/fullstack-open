@@ -1,10 +1,9 @@
-import { gql } from '@apollo-client'
-
+import { gql } from '@apollo/client'
 
 // AUTHORS
-export const ALL_AUTHOR = gql`
+export const ALL_AUTHORS = gql`
 {
-  allAuthor {
+  allAuthors {
     name,
     born,
     id
@@ -33,7 +32,7 @@ mutation addAuthor($name: String!, $born: Int!) {
 `
 
 export const EDIT_AUTHOR = gql`
-mutation editAuthor($name: String!, born: Int!) {
+mutation editAuthor($name: String!, $born: Int!) {
   editAuthor(name: $name, born: $born) {
     name,
     born,
