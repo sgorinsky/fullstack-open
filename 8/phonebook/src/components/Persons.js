@@ -20,6 +20,7 @@ const Persons = ({ persons }) => {
   const [getPerson, result] = useLazyQuery(FIND_PERSON)
 
   const showPerson = (name) => {
+    console.log(name)
     getPerson({ variables: { nameToSearch: name } })
   }
 
