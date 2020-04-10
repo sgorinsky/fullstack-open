@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useLazyQuery } from '@apollo/client'
 
-import AuthorForm from './AuthorForm'
 import { FIND_AUTHOR } from '../queries'
 
-const Authors = ({ authors, setError}) => {
+const Authors = ({ authors }) => {
   const [author, setAuthor] = useState(null)
   const [getAuthor, result] = useLazyQuery(FIND_AUTHOR)
 
@@ -44,7 +43,6 @@ const Authors = ({ authors, setError}) => {
         }
       )}
       </table>
-      <AuthorForm isAddAuthor={false} setError={setError} />
     </div>
   )
 }

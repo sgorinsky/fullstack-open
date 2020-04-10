@@ -12,10 +12,10 @@ const App = () => {
   const [view, setView] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const authors = useQuery(ALL_AUTHORS, {
-    pollInterval: 3000
+    pollInterval: 2000
   })
   const books = useQuery(ALL_BOOKS, {
-    pollInterval: 3000,
+    pollInterval: 2000,
   })
 
   if (authors.loading || books.loading) {
@@ -28,7 +28,10 @@ const App = () => {
       <button onClick={() => setView(true)}>Authors</button>
       <button onClick={() => setView(false)}>Books</button>
       {view ? 
-        <Authors authors={authors.data.allAuthors} /> 
+        <>
+          <Authors authors={authors.data.allAuthors} />
+          <AuthorForm isAddAuthor={false} setError={setErrorMessage} />
+        </>
       : <Books books={books.data.allBooks} />
       }
       <AuthorForm setError={setErrorMessage} />
