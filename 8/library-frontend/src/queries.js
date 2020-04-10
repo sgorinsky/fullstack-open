@@ -1,5 +1,7 @@
 import { gql } from '@apollo-client'
 
+
+// AUTHORS
 export const ALL_AUTHOR = gql`
 {
   allAuthor {
@@ -40,23 +42,25 @@ mutation editAuthor($name: String!, born: Int!) {
 }
 `
 
-
-/*
-type Query {
-  authorCount: Int!
-    findAuthor(name: String!): Author!
-allAuthors: [Author!]!
-
-bookCount: Int!
-findBook(title: String!): Book!
-allBooks(author: String, genre: String): [Book!]!
+// BOOKS
+export const ALL_BOOKS = gql`
+{
+  allBooks {
+    title
+    author,
+    genre,
+    id
   }
-
-type Mutation {
-
-  editAuthor(
-    name: String!
-      born: Int!
-  ): Author
 }
-*/
+`
+
+export const FIND_BOOK = gql`
+query findBook($title: String!) {
+  findAuthor(title: $title) {
+    title,
+    author,
+    genre,
+    id
+  }
+}
+`
