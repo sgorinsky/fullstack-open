@@ -26,7 +26,7 @@ const Books = ({ books }) => {
         </thead>
         {books.map(b => {
           return (
-            <tbody key={b.name}>
+            <tbody key={b.title}>
               <tr>
                 <td>
                   {b.title}

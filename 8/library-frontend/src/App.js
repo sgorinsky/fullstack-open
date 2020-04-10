@@ -7,8 +7,12 @@ import Books from './components/Books'
 import { ALL_AUTHORS, ALL_BOOKS } from './queries';
 
 const App = () => {
-  const authors = useQuery(ALL_AUTHORS)
-  const books = useQuery(ALL_BOOKS)
+  const authors = useQuery(ALL_AUTHORS, {
+    pollInterval: 3000
+  })
+  const books = useQuery(ALL_BOOKS, {
+    pollInterval: 3000,
+  })
   const [view, setView] = useState(true)
 
   if (authors.loading || books.loading) {
