@@ -17,7 +17,7 @@ const PhoneForm = ({ setError }) => {
     if (result.data && !result.data.editNumber) {
       setError('Person not found')
     }
-  }, [result.data])
+  }, [result.data]) // eslint-disable-line 
 
   const submit = async (event) => {
     event.preventDefault()
