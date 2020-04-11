@@ -6,7 +6,9 @@ const BookForm = ({ isAddBook = true, setError }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [published, setPublished] = useState('')
+  
   const [genres, setGenres] = useState([])
+  const [tempGenre, setTempGenre] = useState('')
 
   const [editBook] = useMutation(EDIT_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
@@ -20,6 +22,17 @@ const BookForm = ({ isAddBook = true, setError }) => {
       setError(error.graphQLErrors[0].message)
     }
   })
+
+
+  const addGenre = () => {
+    if (tempGenre.length > 0) {
+      setGenres(genres.concat(tempGenre))
+      setTempGenre('')
+    }
+  }
+  const removeGenre = () => {
+    setGenres(genres.slice(0, genres.length-1))
+  }
 
   const submit = async (event) => {
     event.preventDefault()
@@ -50,7 +63,7 @@ const BookForm = ({ isAddBook = true, setError }) => {
 
   return (
     <div>
-      <h2>{isAddBook ? 'create new' : 'change author published'}</h2>
+      <h2>{isAddBook ? 'create new book' : 'edit book by title'}</h2>
       <form onSubmit={submit}>
         <div>
           title
@@ -71,20 +84,19 @@ const BookForm = ({ isAddBook = true, setError }) => {
           />
         </div>
         <div>
-          <button onClick={() => React.createElement('input')}>add genre</button>
+          genre
+          <input value={tempGenre}
+            onChange={({ target }) => setTempGenre(target.value)}
+          />
+          <button type='button' onClick={addGenre}>add genre</button>
+          <button type='button' onClick={removeGenre}>remove genre</button>
+        </div>
+        <div>
+          current genres: {genres.length ? genres.join(', ') : 'none'}
         </div>
         <button type='submit'>{isAddBook ? 'add!' : 'edit!'}</button>
       </form>
     </div>
-  )
-}
-
-const GenreInput = () => {
-  const [genre, setGenre] = useState('')
-  return (
-    <input value={genre} onChange={({ target }) => setGenre(target.value)}> 
-      genres 
-    </input> 
   )
 }
 
