@@ -1,17 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { useLazyQuery } from '@apollo/client'
-import { FIND_BOOK } from '../queries'
+import React from 'react'
 
 const Books = ({ books }) => {
-  const [book, setBook] = useState(null)
-  const [getBook, result] = useLazyQuery(FIND_BOOK)
-
-  useEffect(() => {
-    if (result.data) {
-      setBook(result.data.findBook)
-    }
-  }, [result.data])
-
   return (
     <div>
       <h2>Books</h2>
@@ -42,8 +31,7 @@ const Books = ({ books }) => {
                 </td>
               </tr>
             </tbody>
-          )
-        }
+          )}
         )}
       </table>
     </div>
