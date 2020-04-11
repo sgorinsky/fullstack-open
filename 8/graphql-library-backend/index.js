@@ -125,7 +125,7 @@ const typeDefs = gql`
 
     editBook (
       title: String!
-      published: String
+      published: Int
       author: String
       genres: [String]
     ): Book
