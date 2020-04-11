@@ -122,6 +122,13 @@ const typeDefs = gql`
       author: String!
       genres: [String!]!
     ): Book
+
+    editBook (
+      title: String!
+      published: String
+      author: String
+      genres: [String]
+    ): Book
   }
 `
 
@@ -179,7 +186,6 @@ const resolvers = {
       authors = authors.concat(author)
       return author
     },
-
     editAuthor: (root, args) => {
       if (!args.name || !args.born) {
         throw new UserInputError('Need name and born fields to edit author\'s birthdate', {
@@ -199,7 +205,9 @@ const resolvers = {
 
     addBook: (root, args) => {
       if (!(args.title && args.author && args.genres && args.published)) {
-        throw new UserInputError('Field missing')
+        throw new UserInputError('Field missing', {
+          invalidArgs: { ...args }
+        })
       }
 
       const book = {
@@ -211,6 +219,25 @@ const resolvers = {
       }
 
       books = books.concat(book)
+      return book
+    },
+    editBook: (root, args) => {
+      if (!args.title) {
+        throw new UserInputError('Title required to edit book fields', {
+          invalidArgs: args.title
+        })
+      }
+
+      let book = books.find(b => b.title === args.title)
+      if (!book) {
+        throw new UserInputError('Title doesn\'t match any books in library')
+      }
+
+      if (args.published) book.published = args.published
+      if (args.genres) book.genres = args.genres
+      if (args.author) book.author = args.author
+
+      books = books.map(b => b.title === book.title ? book : b)
       return book
     }
   },
