@@ -74,7 +74,7 @@ query findBook($title: String!) {
 
 export const ADD_BOOK = gql`
 mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
-  addAuthor(title: $title, published: $published, author: $author, genres: $genres) {
+  addBook(title: $title, published: $published, author: $author, genres: $genres) {
     title,
     published,
     author {
@@ -88,7 +88,7 @@ mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [
 
 export const EDIT_BOOK = gql`
 mutation editBook($title: String!, $published: Int, $author: String, $genres: [String]) {
-  editAuthor(title: $title, published: $published, author: $author, genres: $genres) {
+  editBook(title: $title, published: $published, author: $author, genres: $genres) {
     title,
     published,
     author {

@@ -13,12 +13,14 @@ const BookForm = ({ isAddBook = true, setError }) => {
   const [editBook] = useMutation(EDIT_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
     onError: (error) => {
+      console.log(error)
       setError(error.graphQLErrors[0].message)
     }
   })
   const [addBook] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
     onError: (error) => {
+      console.log(error)
       setError(error.graphQLErrors[0].message)
     }
   })
@@ -36,7 +38,12 @@ const BookForm = ({ isAddBook = true, setError }) => {
 
   const submit = async (event) => {
     event.preventDefault()
+  
     const publishedInt = Number(published)
+    console.log(genres)
+    console.log(author)
+    console.log(title)
+    console.log(typeof publishedInt)
     if (isAddBook) {
       addBook({
         variables: {
