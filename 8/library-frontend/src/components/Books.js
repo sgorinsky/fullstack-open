@@ -38,7 +38,7 @@ const Books = ({ books }) => {
                   {b.author.name}
                 </td>
                 <td>
-                  {b.genres}
+                  {b.genres.join(', ')}
                 </td>
               </tr>
             </tbody>
