@@ -35,7 +35,7 @@ const AuthorForm = ({ isAddAuthor = true, setError }) => {
 
   return (
     <div>
-      <h2>{isAddAuthor ? 'create new' : 'change author birthdate'}</h2>
+      <h2>{isAddAuthor ? 'create new author' : 'edit author birthdate'}</h2>
       <form onSubmit={submit}>
         <div>
           name 

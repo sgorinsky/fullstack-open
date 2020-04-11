@@ -38,12 +38,8 @@ const BookForm = ({ isAddBook = true, setError }) => {
 
   const submit = async (event) => {
     event.preventDefault()
-  
     const publishedInt = Number(published)
-    console.log(genres)
-    console.log(author)
-    console.log(title)
-    console.log(typeof publishedInt)
+
     if (isAddBook) {
       addBook({
         variables: {

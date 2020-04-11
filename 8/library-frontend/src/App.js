@@ -32,13 +32,14 @@ const App = () => {
         <div>
           <Authors authors={authors.data.allAuthors} />
           <AuthorForm isAddAuthor={false} setError={setErrorMessage} />
+          <AuthorForm setError={setErrorMessage} />
         </div>
       : <div>
           <Books books={books.data.allBooks} />
-          <BookForm />
+          <BookForm isAddBook={false} setError={setErrorMessage} />
+          <BookForm setError={setErrorMessage} />
         </div>
       }
-      <AuthorForm setError={setErrorMessage} />
     </div>
   )
 }
