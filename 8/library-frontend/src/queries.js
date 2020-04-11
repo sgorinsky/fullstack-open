@@ -54,7 +54,8 @@ export const ALL_BOOKS = gql`
     genres,
     author {
       name
-    }
+    },
+    authorCount
   }
 }
 `
@@ -65,7 +66,38 @@ query findBook($title: String!) {
     title,
     author,
     genres,
-    id
+    id,
+    authorCount
+  }
+}
+`
+
+export const ADD_BOOK = gql`
+mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
+  addAuthor(title: $title, published: $published, author: $author, genres: $genres) {
+    title,
+    published,
+    author {
+      name
+    },
+    genres,
+    id,
+    authorCount
+  }
+}
+`
+
+export const EDIT_BOOK = gql`
+mutation editBook($title: String!, $published: Int, $author: String, $genres: [String]) {
+  editAuthor(title: $title, published: $published, author: $author, genres: $genres) {
+    title,
+    published,
+    author {
+      name
+    },
+    genres,
+    id,
+    authorCount
   }
 }
 `
