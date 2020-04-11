@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client'
 import Authors from './components/Authors'
 import AuthorForm from './components/AuthorForm'
 import Books from './components/Books'
+import BookForm from './components/BookForm'
 import Notify from './components/Notify'
 
 import { ALL_AUTHORS, ALL_BOOKS } from './queries';
@@ -32,7 +33,10 @@ const App = () => {
           <Authors authors={authors.data.allAuthors} />
           <AuthorForm isAddAuthor={false} setError={setErrorMessage} />
         </div>
-      : <Books books={books.data.allBooks} />
+      : <div>
+          <Books books={books.data.allBooks} />
+          <BookForm />
+        </div>
       }
       <AuthorForm setError={setErrorMessage} />
     </div>

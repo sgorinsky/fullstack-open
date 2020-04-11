@@ -54,8 +54,7 @@ export const ALL_BOOKS = gql`
     genres,
     author {
       name
-    },
-    authorCount
+    }
   }
 }
 `
@@ -64,10 +63,11 @@ export const FIND_BOOK = gql`
 query findBook($title: String!) {
   findAuthor(title: $title) {
     title,
-    author,
+    author {
+      name
+    },
     genres,
-    id,
-    authorCount
+    id
   }
 }
 `
@@ -81,8 +81,7 @@ mutation addBook($title: String!, $published: Int!, $author: String!, $genres: [
       name
     },
     genres,
-    id,
-    authorCount
+    id
   }
 }
 `
@@ -96,8 +95,7 @@ mutation editBook($title: String!, $published: Int, $author: String, $genres: [S
       name
     },
     genres,
-    id,
-    authorCount
+    id
   }
 }
 `

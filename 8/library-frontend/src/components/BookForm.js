@@ -60,7 +60,7 @@ const BookForm = ({ isAddBook = true, setError }) => {
         </div>
         <div>
           author
-          <input value={published}
+          <input value={author}
             onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
@@ -71,14 +71,20 @@ const BookForm = ({ isAddBook = true, setError }) => {
           />
         </div>
         <div>
-          genres
-          <input value={published}
-            onChange={({ target }) => setGenres(target.value)}
-          />
+          <button onClick={() => React.createElement('input')}>add genre</button>
         </div>
         <button type='submit'>{isAddBook ? 'add!' : 'edit!'}</button>
       </form>
     </div>
+  )
+}
+
+const GenreInput = () => {
+  const [genre, setGenre] = useState('')
+  return (
+    <input value={genre} onChange={({ target }) => setGenre(target.value)}> 
+      genres 
+    </input> 
   )
 }
 
