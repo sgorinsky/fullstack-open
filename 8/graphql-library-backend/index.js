@@ -116,10 +116,10 @@ const typeDefs = gql`
       born: Int!
     ): Author
 
-    addBook (
+    addBook(
       title: String!
       published: Int!
-      author: Author!
+      author: String!
       genres: [String!]!
     ): Book
   }
@@ -206,10 +206,11 @@ const resolvers = {
         title: args.title,
         author: args.author,
         genres: args.genres,
-        published: args.published
+        published: args.published,
+        id: uuid()
       }
 
-      books.concat(book)
+      books = books.concat(book)
       return book
     }
   },
