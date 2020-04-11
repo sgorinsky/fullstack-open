@@ -27,11 +27,6 @@ let authors = [
   },
 ]
 
-/*
- * Saattaisi olla järkevämpää assosioida kirja ja sen tekijä tallettamalla kirjan yhteyteen tekijän nimen sijaan tekijän id
- * Yksinkertaisuuden vuoksi tallennamme kuitenkin kirjan yhteyteen tekijän nimen
-*/
-
 let books = [
   {
     title: 'Clean Code',
@@ -120,6 +115,13 @@ const typeDefs = gql`
       name: String!
       born: Int!
     ): Author
+
+    addBook (
+      title: String!
+      published: Int!
+      author: Author!
+      genres: [String!]!
+    ): Book
   }
 `
 
@@ -177,6 +179,7 @@ const resolvers = {
       authors = authors.concat(author)
       return author
     },
+
     editAuthor: (root, args) => {
       if (!args.name || !args.born) {
         throw new UserInputError('Need name and born fields to edit author\'s birthdate', {
@@ -192,6 +195,22 @@ const resolvers = {
         })
       }
       return author
+    },
+
+    addBook: (root, args) => {
+      if (!(args.title && args.author && args.genres && args.published)) {
+        throw new UserInputError('Field missing')
+      }
+
+      const book = {
+        title: args.title,
+        author: args.author,
+        genres: args.genres,
+        published: args.published
+      }
+
+      books.concat(book)
+      return book
     }
   },
 
