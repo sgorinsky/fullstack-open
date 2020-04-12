@@ -159,8 +159,7 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, process.env.SECRET) }
-    },
-    
+    },    
   },
   Person: {
     address: (root) => {
