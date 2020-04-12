@@ -100,7 +100,7 @@ const resolvers = {
       }
       return person
     },
-    editNumber: async (root, args) => {
+    editPhone: async (root, args) => {
       const person = await Person.findOne({ name: args.name })
       person.phone = args.phone
 
