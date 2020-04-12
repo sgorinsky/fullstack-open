@@ -3,7 +3,7 @@ const { ApolloServer, gql, UserInputError } = require('apollo-server')
 
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
-const Person = require('./models/person')
+const Person = require('./models/Person')
 const User = require('./models/User')
 
 mongoose.set('useFindAndModify', false)
@@ -149,7 +149,8 @@ const resolvers = {
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
 
-      if (!user || args.password !== 'secred') {
+      // Not implementing password logic since this app is for gql practice
+      if (!user || args.password !== 'secret') {
         throw new UserInputError("wrong credentials")
       }
 
