@@ -1,7 +1,9 @@
 require('dotenv').config()
 const { ApolloServer, gql, UserInputError } = require('apollo-server')
+
 const mongoose = require('mongoose')
 const Person = require('./models/person')
+const User = require('./models/User')
 
 mongoose.set('useFindAndModify', false)
 
