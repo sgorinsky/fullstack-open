@@ -19,9 +19,14 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
   })
 
 const typeDefs = gql`
-  type Address {
-    street: String!
-    city: String!
+  type User {
+    username: String!
+    friends: [Person!]!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
   }
 
   type Person {
@@ -29,6 +34,11 @@ const typeDefs = gql`
     phone: String
     address: Address!
     id: ID!
+  }
+
+  type Address {
+    street: String!
+    city: String!
   }
 
   enum YesNo {
@@ -54,6 +64,15 @@ const typeDefs = gql`
       name: String!
       phone: String!
     ): Person
+
+    createUser(
+      username: String!
+    ): User
+    
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
 `
 
@@ -114,7 +133,8 @@ const resolvers = {
         })
       }
       return person
-    }
+    },
+    
   },
   Person: {
     address: (root) => {
