@@ -101,6 +101,9 @@ query phoneOwnership {
 
 const resolvers = {
   Query: {
+    me: (root, args, context) => {
+      return context.currentUser
+    },
     personCount: () => Person.collection.countDocuments(),
     allPersons: (root, args) => {
       if (!args.phone) {
