@@ -1,6 +1,7 @@
 require('dotenv').config()
 const { ApolloServer, gql, UserInputError } = require('apollo-server')
 
+const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const Person = require('./models/person')
 const User = require('./models/User')
@@ -47,6 +48,7 @@ const typeDefs = gql`
   }
 
   type Query {
+    me: User
     personCount: Int!
     allPersons(phone: YesNo): [Person!]!
     findPerson(name: String!): Person
@@ -68,7 +70,7 @@ const typeDefs = gql`
     createUser(
       username: String!
     ): User
-    
+
     login(
       username: String!
       password: String!
@@ -133,6 +135,30 @@ const resolvers = {
         })
       }
       return person
+    },
+    createUser: (root, args) => {
+      const user = new User({ username: args.username })
+
+      return user.save()
+        .catch(error => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
+        })
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+
+      if (!user || args.password !== 'secred') {
+        throw new UserInputError("wrong credentials")
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+
+      return { value: jwt.sign(userForToken, process.env.SECRET) }
     },
     
   },
