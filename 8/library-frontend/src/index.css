@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.author-name:hover {
+  cursor: pointer;
+  color: rgba(63, 63, 63, 155);
+}

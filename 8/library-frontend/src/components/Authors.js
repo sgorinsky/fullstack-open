@@ -1,17 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import { useLazyQuery } from '@apollo/client'
-
-import { FIND_AUTHOR } from '../queries'
+import React from 'react'
 
 const Authors = ({ authors }) => {
-  const [author, setAuthor] = useState(null)
-  const [getAuthor, result] = useLazyQuery(FIND_AUTHOR)
-
-  useEffect(() => {
-    if (result.data) {
-      setAuthor(result.data.findAuthor)
-    }
-  }, [result.data])
 
   return (
     <div>
@@ -28,7 +17,7 @@ const Authors = ({ authors }) => {
           return (
             <tbody key={a.name}>
               <tr>
-                <td>
+                <td className='author-name'>
                   {a.name}
                 </td>
                 <td>
