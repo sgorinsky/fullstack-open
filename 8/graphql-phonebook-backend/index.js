@@ -83,7 +83,7 @@ const resolvers = {
       if (!args.phone) {
         return Person.find({})
       }
-      return Person.find({ phone: args.phone })
+      return Person.find({ phone: { $exists: args.phone === 'YES' } })
     },
     findPerson: (root, args) => Person.findOne({ name: args.name })
   },
