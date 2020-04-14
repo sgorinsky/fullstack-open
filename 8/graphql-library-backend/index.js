@@ -123,21 +123,23 @@ const resolvers = {
         })
       }
     },
-    editAuthor: (root, args) => {
-      if (!args.name || !args.born) {
-        throw new UserInputError('Need name and born fields to edit author\'s birthdate', {
-          invalidArgs: {...args}
-        })
-      }
+    editAuthor: async (root, args) => {
+      try {
+        const author = await Author.findOne({ name: args.name })
+        if (!author) {
+          throw new UserInputError('Need name and born fields to edit author\'s birthdate', {
+            invalidArgs: {...args}
+          })
+        }
 
-      authors = authors.map(a => args.name === a.name ? {...a, born: args.born} : a)
-      let author = authors.find(a => a.name === args.name)
-      if (!author) {
-        throw new UserInputError('Author doesn\'t exist in database', {
-          invalidArgs: { ...args }
+        author.born = args.born
+        await author.save()
+        return author
+      } catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
         })
       }
-      return author
     },
 
     addBook: (root, args) => {
