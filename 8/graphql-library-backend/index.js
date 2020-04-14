@@ -80,34 +80,22 @@ const resolvers = {
       }
       return authors.find(a => a.name === args.name)
     },
-    allAuthors: () => authors,
+    allAuthors: async () => await Author.find(),
+    // TODO: add logic for all specific author's books
+    bookCount: () => Book.collection.countDocuments(), 
 
     // Book-related queries
-    bookCount: () => books.length,
-    findBook: (root, args) => {
-      if (!args.title) {
-        throw new UserInputError('Title needed to search for book', {
-          invalidArgs: args.title
+    findBook: async (root, args) => {
+      try {
+        const book = await Book.findOne({ title: args.title })
+        return book
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
         })
       }
-      const book = books.find(b => b.title === args.title)
-      if (!book) {
-        throw new UserInputError('No book found', {
-          invalidArgs: args.title
-        })
-      }
-      return book
     },
-    allBooks: (root, args) => {
-      if (args.author && args.genre) {
-        return books.filter(b => b.author === args.author && b.genres.includes(args.genre))
-      } else if (args.author) {
-        return books.filter(b => b.author === args.author)
-      } else if (args.genre) {
-        return books.filter(b => b.genres.includes(args.genre))
-      }
-      return books
-    }
+    allBooks: async () => await Book.find({})
   },
 
   Mutation: {
