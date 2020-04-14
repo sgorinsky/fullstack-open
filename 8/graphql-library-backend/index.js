@@ -127,12 +127,12 @@ const resolvers = {
       try {
         const author = await Author.findOne({ name: args.name })
         if (!author) {
-          throw new UserInputError('Need name and born fields to edit author\'s birthdate', {
-            invalidArgs: {...args}
+          throw new UserInputError('Author doesn\'t exist with given fields', {
+            invalidArgs: args
           })
         }
-
         author.born = args.born
+
         await author.save()
         return author
       } catch(error) {
@@ -142,23 +142,22 @@ const resolvers = {
       }
     },
 
-    addBook: (root, args) => {
-      if (!(args.title && args.author && args.genres && args.published)) {
-        throw new UserInputError('Field missing', {
-          invalidArgs: { ...args }
+    addBook: async (root, args) => {
+      try {
+        const book = new Book({ ...args })
+        if (!book) {
+          throw new UserInputError('Book doesn\'t exist with given fields', {
+            invalidArgs: args
+          })
+        }
+
+        await book.save()
+        return book
+      } catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
         })
-      }
-
-      const book = {
-        title: args.title,
-        author: args.author,
-        genres: args.genres,
-        published: args.published,
-        id: uuid()
-      }
-
-      books = books.concat(book)
-      return book
+      }      
     },
     editBook: (root, args) => {
       if (!args.title) {
