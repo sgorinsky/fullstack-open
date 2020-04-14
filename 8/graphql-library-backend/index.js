@@ -2,6 +2,7 @@ const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const uuid = require('uuid/v1')
 const Book = require('./models/Book')
 const Author = require('./models/Author')
+
 let authors = [
   {
     name: 'Robert Martin',
@@ -136,7 +137,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     // Author-related queries
-    authorCount: () => authors.length,
+    authorCount: () => Author.collection.countDocuments(),
     findAuthor: (root, args) => {
       if (!args.name) {
         throw new UserInputError('Name must be used to search through authors', {
@@ -176,16 +177,16 @@ const resolvers = {
   },
 
   Mutation: {
-    addAuthor: (root, args) => {
-      if (authors.find(a => a.name === args.name)) {
-        return UserInputError('Author already exists', {
-          invalidArgs: args.name
+    addAuthor: async (root, args) => {
+      const author = new Author({ ...args })
+      try {
+        author.save()
+        return author
+      } catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
         })
       }
-
-      const author = {...args, id: uuid()}
-      authors = authors.concat(author)
-      return author
     },
     editAuthor: (root, args) => {
       if (!args.name || !args.born) {
