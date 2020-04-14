@@ -125,6 +125,7 @@ const resolvers = {
     },
     editAuthor: async (root, args) => {
       try {
+        // may want to include mongoose string matching instead of exact match lookups
         const author = await Author.findOne({ name: args.name })
         if (!author) {
           throw new UserInputError('Author doesn\'t exist with given fields', {
@@ -159,24 +160,27 @@ const resolvers = {
         })
       }      
     },
-    editBook: (root, args) => {
-      if (!args.title) {
-        throw new UserInputError('Title required to edit book fields', {
-          invalidArgs: args.title
+    editBook: async (root, args) => {
+      try {
+        // may want to include mongoose string matching instead of exact match lookups
+        const book = await BookfindOne({ title: args.title })
+        if (!book) {
+          throw new UserInputError('Book with given fields doesn\'t exist', {
+            invalidArgs: args
+          })
+        }
+
+        if (args.published) book.published = args.published
+        if (args.genres) book.genres = args.genres
+        if (args.author) book.author = args.author
+        await book.save()
+        return book
+    
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
         })
       }
-
-      let book = books.find(b => b.title === args.title)
-      if (!book) {
-        throw new UserInputError('Title doesn\'t match any books in library')
-      }
-
-      if (args.published) book.published = args.published
-      if (args.genres) book.genres = args.genres
-      if (args.author) book.author = args.author
-
-      books = books.map(b => b.title === book.title ? book : b)
-      return book
     }
   },
 
