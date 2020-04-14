@@ -175,7 +175,22 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, process.env.SECRET) }
-    },    
+    },
+    addAsFriend: async (root, args, { currentUser }) => {
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
+      }
+      
+      const notFriendAlready = (person) => !currentUser.friends.map(f => f._id).includes(person._id)
+      const person = await Person.findOne({ name: args.name })
+
+      if (notFriendAlready(person)) {
+        currentUser.friends = currentUser.friends.concat(person)
+        await currentUser.save()
+      }
+
+      return currentUser
+    },  
   },
   Person: {
     address: (root) => {
