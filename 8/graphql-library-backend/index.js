@@ -180,8 +180,7 @@ const resolvers = {
     addAuthor: async (root, args) => {
       const author = new Author({ ...args })
       try {
-        author.save()
-        return author
+        await author.save()
       } catch(error) {
         throw new UserInputError(error.message, {
           invalidArgs: args
