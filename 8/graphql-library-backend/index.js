@@ -17,6 +17,16 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
   })
 
 const typeDefs = gql`
+  type User {
+    username: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Author {
     name: String!
     born: Int
