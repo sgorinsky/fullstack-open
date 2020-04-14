@@ -63,7 +63,6 @@ const typeDefs = gql`
     editBook (
       title: String!
       published: Int
-      author: String
       genres: [String]
     ): Book
   }
@@ -173,7 +172,7 @@ const resolvers = {
     editBook: async (root, args) => {
       try {
         // may want to include mongoose string matching instead of exact match lookups
-        const book = await BookfindOne({ title: args.title })
+        const book = await Book.findOne({ title: args.title })
         if (!book) {
           throw new UserInputError('Book with given fields doesn\'t exist', {
             invalidArgs: args
@@ -182,7 +181,7 @@ const resolvers = {
 
         if (args.published) book.published = args.published
         if (args.genres) book.genres = args.genres
-        if (args.author) book.author = args.author
+
         await book.save()
         return book
     
