@@ -145,15 +145,25 @@ const resolvers = {
 
     addBook: async (root, args) => {
       try {
-        const book = new Book({ ...args })
+        // New book must have author
+        let author = await Author.findOne({ name: args.author })
+        // --> author goes in db if not already there
+        if (!author) {
+          author = new Author({ name: args.author })
+          console.log(author)
+          await author.save()
+        }
+
+        // Book can be ref'd by mongoose schema _id now
+        const book = new Book({ ...args, author: author._id })
         if (!book) {
           throw new UserInputError('Book doesn\'t exist with given fields', {
             invalidArgs: args
           })
         }
-
         await book.save()
         return book
+
       } catch(error) {
         throw new UserInputError(error.message, {
           invalidArgs: args
