@@ -23,7 +23,7 @@ const typeDefs = gql`
     username: String!
     favoriteGenre: String!
     id: String!
-    token: Token!
+    token: String!
   }
 
   type Token {
@@ -126,12 +126,12 @@ const resolvers = {
   Mutation: {
     addUser: async (root, args) => {
       try {
-        const User = new User({ ...args })
+        const user = new User({ ...args })
         const token = jwt.sign(User, process.env.SECRET)
-        User.token = token
-        await User.save()
+        user.token = token
+        await user.save()
         
-        return User
+        return user
       } catch(error) {
         throw new UserInputError(error.message, {
           invalidArgs: args
