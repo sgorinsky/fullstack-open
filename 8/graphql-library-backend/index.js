@@ -47,7 +47,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    me: User!
+    me: User
 
     authorCount: Int!
     findAuthor(name: String!): Author!
@@ -100,6 +100,7 @@ const resolvers = {
     // User-related queries
     me: (root, args, context) => {
       console.log(context)
+      return context.currentUser
     },
 
     // Author-related queries
@@ -149,7 +150,7 @@ const resolvers = {
       }
     },
     login: async (root, args) => {
-      // Query format for login
+      // Login format
       /*
       mutation {
         login(username: "username", password: "password") {
@@ -191,7 +192,8 @@ const resolvers = {
       }
     },
 
-    addAuthor: async (root, args) => {
+    addAuthor: async (root, args, context) => {
+
       const author = new Author({ ...args })
       try {
         await author.save()
@@ -305,14 +307,25 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+
+  // Need to provide Query Variabled http header with `bearer ${token}` format to provide context
   context: async ({ req }) => {
-    const auth = req ? req.headers.authorization : null
-    if (auth && auth.toLowerCase().startsWith('bearer ')) {
-      const decodedToken = jwt.verify(
-        auth.substring(7), process.env.SECRET
-      )
-      const currentUser = await User.findById(decodedToken.id)
-      return { currentUser }
+    try {
+      const auth = req ? req.headers.authorization : null
+      if (auth && auth.toLowerCase().startsWith('bearer ')) {
+        const decodedToken = jwt.verify(
+          auth.substring(7), process.env.SECRET
+        )
+
+        // Encoded User is in "_doc" field
+        const currentUser = await User.findById(decodedToken._doc._id)
+        return {
+          currentUser,
+          loggedIn: true
+        }
+      }
+    } catch (error) {
+      throw new Error(error.message)
     }
   },
 })
