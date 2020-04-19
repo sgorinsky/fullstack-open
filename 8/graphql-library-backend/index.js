@@ -2,6 +2,7 @@ require('dotenv').config()
 const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 const Book = require('./models/Book')
 const Author = require('./models/Author')
@@ -60,6 +61,7 @@ const typeDefs = gql`
   type Mutation {
     addUser(
       username: String!
+      password: String!
       favoriteGenre: String!
     ): User
 
@@ -132,7 +134,9 @@ const resolvers = {
     // User-related mutations
     addUser: async (root, args) => {
       try {
-        const user = new User({ ...args })
+        const password = await bcrypt.hash(args.password, Number(args.password))
+        const user = new User({ ...args, password })
+
         const token = jwt.sign({ ...user }, process.env.SECRET) // Must hash json object, not mongoose model
         user.token = token
 
