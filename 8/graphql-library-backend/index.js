@@ -23,7 +23,7 @@ const typeDefs = gql`
     username: String!
     favoriteGenre: String!
     id: String!
-    token: String!
+    token: Token!
   }
 
   type Token {
@@ -127,10 +127,10 @@ const resolvers = {
     addUser: async (root, args) => {
       try {
         const user = new User({ ...args })
-        const token = jwt.sign(User, process.env.SECRET)
+
+        const token = jwt.sign({ ...user }, process.env.SECRET) // Must hash json object, not mongoose model
         user.token = token
         await user.save()
-        
         return user
       } catch(error) {
         throw new UserInputError(error.message, {
@@ -217,6 +217,14 @@ const resolvers = {
         throw new UserInputError(error.message, {
           invalidArgs: args
         })
+      }
+    }
+  },
+
+  User: {
+    token: (root) => {
+      return {
+        value: root.token
       }
     }
   },

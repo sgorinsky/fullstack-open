@@ -10,10 +10,7 @@ const schema = new mongoose.Schema({
     type: String,
     required: true
   },
-  token: {
-    type: String,
-    required: true
-  }
+  token: String
 })
 
 module.exports = mongoose.model('User', schema)
