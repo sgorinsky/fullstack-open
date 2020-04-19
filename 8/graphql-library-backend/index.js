@@ -68,7 +68,7 @@ const typeDefs = gql`
     login(
       username: String!
       password: String!
-    ): User
+    ): Token!
 
     addAuthor(
       name: String!
@@ -174,7 +174,7 @@ const resolvers = {
           })
         }
 
-        return user
+        return { value: token }
 
       } catch(error) {
         throw new UserInputError(error.message, {
