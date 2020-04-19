@@ -207,7 +207,7 @@ const resolvers = {
         })
       }
     },
-    editAuthor: async (root, args) => {
+    editAuthor: async (root, args, context) => {
       try {
         if (!context.currentUser) {
           throw new UserInputError('Must be logged in to edit author')
