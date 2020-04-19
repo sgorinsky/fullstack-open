@@ -9,6 +9,7 @@ import Notify from './components/Notify'
 import { ALL_PERSONS } from './queries'
 
 const App = () => {
+  const [token, setToken] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
   const result = useQuery(ALL_PERSONS, {
