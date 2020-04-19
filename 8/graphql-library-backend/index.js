@@ -99,7 +99,6 @@ const resolvers = {
   Query: {
     // User-related queries
     me: (root, args, context) => {
-      console.log(context)
       return context.currentUser
     },
 
