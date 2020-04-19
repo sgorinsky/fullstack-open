@@ -56,6 +56,11 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    addUser(
+      username: String!
+      favoriteGenre: String!
+    ): User
+
     addAuthor(
       name: String!
       born: Int
