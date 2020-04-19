@@ -149,6 +149,14 @@ const resolvers = {
       }
     },
     login: async (root, args) => {
+      // Query format for login
+      /*
+      mutation {
+        login(username: "username", password: "password") {
+          value
+        }
+      }
+      */
       try {
         const user = await User.findOne({ username: args.username })
         if (!user) {
