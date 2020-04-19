@@ -43,6 +43,8 @@ const typeDefs = gql`
   }
 
   type Query {
+    me: User!
+
     authorCount: Int!
     findAuthor(name: String!): Author!
     allAuthors: [Author!]!
@@ -80,6 +82,11 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
+    // User-related queries
+    me: (root, args, context) => {
+      console.log(context)
+    },
+
     // Author-related queries
     authorCount: () => Author.collection.countDocuments(),
     findAuthor: (root, args) => {
@@ -215,6 +222,16 @@ const resolvers = {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: async ({ req }) => {
+    const auth = req ? req.headers.authorization : null
+    if (auth && auth.toLowerCase().startsWith('bearer ')) {
+      const decodedToken = jwt.verify(
+        auth.substring(7), process.env.SECRET
+      )
+      const currentUser = await User.findById(decodedToken.id).populate('friends')
+      return { currentUser }
+    }
+  },
 })
 
 server.listen().then(({ url }) => {
