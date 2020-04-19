@@ -1,6 +1,7 @@
 require('dotenv').config()
 const { ApolloServer, gql, UserInputError } = require('apollo-server')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 
 const Book = require('./models/Book')
 const Author = require('./models/Author')
@@ -22,6 +23,7 @@ const typeDefs = gql`
     username: String!
     favoriteGenre: String!
     id: String!
+    token: Token!
   }
 
   type Token {
@@ -125,6 +127,8 @@ const resolvers = {
     addUser: async (root, args) => {
       try {
         const User = new User({ ...args })
+        const token = jwt.sign(User, process.env.SECRET)
+        User.token = token
         await User.save()
         
         return User
