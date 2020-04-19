@@ -134,7 +134,7 @@ const resolvers = {
     // User-related mutations
     addUser: async (root, args) => {
       try {
-        const password = await bcrypt.hash(args.password, Number(args.password))
+        const password = await bcrypt.hash(args.password, Number(process.env.SALT_ROUNDS))
         const user = new User({ ...args, password })
 
         const token = jwt.sign({ ...user }, process.env.SECRET) // Must hash json object, not mongoose model
