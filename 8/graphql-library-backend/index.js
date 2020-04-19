@@ -150,7 +150,31 @@ const resolvers = {
     },
     login: async (root, args) => {
       try {
-        const user = await user.find({ username: args.username })
+        const user = await User.findOne({ username: args.username })
+        if (!user) {
+          throw new UserInputError('Incorrect username', {
+            invalidArgs: args.username
+          })
+        }
+        const isCorrectPass = await bcrypt.compare(args.pass, user.password)
+        if (!isCorrectPass) {
+          throw new UserInputError('Incorrect password', {
+            invalidArgs: args.password
+          })
+        }
+
+        // Something wrong with verify method of token
+        const token = user.token
+        const decodedToken = jwt.verify(token, process.env.SECRET)
+
+        if (typeof decodedToken !== 'object') {
+          throw new UserInputError('Something went wrong, please try again', {
+            invalidArgs: args
+          })
+        }
+
+        return user
+        
       } catch(error) {
         throw new UserInputError(error.message, {
           invalidArgs: args
