@@ -63,6 +63,11 @@ const typeDefs = gql`
       favoriteGenre: String!
     ): User
 
+    login(
+      username: String!
+      password: String!
+    ): User
+
     addAuthor(
       name: String!
       born: Int
@@ -124,14 +129,24 @@ const resolvers = {
   },
 
   Mutation: {
+    // User-related mutations
     addUser: async (root, args) => {
       try {
         const user = new User({ ...args })
-
         const token = jwt.sign({ ...user }, process.env.SECRET) // Must hash json object, not mongoose model
         user.token = token
+
         await user.save()
         return user
+      } catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+    },
+    login: async (root, args) => {
+      try {
+        const user = await user.find({ username: args.username })
       } catch(error) {
         throw new UserInputError(error.message, {
           invalidArgs: args
@@ -259,7 +274,7 @@ const server = new ApolloServer({
       const decodedToken = jwt.verify(
         auth.substring(7), process.env.SECRET
       )
-      const currentUser = await User.findById(decodedToken.id).populate('friends')
+      const currentUser = await User.findById(decodedToken.id)
       return { currentUser }
     }
   },
