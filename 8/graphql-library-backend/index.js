@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 
 const Book = require('./models/Book')
 const Author = require('./models/Author')
+const User = require('./models/User')
 
 const MONGODB_URI = process.env.MONGODB_URI
 console.log('connecting to MONGODB_URI')
@@ -116,6 +117,19 @@ const resolvers = {
   },
 
   Mutation: {
+    addUser: async (root, args) => {
+      try {
+        const User = new User({ ...args })
+        await User.save()
+        
+        return User
+      } catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args
+        })
+      }
+    },
+
     addAuthor: async (root, args) => {
       const author = new Author({ ...args })
       try {
