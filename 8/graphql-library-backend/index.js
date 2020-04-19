@@ -193,9 +193,12 @@ const resolvers = {
     },
 
     addAuthor: async (root, args, context) => {
-
-      const author = new Author({ ...args })
       try {
+        if (!context.currentUser) {
+          throw new UserInputError('Must be logged in to add author')
+        }
+
+        const author = new Author({ ...args })
         await author.save()
         return author
       } catch(error) {
@@ -321,7 +324,10 @@ const server = new ApolloServer({
         const currentUser = await User.findById(decodedToken._doc._id)
         return {
           currentUser,
-          loggedIn: true
+        }
+      } else {
+        return {
+          currentUser: null
         }
       }
     } catch (error) {
