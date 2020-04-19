@@ -156,7 +156,8 @@ const resolvers = {
             invalidArgs: args.username
           })
         }
-        const isCorrectPass = await bcrypt.compare(args.pass, user.password)
+
+        const isCorrectPass = await bcrypt.compare(args.password, user.password)
         if (!isCorrectPass) {
           throw new UserInputError('Incorrect password', {
             invalidArgs: args.password
@@ -174,7 +175,7 @@ const resolvers = {
         }
 
         return user
-        
+
       } catch(error) {
         throw new UserInputError(error.message, {
           invalidArgs: args
