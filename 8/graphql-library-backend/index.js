@@ -209,6 +209,10 @@ const resolvers = {
     },
     editAuthor: async (root, args) => {
       try {
+        if (!context.currentUser) {
+          throw new UserInputError('Must be logged in to edit author')
+        }
+
         // may want to include mongoose string matching instead of exact match lookups
         const author = await Author.findOne({ name: args.name })
         if (!author) {
