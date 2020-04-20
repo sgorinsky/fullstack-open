@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useQuery } from '@apollo/client'
+import { useQuery, useApolloClient } from '@apollo/client'
 
 import LoginForm from './components/LoginForm'
 import Persons from './components/Persons'
@@ -16,6 +16,14 @@ const App = () => {
   const result = useQuery(ALL_PERSONS, {
     pollInterval: 2000
   })
+
+  const client = useApolloClient()
+
+  const logout = () => {
+    setToken(null)
+    localStorage.clear()
+    client.resetStore()
+  }
 
   const notify = (message) => {
     setErrorMessage(message)
