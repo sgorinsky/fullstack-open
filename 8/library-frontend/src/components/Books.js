@@ -1,6 +1,20 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
 const Books = ({ books }) => {
+  const [genre, setGenre] = useState(true)
+  const [allGenres, setAllGenres] = useState([])
+  useEffect(() => {
+
+    let currentGenres = new Set();
+    books.forEach(b => {
+      b.genres.forEach(genre => {
+        currentGenres.add(genre.toLowerCase())
+      })
+    })
+    setAllGenres([...currentGenres])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  console.log(allGenres)
   return (
     <div>
       <h2>Books</h2>
@@ -13,7 +27,7 @@ const Books = ({ books }) => {
             <th scope='col'>genres</th>
           </tr>
         </thead>
-        {books.map(b => {
+        {books.filter(b => genre || b.genres.includes(genre)).map(b => {
           return (
             <tbody key={b.title}>
               <tr>
@@ -34,6 +48,12 @@ const Books = ({ books }) => {
           )}
         )}
       </table>
+      <div>
+        {
+          allGenres.length > 0 && allGenres.map(genre => <button key={genre} onClick={() => setGenre(genre)}>{genre}</button>)
+        }
+        <button onClick={() => setGenre(true)}>all genres</button>
+      </div>
     </div>
   )
 }
