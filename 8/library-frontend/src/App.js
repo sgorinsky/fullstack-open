@@ -26,24 +26,27 @@ const App = () => {
     return <div>loading...</div>
   }
 
-  if (!token) {
-    return (
-      <LoginForm setToken={setToken} setError={setErrorMessage} />
-    )
-  }
-
   return (
     <div>
       <Notify errorMessage={errorMessage}/>
-      <button onClick={() => setView(true)}>Authors</button>
-      <button onClick={() => setView(false)}>Books</button>
-      {view && authors.data ? 
+      <button onClick={() => setView('login')}>{token ? 'Login' : 'Logout'} </button>
+      <button onClick={() => setView('authors')}>Authors</button>
+      <button onClick={() => setView('books')}>Books</button>
+      {
+        view === 'login' &&
+        <LoginForm setToken={setToken} setError={setErrorMessage} />
+      }
+      { 
+        view === 'authors' &&
         <div>
           <Authors authors={authors.data.allAuthors} />
           <AuthorForm isAddAuthor={false} setError={setErrorMessage} />
           <AuthorForm setError={setErrorMessage} />
         </div>
-      : <div>
+      }
+      {   
+        view === 'books' && 
+        <div>
           <Books books={books.data.allBooks} />
           <BookForm isAddBook={false} setError={setErrorMessage} />
           <BookForm setError={setErrorMessage} />
