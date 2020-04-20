@@ -4,7 +4,6 @@ const Books = ({ books }) => {
   const [genre, setGenre] = useState(true)
   const [allGenres, setAllGenres] = useState([])
   useEffect(() => {
-
     let currentGenres = new Set();
     books.forEach(b => {
       b.genres.forEach(genre => {
@@ -14,7 +13,7 @@ const Books = ({ books }) => {
     setAllGenres([...currentGenres])
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log(allGenres)
+
   return (
     <div>
       <h2>Books</h2>
