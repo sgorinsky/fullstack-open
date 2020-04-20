@@ -5,6 +5,7 @@ import Authors from './components/Authors'
 import AuthorForm from './components/AuthorForm'
 import Books from './components/Books'
 import BookForm from './components/BookForm'
+import LoginForm from './components/LoginForm'
 import Notify from './components/Notify'
 
 import { ALL_AUTHORS, ALL_BOOKS } from './queries';
@@ -12,6 +13,8 @@ import { ALL_AUTHORS, ALL_BOOKS } from './queries';
 const App = () => {
   const [view, setView] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [token, setToken] = useState(null)
+
   const authors = useQuery(ALL_AUTHORS, {
     pollInterval: 2000
   })
@@ -23,6 +26,11 @@ const App = () => {
     return <div>loading...</div>
   }
 
+  if (!token) {
+    return (
+      <LoginForm setToken={setToken} setError={setErrorMessage} />
+    )
+  }
   return (
     <div>
       <Notify errorMessage={errorMessage}/>
