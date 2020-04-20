@@ -37,7 +37,7 @@ const App = () => {
       <Notify errorMessage={errorMessage}/>
       <button onClick={() => setView(true)}>Authors</button>
       <button onClick={() => setView(false)}>Books</button>
-      {view ? 
+      {view && authors.data ? 
         <div>
           <Authors authors={authors.data.allAuthors} />
           <AuthorForm isAddAuthor={false} setError={setErrorMessage} />

@@ -11,12 +11,12 @@ mutation login($username: String!, $password: String!) {
 
 // AUTHORS
 export const ALL_AUTHORS = gql`
-{
+query allAuthors {
   allAuthors {
     name,
     born,
-    bookCount,
-    id
+    id,
+    bookCount
   }
 }
 `
