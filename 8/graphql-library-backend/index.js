@@ -237,7 +237,6 @@ const resolvers = {
         // --> author goes in db if not already there
         if (!author) {
           author = new Author({ name: args.author })
-          console.log(author)
           await author.save()
         }
 
