@@ -28,8 +28,14 @@ const LoginForm = ({ setToken, setError }) => {
   return (
     <div>
       <form onSubmit={submit}>
-        <input value={username} onChange={({ target }) => setUsername(target.value)} />
-        <input value={password} type='password' onChange={({ target }) => setPassword(target.value)} />
+        <div>
+          username
+          <input value={username} onChange={({ target }) => setUsername(target.value)} />
+        </div>
+        <div>
+          password
+          <input value={password} type='password' onChange={({ target }) => setPassword(target.value)} />
+        </div>
         <button type='submit'>login</button>
       </form>
     </div>
