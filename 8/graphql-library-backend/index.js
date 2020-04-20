@@ -290,14 +290,15 @@ const resolvers = {
   },
 
   Author: {
-    bookCount: (root) => {
-      let count = 0;
-      for (var i = 0; i < books.length; ++i) {
-        if (books[i].author === root.name) {
-          count = count + 1
-        }
+    bookCount: async (root) => {
+      try {
+        const books = Book.find({ author: root.name })
+        return books.length
+      } catch(error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: root.name
+        })
       }
-      return count
     }
   },
 
