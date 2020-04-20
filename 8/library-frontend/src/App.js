@@ -29,9 +29,10 @@ const App = () => {
   return (
     <div>
       <Notify errorMessage={errorMessage}/>
-      <button onClick={() => setView('login')}>{token ? 'Login' : 'Logout'} </button>
+      <button onClick={() => setView('login')}>{!token ? 'Login' : 'Logout'} </button>
       <button onClick={() => setView('authors')}>Authors</button>
       <button onClick={() => setView('books')}>Books</button>
+      <button onClick={() => setView('addBook')}>Add Book</button>
       {
         view === 'login' &&
         <LoginForm token={token} setToken={setToken} setError={setErrorMessage} />
@@ -49,11 +50,14 @@ const App = () => {
         <div>
           <Books books={books.data.allBooks} />
           <BookForm isAddBook={false} setError={setErrorMessage} />
-          <BookForm setError={setErrorMessage} />
         </div>
+      }
+      {
+        view === 'addBook' &&
+        <BookForm setError={setErrorMessage} />
       }
     </div>
   )
 }
 
-export default App;
+export default App

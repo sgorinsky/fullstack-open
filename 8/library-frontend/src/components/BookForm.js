@@ -97,7 +97,7 @@ const BookForm = ({ isAddBook = true, setError }) => {
         <div>
           current genres: {genres.length ? genres.join(', ') : 'none'}
         </div>
-        <button type='submit'>{isAddBook ? 'add!' : 'edit!'}</button>
+        <button type='submit'>{isAddBook ? 'add' : 'edit'}</button>
       </form>
     </div>
   )
