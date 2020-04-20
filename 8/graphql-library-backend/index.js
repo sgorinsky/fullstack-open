@@ -292,7 +292,7 @@ const resolvers = {
   Author: {
     bookCount: async (root) => {
       try {
-        const books = Book.find({ author: root.name })
+        const books = await Book.find({ author: root.id })
         return books.length
       } catch(error) {
         throw new UserInputError(error.message, {
