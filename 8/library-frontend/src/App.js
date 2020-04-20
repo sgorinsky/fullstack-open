@@ -31,6 +31,7 @@ const App = () => {
       <LoginForm setToken={setToken} setError={setErrorMessage} />
     )
   }
+
   return (
     <div>
       <Notify errorMessage={errorMessage}/>

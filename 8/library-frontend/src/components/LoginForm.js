@@ -8,7 +8,7 @@ const LoginForm = ({ setToken, setError }) => {
 
   const [login, result] = useMutation(LOGIN, {
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
+      console.log(error)
     }
   })
 
@@ -16,7 +16,7 @@ const LoginForm = ({ setToken, setError }) => {
     if (result.data) {
       const token = result.data.login.value
       setToken(token)
-      localStorage.setItem('phonenumbers-user-token', token) // set browser cache
+      localStorage.setItem('library-user-token', token) // set browser cache
     }
   }, [result.data]) // eslint-disable-line
 
