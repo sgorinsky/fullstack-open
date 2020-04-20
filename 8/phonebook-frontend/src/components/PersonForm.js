@@ -12,7 +12,7 @@ const PersonForm = ({ setError }) => {
     onError: (error) => {
       setError(error.graphQLErrors[0].message)
     },
-    // update store instead of constantly refetching queries after new object is written to backend
+    // update cache/store instead of constantly refetching queries after new object is written to backend
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_PERSONS })
       dataInStore.allPersons.push(response.data.addPerson)
