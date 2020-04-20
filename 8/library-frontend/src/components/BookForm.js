@@ -14,13 +14,11 @@ const BookForm = ({ isAddBook = true, setError }) => {
     refetchQueries: [{ query: ALL_BOOKS }],
     onError: (error) => {
       console.log(error)
-      setError(error.graphQLErrors[0].message)
     }
   })
   const [addBook] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
     onError: (error) => {
-      console.log(error)
       setError(error.graphQLErrors[0].message)
     }
   })

@@ -27,7 +27,7 @@ const Books = ({ books }) => {
             <th scope='col'>genres</th>
           </tr>
         </thead>
-        {books.filter(b => genre || b.genres.includes(genre)).map(b => {
+        {books.filter(b => genre === true || b.genres.includes(genre)).map(b => {
           return (
             <tbody key={b.title}>
               <tr>
