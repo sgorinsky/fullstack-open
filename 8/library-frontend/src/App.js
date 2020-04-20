@@ -11,7 +11,7 @@ import Notify from './components/Notify'
 import { ALL_AUTHORS, ALL_BOOKS } from './queries';
 
 const App = () => {
-  const [view, setView] = useState(true)
+  const [view, setView] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
   const [token, setToken] = useState(null)
 
@@ -34,7 +34,7 @@ const App = () => {
       <button onClick={() => setView('books')}>Books</button>
       {
         view === 'login' &&
-        <LoginForm setToken={setToken} setError={setErrorMessage} />
+        <LoginForm token={token} setToken={setToken} setError={setErrorMessage} />
       }
       { 
         view === 'authors' &&
