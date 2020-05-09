@@ -302,10 +302,9 @@ const resolvers = {
   },
 
   Book: {
-    author: (root) => {
-      return {
-        name: root.author
-      }
+    author: async (root) => {
+      const author = await Author.findById(root.author)
+      return author
     }
   }
 }
