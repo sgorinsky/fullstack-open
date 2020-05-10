@@ -230,8 +230,12 @@ const resolvers = {
       }
     },
 
-    addBook: async (root, args) => {
+    addBook: async (root, args, context) => {
       try {
+        if (!context.currentUser) {
+          throw new UserInputError('Must be logged in to add book')
+        }
+
         // New book must have author
         let author = await Author.findOne({ name: args.author })
         // --> author goes in db if not already there
@@ -313,7 +317,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 
-  // Need to provide Query Variabled http header with `bearer ${token}` format to provide context
+  // Need to provide Query Variable http header with `bearer ${token}` format to provide context
   context: async ({ req }) => {
     try {
       const auth = req ? req.headers.authorization : null

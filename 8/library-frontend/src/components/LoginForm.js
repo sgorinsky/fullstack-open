@@ -25,6 +25,12 @@ const LoginForm = ({ token, setToken, setError }) => {
     login({ variables: { username, password } })
   }
 
+  const logout = (event) => {
+    event.preventDefault()
+    setToken(null)
+    localStorage.removeItem('library-user-token')
+  }
+
   return (
     <div>
       {!token || !localStorage.getItem('library-user-token') ?
@@ -39,7 +45,10 @@ const LoginForm = ({ token, setToken, setError }) => {
           </div>
           <button type='submit'>login</button>
         </form> :
-        'logged in!'
+        <div>
+          'logged in!'
+          <button onClick={logout}>logout</button>
+        </div>
       }
     </div>
   )
