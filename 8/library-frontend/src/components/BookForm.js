@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import get from 'lodash/get'
+
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK, EDIT_BOOK, ALL_BOOKS } from '../queries'
 
@@ -13,7 +15,7 @@ const BookForm = ({ isAddBook = true, setError }) => {
   const [editBook] = useMutation(EDIT_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }],
     onError: (error) => {
-      setError(error.graphQLErrors[0].message)
+      setError(get(error, ['graphQLErrors', 0,'message'], null))
     }
   })
   const [addBook] = useMutation(ADD_BOOK, {

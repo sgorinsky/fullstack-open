@@ -1,10 +1,16 @@
 import React from 'react'
 
-const Recommend = () => {
-  
+import { ME } from '../queries'
+import { useQuery } from '@apollo/client'
+
+const Recommend = ({ books }) => {
+  const user = useQuery(ME)
+  console.log(user)
   return (
     <div>
-
+      {
+        
+      }
     </div>
   )
 }

@@ -7,6 +7,7 @@ import Books from './components/Books'
 import BookForm from './components/BookForm'
 import LoginForm from './components/LoginForm'
 import Notify from './components/Notify'
+import Recommend from './components/Recommend'
 
 import { ALL_AUTHORS, ALL_BOOKS } from './queries';
 
@@ -32,6 +33,7 @@ const App = () => {
       <button onClick={() => setView('login')}>{!token ? 'Login' : 'Logout'} </button>
       <button onClick={() => setView('authors')}>Authors</button>
       <button onClick={() => setView('books')}>Books</button>
+      <button onClick={() => setView('recommend')}>Recommend</button>
       <button onClick={() => setView('addBook')}>Add Book</button>
       {
         view === 'login' &&
@@ -55,6 +57,10 @@ const App = () => {
       {
         view === 'addBook' &&
         <BookForm setError={setErrorMessage} />
+      }
+      {
+        view === 'recommend' &&
+        <Recommend books={books.data.allBooks} />
       }
     </div>
   )
